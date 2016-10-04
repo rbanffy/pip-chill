@@ -28,7 +28,7 @@ Like `pip freeze` but lists only the packages that are not dependencies of insta
 Features
 --------
 
-* TODO
+Generates a requirements file without any packages that depend on other packages in the file.
 
 Credits
 ---------
@@ -37,4 +37,3 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-
