@@ -9,7 +9,7 @@ def chill():
     dependencies = set()
     for distribution in pip.get_installed_distributions():
         for requirement in distribution.requires():
-            dependencies.add(requirement)
+            dependencies.add(requirement.key)
 
     # List all packages and versions installed, excluding the auto-installed.
     return [
