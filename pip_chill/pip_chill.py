@@ -16,4 +16,5 @@ def chill():
         '{}=={}'.format(distribution.key, distribution.version)
         for distribution in pip.get_installed_distributions()
         if distribution.key not in dependencies
+        and distribution.key not in ('pip', 'pip-chill')
     ]
