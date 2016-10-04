@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+"""Lists installed packages that are not dependencies of others"""
+
+import pip
+
+
+def chill():
+    # Gather all packages that are requirements and will be auto-installed.
+    dependencies = set()
+    for distribution in pip.get_installed_distributions():
+        for requirement in distribution.requires():
+            dependencies.add(requirement)
+
+    # List all packages and versions installed, excluding the auto-installed.
+    return [
+        '{}=={}'.format(distribution.key, distribution.version)
+        for distribution in pip.get_installed_distributions()
+        if distribution.key not in dependencies
+    ]
