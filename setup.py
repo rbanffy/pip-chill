@@ -27,13 +27,13 @@ setup(
     author_email='rbanffy@gmail.com',
     url='https://github.com/rbanffy/pip_chill',
     packages=[
-        'pip_chill',
+        'pip-chill',
     ],
     package_dir={'pip_chill':
                  'pip_chill'},
     entry_points={
         'console_scripts': [
-            'pip_chill=pip_chill.cli:main'
+            'pip-chill=pip_chill.cli:main'
         ]
     },
     include_package_data=True,
