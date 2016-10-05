@@ -1,6 +1,6 @@
-===============================
+=========
 PIP Chill
-===============================
+=========
 
 
 .. image:: https://img.shields.io/pypi/v/pip_chill.svg
@@ -18,7 +18,8 @@ PIP Chill
      :alt: Updates
 
 
-Like `pip freeze` but lists only the packages that are not dependencies of installed packages.
+Like `pip freeze` but lists only the packages that are not
+dependencies of installed packages.
 
 
 * Free software: GNU General Public License v3
@@ -28,12 +29,25 @@ Like `pip freeze` but lists only the packages that are not dependencies of insta
 Features
 --------
 
-Generates a requirements file without any packages that depend on other packages in the file.
+Generates a requirements file without any packages that depend on
+other packages in the file.
+
+Usage
+-----
+
+Suppose you have installed in your virtualenv a couple packages. When
+you run `pip freeze`, you'll get a list of all packages installed,
+with all dependencies. If one of the packages you installed ceases to
+depend on an already installed package, you have to manually remove it
+from the list. The list also makes no distinction about the packages
+you actually care about and packages your packages care about, making
+the requirements file bloated and, ultimately, inaccurate.
 
 Credits
----------
+-------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+This package was created with Cookiecutter_ and the
+`audreyr/cookiecutter-pypackage`_ project template.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
