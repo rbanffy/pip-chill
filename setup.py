@@ -18,16 +18,16 @@ test_requirements = [
 ]
 
 setup(
-    name='pip_chill',
+    name='pip-chill',
     version='0.1.0',
     description="Like `pip freeze` but lists only the packages that are not "
     "dependencies of installed packages.",
     long_description=readme + '\n\n' + history,
     author="Ricardo Bánffy",
     author_email='rbanffy@gmail.com',
-    url='https://github.com/rbanffy/pip_chill',
+    url='https://github.com/rbanffy/pip-chill',
     packages=[
-        'pip-chill',
+        'pip_chill',
     ],
     package_dir={'pip_chill':
                  'pip_chill'},
@@ -40,7 +40,7 @@ setup(
     install_requires=requirements,
     license="GNU General Public License v3",
     zip_safe=False,
-    keywords='pip_chill',
+    keywords='pip-chill',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
