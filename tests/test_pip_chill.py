@@ -11,7 +11,7 @@ Tests for `pip_chill` module.
 
 import sys
 import unittest
-from contextlib import contextmanager
+# from contextlib import contextmanager
 from click.testing import CliRunner
 
 from pip_chill import pip_chill

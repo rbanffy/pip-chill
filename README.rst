@@ -1,6 +1,6 @@
-=========
-PIP Chill
-=========
+=============================================================
+PIP Chill - Make requirements will only the packages you need
+=============================================================
 
 
 .. image:: https://img.shields.io/pypi/v/pip_chill.svg
