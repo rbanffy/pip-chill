@@ -7,11 +7,16 @@ import click
 import pip_chill
 
 
+@click.option(
+    '--no-version', is_flag=True, default=False, help='Omit version numbers.')
 @click.command()
-def main(args=None):
+def main(no_version):
     """Console script for pip_chill"""
-    for line in pip_chill.chill():
-        print(line)
+    for package, version in pip_chill.chill():
+        if no_version:
+            print(package)
+        else:
+            print('{}=={}'.format(package, version))
 
 if __name__ == "__main__":
     main()
