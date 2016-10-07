@@ -4,17 +4,17 @@ PIP Chill - Make requirements with only the packages you need
 
 
 .. image:: https://img.shields.io/pypi/v/pip_chill.svg
-        :target: https://pypi.python.org/pypi/pip_chill
+        :target: https://pypi.python.org/pypi/pip-chill
 
 .. image:: https://img.shields.io/travis/rbanffy/pip_chill.svg
-        :target: https://travis-ci.org/rbanffy/pip_chill
+        :target: https://travis-ci.org/rbanffy/pip-chill
 
 .. image:: https://readthedocs.org/projects/pip-chill/badge/?version=latest
         :target: https://pip-chill.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/rbanffy/pip_chill/shield.svg
-     :target: https://pyup.io/repos/github/rbanffy/pip_chill/
+     :target: https://pyup.io/repos/github/rbanffy/pip-chill/
      :alt: Updates
 
 
