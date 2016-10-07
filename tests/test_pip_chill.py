@@ -35,7 +35,9 @@ class TestPip_chill(unittest.TestCase):
         assert result.exit_code == 0
         help_result = runner.invoke(cli.main, ['--help'])
         assert help_result.exit_code == 0
-        assert '--help  Show this message and exit.' in help_result.output
+        assert '--no-version  Omit version numbers' in help_result.output
+        assert '--help' in help_result.output
+        assert 'Show this message and exit.' in help_result.output
 
 
 if __name__ == '__main__':
