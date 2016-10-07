@@ -62,3 +62,7 @@ target/
 *~
 .#*
 *#
+
+# Testing venvs
+.venv
+.venv3
