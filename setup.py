@@ -19,7 +19,7 @@ test_requirements = [
 
 setup(
     name='pip-chill',
-    version='0.1.4',
+    version='0.1.5',
     description="Like `pip freeze` but lists only the packages that are not "
     "dependencies of installed packages.",
     long_description=readme + '\n\n' + history,
@@ -44,10 +44,10 @@ setup(
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'License :: '
+        'OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
