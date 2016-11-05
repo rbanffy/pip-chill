@@ -39,6 +39,11 @@ class TestPip_chill(unittest.TestCase):
         assert '--help' in help_result.output
         assert 'Show this message and exit.' in help_result.output
 
+    def test_command_line_interface_no_version(self):
+        runner = CliRunner()
+        result = runner.invoke(cli.main, ['--no-version'])
+        assert result.exit_code == 0
+        assert '==' not in result.output
 
 if __name__ == '__main__':
     sys.exit(unittest.main())
