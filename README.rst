@@ -66,7 +66,6 @@ Or, if you want it without version numbers::
  coverage
  django-argonauts
 
-
 Credits
 -------
 
