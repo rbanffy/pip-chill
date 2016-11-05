@@ -32,6 +32,9 @@ Features
 Generates a requirements file without any packages that depend on
 other packages in the file.
 
+![How it works]
+(https://raw.githubusercontent.com/wiki/rbanffy/pip-chill/demo.gif)
+
 Usage
 -----
 
