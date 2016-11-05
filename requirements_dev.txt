@@ -6,4 +6,3 @@ flake8
 tox
 coverage
 Sphinx
-'
