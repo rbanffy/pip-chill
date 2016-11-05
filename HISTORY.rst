@@ -2,6 +2,11 @@
 History
 =======
 
+0.1.4 (2016-11-05)
+------------------
+
+* Better testing, more of the cookiecutter infrastructure enabled
+
 0.1.3 (2016-10-06)
 ------------------
 
