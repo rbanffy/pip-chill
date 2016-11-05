@@ -35,7 +35,7 @@ class TestPip_chill(unittest.TestCase):
     def test_all(self):
         installed_packages = [
             package for (package, version) in pip_chill.chill(True)]
-        for package in ['pip-chill', 'wheel', 'setuptools', 'pip']:
+        for package in ['wheel', 'setuptools', 'pip']:
             assert package in installed_packages
 
     def test_command_line_interface_help(self):
@@ -63,7 +63,7 @@ class TestPip_chill(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--all'])
         assert result.exit_code == 0
-        for package in ['pip-chill', 'wheel', 'setuptools', 'pip']:
+        for package in ['wheel', 'setuptools', 'pip']:
             assert package in result.output
 
 if __name__ == '__main__':
