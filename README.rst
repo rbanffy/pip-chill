@@ -66,6 +66,24 @@ Or, if you want it without version numbers::
  coverage
  django-argonauts
 
+Developing
+----------
+
+If you want to make changes, use the `install` Makefile target on a virtualenv you create. This will install the library in developer mode and changes you make to the code will be instantly reflected.
+
+ $ virtualenv .env
+ New python executable in /home/ricardo/projects/pip-chill/.env/bin/python2
+ Also creating executable in /home/ricardo/projects/pip-chill/.env/bin/python
+ Installing setuptools, pip, wheel...done.
+ $ source .env/bin/activate(.env) [ricardo@adams pip-chill]$ make install
+ rm -fr build/
+ rm -fr dist/
+ rm -fr .eggs/
+ ...
+ Installed /home/ricardo/projects/pip-chill/.env/lib/python2.7/site-packages/click-6.6-py2.7.egg
+ Finished processing dependencies for pip-chill==0.1.3
+ $ (and here you are ready to go)
+
 Credits
 -------
 
