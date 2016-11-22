@@ -9,7 +9,8 @@ def chill(show_all=False):
     if show_all:
         ignored_packages = ()
     else:
-        ignored_packages = ('pip', 'pip-chill', 'wheel', 'setuptools')
+        ignored_packages = ('pip', 'pip-chill', 'wheel', 'setuptools',
+                            'pkg-resources')
 
     # Gather all packages that are requirements and will be auto-installed.
     dependencies = set()
