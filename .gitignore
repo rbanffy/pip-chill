@@ -66,3 +66,7 @@ target/
 # Testing venvs
 .venv
 .venv3
+.env
+
+# Others
+cache
