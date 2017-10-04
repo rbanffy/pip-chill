@@ -11,7 +11,6 @@ Tests for `pip_chill` module.
 
 import sys
 import unittest
-# from contextlib import contextmanager
 from click.testing import CliRunner
 
 from pip_chill import pip_chill
@@ -27,22 +26,23 @@ class TestPip_chill(unittest.TestCase):
         pass
 
     def test_pip_ommitted(self):
-        installed_packages = [
-            package for (package, version) in pip_chill.chill()]
-        for package in ['pip-chill', 'wheel', 'setuptools', 'pip']:
-            assert package not in installed_packages
+        packages, _ = pip_chill.chill()
+        hidden = {'pip-chill', 'wheel', 'setuptools', 'pip'}
+        for package in packages:
+            assert package.name not in hidden
 
     def test_all(self):
-        installed_packages = [
-            package for (package, version) in pip_chill.chill(True)]
+        packages, _ = pip_chill.chill(True)
+        package_names = {package.name for package in packages}
         for package in ['wheel', 'pip']:
-            assert package in installed_packages
+            assert package in package_names
 
     def test_command_line_interface_help(self):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--help'])
         assert result.exit_code == 0
-        assert '--no-version  Omit version numbers' in result.output
+        assert '--no-version' in result.output
+        assert 'Omit version numbers' in result.output
         assert '--help' in result.output
         assert 'Show this message and exit.' in result.output
 
@@ -65,6 +65,7 @@ class TestPip_chill(unittest.TestCase):
         assert result.exit_code == 0
         for package in ['wheel', 'pip']:
             assert package in result.output
+
 
 if __name__ == '__main__':
     sys.exit(unittest.main())
