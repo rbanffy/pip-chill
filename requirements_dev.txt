@@ -1,8 +1,7 @@
-pip
 bumpversion
-wheel
-watchdog
-flake8
-tox
+click
 coverage
-Sphinx
+flake8
+sphinx
+tox
+watchdog
