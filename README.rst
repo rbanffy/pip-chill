@@ -68,6 +68,36 @@ Or, if you want it without version numbers::
  cookiecutter
  coverage
  django-argonauts
+ ...
+
+Or, if you want to list package dependencies too::
+
+ $ pip-chill -v
+ asciitree==0.3.1
+ autopep8==1.2.4
+ beautifulsoup4==4.4.0
+ bleach==1.4.1
+ cookiecutter==1.4.0
+ coverage==3.7.1
+ django-argonauts==1.0.1
+ # arrow==0.10.0 # Installed as dependency for jinja2-time
+ # binaryornot==0.4.4 # Installed as dependency for cookiecutter
+ # chardet==3.0.4 # Installed as dependency for binaryornot
+ # click==6.7 # Installed as dependency for cookiecutter
+ # django==1.11.5 # Installed as dependency for django-argonauts
+ # future==0.16.0 # Installed as dependency for cookiecutter
+ # html5lib==0.999999999 # Installed as dependency for bleach
+ # jinja2==2.9.6 # Installed as dependency for jinja2-time, cookiecutter
+ # jinja2-time==0.2.0 # Installed as dependency for cookiecutter
+ # markupsafe==1.0 # Installed as dependency for jinja2
+ # pep8==1.7.0 # Installed as dependency for autopep8
+ # poyo==0.4.1 # Installed as dependency for cookiecutter
+ # python-dateutil==2.6.1 # Installed as dependency for arrow
+ # pytz==2017.2 # Installed as dependency for django
+ # six==1.11.0 # Installed as dependency for python-dateutil, html5lib, bleach
+ # webencodings==0.5.1 # Installed as dependency for html5lib
+ # whichcraft==0.4.1 # Installed as dependency for cookiecutter
+ ...
 
 Credits
 -------
