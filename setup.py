@@ -19,7 +19,7 @@ test_requirements = [
 
 setup(
     name='pip-chill',
-    version='0.1.6',
+    version='0.1.7',
     description="Like `pip freeze` but lists only the packages that are not "
     "dependencies of installed packages.",
     long_description=readme + '\n\n' + history,
