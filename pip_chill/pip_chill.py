@@ -3,7 +3,7 @@
 
 import pip
 
-from utils import Distribution
+from .utils import Distribution
 
 
 def chill(show_all=False):
