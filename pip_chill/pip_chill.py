@@ -4,7 +4,7 @@
 import pip
 
 from utils import Distribution
-
+import pkg_resources
 
 def chill(show_all=False):
     if show_all:
@@ -16,8 +16,8 @@ def chill(show_all=False):
     # Gather all packages that are requirements and will be auto-installed.
     distributions = {}
     dependencies = {}
-
-    for distribution in pip.get_installed_distributions():
+    
+    for distribution in pkg_resources.working_set:
         if distribution.key in ignored_packages:
             continue
 
