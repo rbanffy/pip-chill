@@ -13,7 +13,7 @@ python:
   - "pypy3"
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install tox-travis
+install: pip install tox-travis  && if [[ $TRAVIS_PYTHON_VERSION == 3.3 ]]; then pip install virtualenv==15.2.0; fi
 
 # command to run tests, e.g. python setup.py test
 script: tox

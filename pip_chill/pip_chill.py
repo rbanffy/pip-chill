@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Lists installed packages that are not dependencies of others"""
 
-import pip
+import pkg_resources
 
-from utils import Distribution
+from .utils import Distribution
 
 
 def chill(show_all=False):
@@ -17,7 +17,7 @@ def chill(show_all=False):
     distributions = {}
     dependencies = {}
 
-    for distribution in pip.get_installed_distributions():
+    for distribution in pkg_resources.working_set:
         if distribution.key in ignored_packages:
             continue
 
