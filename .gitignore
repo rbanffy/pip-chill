@@ -67,6 +67,8 @@ target/
 .venv
 .venv3
 .env
+env2
 
 # Others
 cache
+.pytest_cache
