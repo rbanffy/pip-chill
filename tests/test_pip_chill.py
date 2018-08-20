@@ -68,6 +68,19 @@ class TestPip_chill(unittest.TestCase):
         assert result.exit_code == 0
         assert '==' not in result.output
 
+    def test_command_line_interface_verbose(self):
+        runner = CliRunner()
+        result = runner.invoke(cli.main, ['--verbose'])
+        assert result.exit_code == 0
+        assert '# Installed as dependency for' in result.output
+
+    def test_command_line_interface_verbose_no_version(self):
+        runner = CliRunner()
+        result = runner.invoke(cli.main, ['--verbose', '--no-version'])
+        assert result.exit_code == 0
+        assert '==' not in result.output
+        assert '# Installed as dependency for' in result.output
+
     def test_command_line_interface_omits_ignored(self):
         runner = CliRunner()
         result = runner.invoke(cli.main)
