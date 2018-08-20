@@ -13,14 +13,19 @@ import sys
 import unittest
 from click.testing import CliRunner
 
-from pip_chill import pip_chill
-from pip_chill import cli
+from pip_chill import (
+    pip_chill,
+    cli,
+    )
+from pip_chill.pip_chill import Distribution
 
 
 class TestPip_chill(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.distribution_1 = Distribution('pip-chill', '2.0.0', [])
+        self.distribution_2 = Distribution('pip', '10.0.0', [self.distribution_1])
+        self.distribution_3 = Distribution('pip', '11.0.0', [self.distribution_1])
 
     def tearDown(self):
         pass
@@ -36,6 +41,17 @@ class TestPip_chill(unittest.TestCase):
         package_names = {package.name for package in packages}
         for package in ['wheel', 'pip']:
             assert package in package_names
+
+    def test_hashes(self):
+        packages, _ = pip_chill.chill()
+        for package in packages:
+            assert hash(package) == hash(package.name)
+
+    def test_equality(self):
+        assert self.distribution_1 != self.distribution_2
+        assert self.distribution_1 == self.distribution_1
+        assert self.distribution_2 == self.distribution_3
+        assert self.distribution_2 == self.distribution_2.name
 
     def test_command_line_interface_help(self):
         runner = CliRunner()
