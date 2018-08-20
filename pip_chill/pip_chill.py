@@ -23,17 +23,19 @@ class Distribution:
                 .format(self.name, self.version, ', '.join(self.required_by))
         return '{}=={}'.format(self.name, self.version)
 
-    def __cmp__(self, other):
-        if isinstance(other, Distribution):
-            return self.name == other.name
-
-        return self.name == other
+    def __eq__(self, other):
+        if self is other:
+            return True
+        elif isinstance(other, Distribution):
+            return True if self.name == other.name else False
+        else:
+            return True if self.name == other else False
 
     def __lt__(self, other):
         return self.name < other.name
 
     def __hash__(self):
-        return self.name
+        return hash(self.name)
 
 
 def chill(show_all=False):
