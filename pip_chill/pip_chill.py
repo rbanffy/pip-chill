@@ -1,9 +1,41 @@
 # -*- coding: utf-8 -*-
 """Lists installed packages that are not dependencies of others"""
 
-import pip
+from pip._internal.utils.misc import get_installed_distributions
 
-from utils import Distribution
+
+# from pip_chill.utils import Distribution
+class Distribution:
+    def __init__(self, name, version=None, required_by=None):
+        self.name = name
+        self.version = version
+        self.required_by = set(required_by) if required_by else set()
+
+    def get_name_without_version(self):
+        if self.required_by:
+            return '# {} # Installed as dependency for {}' \
+                .format(self.name, ', '.join(self.required_by))
+        return self.name
+
+    def __str__(self):
+        if self.required_by:
+            return '# {}=={} # Installed as dependency for {}' \
+                .format(self.name, self.version, ', '.join(self.required_by))
+        return '{}=={}'.format(self.name, self.version)
+
+    def __eq__(self, other):
+        if self is other:
+            return True
+        elif isinstance(other, Distribution):
+            return True if self.name == other.name else False
+        else:
+            return True if self.name == other else False
+
+    def __lt__(self, other):
+        return self.name < other.name
+
+    def __hash__(self):
+        return hash(self.name)
 
 
 def chill(show_all=False):
@@ -11,13 +43,13 @@ def chill(show_all=False):
         ignored_packages = ()
     else:
         ignored_packages = {
-            'pip', 'pip-chill', 'wheel', 'setuptools', 'pkg-resources'}
+            'pip', 'wheel', 'setuptools', 'pkg-resources'}
 
     # Gather all packages that are requirements and will be auto-installed.
     distributions = {}
     dependencies = {}
 
-    for distribution in pip.get_installed_distributions():
+    for distribution in get_installed_distributions():
         if distribution.key in ignored_packages:
             continue
 

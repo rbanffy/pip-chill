@@ -50,15 +50,13 @@ clean-test: ## remove test and coverage artifacts
 lint: ## check style with flake8
 	flake8 pip_chill tests
 
-# test: ## run tests quickly with the default Python
+test: ## run tests quickly with the default Python
+	python setup.py test
 
-# 		python setup.py test
-
-# test-all: ## run tests on every Python version with tox
-# 	tox
+test-all: ## run tests on every Python version with tox
+	tox
 
 coverage: ## check code coverage quickly with the default Python
-
 	coverage run --source pip_chill setup.py test
 	coverage report -m
 	coverage html
