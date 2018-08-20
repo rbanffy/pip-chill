@@ -27,7 +27,7 @@ class TestPip_chill(unittest.TestCase):
 
     def test_pip_ommitted(self):
         packages, _ = pip_chill.chill()
-        hidden = {'pip-chill', 'wheel', 'setuptools', 'pip'}
+        hidden = {'wheel', 'setuptools', 'pip'}
         for package in packages:
             assert package.name not in hidden
 
@@ -56,8 +56,10 @@ class TestPip_chill(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli.main)
         assert result.exit_code == 0
-        for package in ['pip-chill', 'wheel', 'setuptools', 'pip']:
-            assert package not in result.output
+        for package in ['wheel', 'setuptools', 'pip']:
+            assert not any(
+                [p.startswith(package + '==')
+                 for p in result.output.split('\n')])
 
     def test_command_line_interface_all(self):
         runner = CliRunner()
