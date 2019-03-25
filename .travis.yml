@@ -1,11 +1,14 @@
 # Config file for automatic testing at travis-ci.org
 # This file will be regenerated if you run travis_pypi_setup.py
 
-os:
-  - linux
-  - osx
-dist: xenial
-language: python
+matrix:
+  include:
+    - os: linux
+      language: python
+      dist: xenial
+    - os: osx
+      language: generic
+      env: PYTHON=3.7
 python:
   - "2.7"
   - "3.4"
