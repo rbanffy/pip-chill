@@ -13,19 +13,19 @@ import sys
 import unittest
 from click.testing import CliRunner
 
-from pip_chill import (
-    pip_chill,
-    cli,
-    )
+from pip_chill import pip_chill, cli
 from pip_chill.pip_chill import Distribution
 
 
 class TestPip_chill(unittest.TestCase):
-
     def setUp(self):
         self.distribution_1 = Distribution('pip-chill', '2.0.0', [])
-        self.distribution_2 = Distribution('pip', '10.0.0', [self.distribution_1])
-        self.distribution_3 = Distribution('pip', '11.0.0', [self.distribution_1])
+        self.distribution_2 = Distribution(
+            'pip', '10.0.0', [self.distribution_1]
+        )
+        self.distribution_3 = Distribution(
+            'pip', '11.0.0', [self.distribution_1]
+        )
 
     def tearDown(self):
         pass
@@ -87,8 +87,11 @@ class TestPip_chill(unittest.TestCase):
         assert result.exit_code == 0
         for package in ['wheel', 'setuptools', 'pip']:
             assert not any(
-                [p.startswith(package + '==')
-                 for p in result.output.split('\n')])
+                [
+                    p.startswith(package + '==')
+                    for p in result.output.split('\n')
+                ]
+            )
 
     def test_command_line_interface_all(self):
         runner = CliRunner()
