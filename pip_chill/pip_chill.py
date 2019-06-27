@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 """Lists installed packages that are not dependencies of others"""
 
-from pip._internal.operations.freeze import get_requirement_info
 from pip._internal.utils.misc import get_installed_distributions
+
+try:
+    # This version of the function was added only in pip 19.1.1
+    from pip._internal.operations.freeze import get_requirement_info
+except ImportError:
+    # TODO: Add support for older versions of pip
+    def get_requirement_info(_):
+        return (None, False, [])
 
 
 class Distribution:
