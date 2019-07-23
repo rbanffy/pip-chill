@@ -11,9 +11,10 @@ Tests for `pip_chill` module.
 
 import sys
 import unittest
+
 from click.testing import CliRunner
 
-from pip_chill import pip_chill, cli
+from pip_chill import cli, pip_chill
 from pip_chill.pip_chill import Distribution
 
 
@@ -45,33 +46,33 @@ class TestPip_chill(unittest.TestCase):
     def test_hashes(self):
         packages, _ = pip_chill.chill()
         for package in packages:
-            assert hash(package) == hash(package.name)
+            self.assertEqual(hash(package), hash(package.name))
 
     def test_equality(self):
-        assert self.distribution_1 != self.distribution_2
-        assert self.distribution_1 == self.distribution_1
-        assert self.distribution_2 == self.distribution_3
-        assert self.distribution_2 == self.distribution_2.name
+        self.assertNotEqual(self.distribution_1, self.distribution_2)
+        self.assertEqual(self.distribution_1, self.distribution_1)
+        self.assertEqual(self.distribution_2, self.distribution_3)
+        self.assertEqual(self.distribution_2, self.distribution_2.name)
 
     def test_command_line_interface_help(self):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--help'])
-        assert result.exit_code == 0
-        assert '--no-version' in result.output
-        assert 'Omit version numbers' in result.output
-        assert '--help' in result.output
-        assert 'Show this message and exit.' in result.output
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn('--no-version', result.output)
+        self.assertIn('Omit version numbers', result.output)
+        self.assertIn('--help', result.output)
+        self.assertIn('Show this message and exit.', result.output)
 
     def test_command_line_interface_no_version(self):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--no-version'])
-        assert result.exit_code == 0
-        assert '==' not in result.output
+        self.assertEqual(result.exit_code, 0)
+        self.assertNotIn('==', result.output)
 
     def test_command_line_interface_verbose(self):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--verbose'])
-        assert result.exit_code == 0
+        self.assertEqual(result.exit_code, 0)
         self.assertIn('# Installed as dependency for', result.output)
 
     def test_command_line_interface_verbose_no_version(self):
@@ -86,17 +87,19 @@ class TestPip_chill(unittest.TestCase):
         result = runner.invoke(cli.main)
         self.assertEqual(result.exit_code, 0)
         for package in ['wheel', 'setuptools', 'pip']:
-            assert not any(
-                [
-                    p.startswith(package + '==')
-                    for p in result.output.split('\n')
-                ]
+            self.assertFalse(
+                any(
+                    [
+                        p.startswith(package + '==')
+                        for p in result.output.split('\n')
+                    ]
+                )
             )
 
     def test_command_line_interface_all(self):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--all'])
-        assert result.exit_code == 0
+        self.assertEqual(result.exit_code, 0)
         for package in ['pip-chill', 'pip']:
             self.assertIn(package, result.output)
 
