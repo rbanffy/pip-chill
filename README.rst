@@ -107,3 +107,8 @@ This package was created with Cookiecutter_ and the
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+
+.. image:: https://api.codacy.com/project/badge/Grade/1100f4243bb54a279a3ee6458847b4a7
+   :alt: Codacy Badge
+   :target: https://app.codacy.com/app/rbanffy/pip-chill?utm_source=github.com&utm_medium=referral&utm_content=rbanffy/pip-chill&utm_campaign=Badge_Grade_Dashboard
