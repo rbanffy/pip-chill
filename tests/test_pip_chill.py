@@ -34,13 +34,13 @@ class TestPip_chill(unittest.TestCase):
         packages, _ = pip_chill.chill()
         hidden = {'wheel', 'setuptools', 'pip'}
         for package in packages:
-            assert package.name not in hidden
+            self.assertNotIn(package.name, hidden)
 
     def test_all(self):
         packages, _ = pip_chill.chill(True)
         package_names = {package.name for package in packages}
-        for package in ['wheel', 'pip']:
-            assert package in package_names
+        for package in ['pkg-resources', 'pip']:
+            self.assertIn(package, package_names)
 
     def test_hashes(self):
         packages, _ = pip_chill.chill()
@@ -72,19 +72,19 @@ class TestPip_chill(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--verbose'])
         assert result.exit_code == 0
-        assert '# Installed as dependency for' in result.output
+        self.assertIn('# Installed as dependency for', result.output)
 
     def test_command_line_interface_verbose_no_version(self):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--verbose', '--no-version'])
-        assert result.exit_code == 0
-        assert '==' not in result.output
-        assert '# Installed as dependency for' in result.output
+        self.assertEqual(result.exit_code, 0)
+        self.assertNotIn('==', result.output)
+        self.assertIn('# Installed as dependency for', result.output)
 
     def test_command_line_interface_omits_ignored(self):
         runner = CliRunner()
         result = runner.invoke(cli.main)
-        assert result.exit_code == 0
+        self.assertEqual(result.exit_code, 0)
         for package in ['wheel', 'setuptools', 'pip']:
             assert not any(
                 [
@@ -97,8 +97,8 @@ class TestPip_chill(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--all'])
         assert result.exit_code == 0
-        for package in ['wheel', 'pip']:
-            assert package in result.output
+        for package in ['pkg-resources', 'pip']:
+            self.assertIn(package, result.output)
 
 
 if __name__ == '__main__':
