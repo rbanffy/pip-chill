@@ -1,8 +1,8 @@
 ### Environment
 
-*  PIP Chill version:
-*  Python version:
-*  Operating System:
+  * PIP Chill version:
+  * Python version:
+  * Operating System:
 
 ### Description
 
