@@ -39,7 +39,7 @@ class TestPip_chill(unittest.TestCase):
     def test_all(self):
         packages, _ = pip_chill.chill(True)
         package_names = {package.name for package in packages}
-        for package in ['pkg-resources', 'pip']:
+        for package in ['pip-chill', 'pip']:
             self.assertIn(package, package_names)
 
     def test_hashes(self):
@@ -97,7 +97,7 @@ class TestPip_chill(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli.main, ['--all'])
         assert result.exit_code == 0
-        for package in ['pkg-resources', 'pip']:
+        for package in ['pip-chill', 'pip']:
             self.assertIn(package, result.output)
 
 
