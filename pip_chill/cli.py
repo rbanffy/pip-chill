@@ -12,7 +12,7 @@ import pip_chill
 @click.option(
     '--no-version', is_flag=True, default=False, help='Omit version numbers.')
 @click.option(
-    'show_all', '--all', is_flag=True, default=False,
+    'show_all', '-a', '--all', is_flag=True, default=False,
     help='Show all packages.')
 @click.option(
     '--verbose', '-v', is_flag=True, default=False,
