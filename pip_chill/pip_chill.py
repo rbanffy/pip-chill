@@ -22,6 +22,10 @@ class Distribution:
                 .format(self.name, self.version, ', '.join(self.required_by))
         return '{}=={}'.format(self.name, self.version)
 
+    def __repr__(self):
+        return '<{}.{} instance "{}">'.format(
+            self.__module__, self.__class__.__name__, self.name)
+
     def __eq__(self, other):
         if self is other:
             return True
