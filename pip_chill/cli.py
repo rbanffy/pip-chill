@@ -7,7 +7,9 @@ import argparse
 
 import pip_chill
 
-parser = argparse.ArgumentParser(description="Generate a grid for3270font.")
+parser = argparse.ArgumentParser(
+    description="Like `pip freeze`, but more relaxed."
+)
 parser.add_argument(
     "--no-version",
     action="store_true",
