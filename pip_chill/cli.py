@@ -7,35 +7,36 @@ import argparse
 
 import pip_chill
 
-parser = argparse.ArgumentParser(
-    description="Like `pip freeze`, but more relaxed."
-)
-parser.add_argument(
-    "--no-version",
-    action="store_true",
-    dest="no_version",
-    help="Omit version numbers.",
-)
-parser.add_argument(
-    "-a",
-    "--all",
-    "--show-all",
-    action="store_true",
-    dest="show_all",
-    help="Show all packages.",
-)
-parser.add_argument(
-    "-v",
-    "--verbose",
-    action="store_true",
-    dest="verbose",
-    help="List commented out dependencies too.",
-)
-args = parser.parse_args()
-
 
 def main():
     """Console script for pip_chill"""
+
+    parser = argparse.ArgumentParser(
+        description="Like `pip freeze`, but more relaxed."
+    )
+    parser.add_argument(
+        "--no-version",
+        action="store_true",
+        dest="no_version",
+        help="omit version numbers.",
+    )
+    parser.add_argument(
+        "-a",
+        "--all",
+        "--show-all",
+        action="store_true",
+        dest="show_all",
+        help="show all packages.",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        help="list commented out dependencies too.",
+    )
+    args = parser.parse_args()
+
     distributions, dependencies = pip_chill.chill(show_all=args.show_all)
     for package in distributions:
         if args.no_version:
