@@ -12,7 +12,7 @@ Tests for `pip_chill` module.
 import sys
 import unittest
 
-from click.testing import CliRunner
+# from click.testing import CliRunner
 
 from pip_chill import cli, pip_chill
 from pip_chill.pip_chill import Distribution
