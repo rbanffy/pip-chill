@@ -3,6 +3,8 @@ bumpversion
 click
 coverage
 flake8
+nose
+pytest
 sphinx
 tox
 twine
