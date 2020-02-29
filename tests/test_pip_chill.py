@@ -19,12 +19,12 @@ from pip_chill.pip_chill import Distribution
 
 class TestPip_chill(unittest.TestCase):
     def setUp(self):
-        self.distribution_1 = Distribution('pip-chill', '2.0.0', [])
+        self.distribution_1 = Distribution("pip-chill", "2.0.0", [])
         self.distribution_2 = Distribution(
-            'pip', '10.0.0', [self.distribution_1]
+            "pip", "10.0.0", [self.distribution_1]
         )
         self.distribution_3 = Distribution(
-            'pip', '11.0.0', [self.distribution_1]
+            "pip", "11.0.0", [self.distribution_1]
         )
 
     def tearDown(self):
@@ -32,14 +32,14 @@ class TestPip_chill(unittest.TestCase):
 
     def test_pip_ommitted(self):
         packages, _ = pip_chill.chill()
-        hidden = {'wheel', 'setuptools', 'pip'}
+        hidden = {"wheel", "setuptools", "pip"}
         for package in packages:
             self.assertNotIn(package.name, hidden)
 
     def test_all(self):
         packages, _ = pip_chill.chill(True)
         package_names = {package.name for package in packages}
-        for package in ['pip-chill', 'pip']:
+        for package in ["pip-chill", "pip"]:
             self.assertIn(package, package_names)
 
     def test_hashes(self):
@@ -107,5 +107,5 @@ class TestPip_chill(unittest.TestCase):
     #         self.assertIn(package, result.output)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(unittest.main())
