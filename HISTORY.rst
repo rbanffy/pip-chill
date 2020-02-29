@@ -2,11 +2,13 @@
 History
 =======
 
-current
+1.0.0 (2020-02-29)
 ------------------
 
 * Remove dependency on Click (stay 100% within stdlib)
 * Add 3.8 tests for Tox
+* Add new tests
+* Add arm, ppc64le, and s390x to architectures being tested
 * Bump version to 1.0.0
 
 0.1.9 (2019-07-23)

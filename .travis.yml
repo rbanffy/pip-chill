@@ -59,6 +59,68 @@ matrix:
       dist: bionic
       python: nightly
 
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 2.7
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 3.5
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 3.6
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 3.7
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 3.8
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: nightly
+
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 2.7
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 3.5
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 3.6
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 3.7
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 3.8
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: nightly
+
     - os: osx
       language: generic
       env: PYTHON=2.7
