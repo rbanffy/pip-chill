@@ -8,6 +8,7 @@ class Distribution:
     """
     Represents a distribution package installed in the cutrrent environment.
     """
+
     def __init__(self, name, version=None, required_by=None):
         self.name = name
         self.version = version
@@ -18,19 +19,22 @@ class Distribution:
         Return the name of the package without a version.
         """
         if self.required_by:
-            return '# {} # Installed as dependency for {}' \
-                .format(self.name, ', '.join(self.required_by))
+            return "# {} # Installed as dependency for {}".format(
+                self.name, ", ".join(self.required_by)
+            )
         return self.name
 
     def __str__(self):
         if self.required_by:
-            return '# {}=={} # Installed as dependency for {}' \
-                .format(self.name, self.version, ', '.join(self.required_by))
-        return '{}=={}'.format(self.name, self.version)
+            return "# {}=={} # Installed as dependency for {}".format(
+                self.name, self.version, ", ".join(self.required_by)
+            )
+        return "{}=={}".format(self.name, self.version)
 
     def __repr__(self):
         return '<{}.{} instance "{}">'.format(
-            self.__module__, self.__class__.__name__, self.name)
+            self.__module__, self.__class__.__name__, self.name
+        )
 
     def __eq__(self, other):
         if self is other:
@@ -51,8 +55,7 @@ def chill(show_all=False):
     if show_all:
         ignored_packages = ()
     else:
-        ignored_packages = {
-            'pip', 'wheel', 'setuptools', 'pkg-resources'}
+        ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources"}
 
     # Gather all packages that are requirements and will be auto-installed.
     distributions = {}
@@ -65,21 +68,24 @@ def chill(show_all=False):
         if distribution.key in dependencies:
             dependencies[distribution.key].version = distribution.version
         else:
-            distributions[distribution.key] = \
-                Distribution(distribution.key, distribution.version)
+            distributions[distribution.key] = Distribution(
+                distribution.key, distribution.version
+            )
 
         for requirement in distribution.requires():
             if requirement.key not in ignored_packages:
                 if requirement.key in dependencies:
-                    dependencies[requirement.key] \
-                        .required_by.add(distribution.key)
+                    dependencies[requirement.key].required_by.add(
+                        distribution.key
+                    )
                 else:
                     dependencies[requirement.key] = Distribution(
-                        requirement.key,
-                        required_by=(distribution.key,))
+                        requirement.key, required_by=(distribution.key,)
+                    )
 
             if requirement.key in distributions:
-                dependencies[requirement.key].version \
-                    = distributions.pop(requirement.key).version
+                dependencies[requirement.key].version = distributions.pop(
+                    requirement.key
+                ).version
 
     return sorted(distributions.values()), sorted(dependencies.values())

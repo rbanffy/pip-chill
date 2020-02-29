@@ -2,9 +2,9 @@
 
 from .pip_chill import chill
 
-__author__ = 'Ricardo Bánffy'
-__email__ = 'rbanffy@gmail.com'
-__version__ = '0.1.10'
+__author__ = "Ricardo Bánffy"
+__email__ = "rbanffy@gmail.com"
+__version__ = "0.1.10"
 
 
 __all__ = [chill.__name__]
