@@ -2,6 +2,17 @@
 History
 =======
 
+1.0
+---
+
+* Moving to version 1.0.
+
+0.1.9 (2019-07-23)
+------------------
+
+* New `-a` shortcut for `--all`
+* Internal fixes - use assert methods in tests, improve markdown.
+
 0.1.8 (2018-08-20)
 ------------------
 

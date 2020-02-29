@@ -19,10 +19,11 @@ test_requirements = [
 
 setup(
     name='pip-chill',
-    version='0.1.9',
+    version='0.1.10',
     description="Like `pip freeze` but lists only the packages that are not "
     "dependencies of installed packages.",
     long_description=readme + '\n\n' + history,
+    long_description_content_type="text/x-rst",
     author="Ricardo Bánffy",
     author_email='rbanffy@gmail.com',
     url='https://github.com/rbanffy/pip-chill',
