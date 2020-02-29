@@ -55,6 +55,7 @@ class TestPip_chill(unittest.TestCase):
 
     def test_command_line_interface_help(self):
         command = "pip_chill/cli.py --help"
+
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
 
@@ -66,45 +67,94 @@ class TestPip_chill(unittest.TestCase):
 
     def test_command_line_interface_no_version(self):
         command = "pip_chill/cli.py --no-version"
+
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
         self.assertNotIn('==', result)
 
-    # def test_command_line_interface_verbose(self):
-    #     runner = CliRunner()
-    #     result = runner.invoke(cli.main, ['--verbose'])
-    #     self.assertEqual(result.exit_code, 0)
-    #     self.assertIn('# Installed as dependency for', result.output)
+    def test_command_line_interface_verbose(self):
+        command = "pip_chill/cli.py --verbose"
 
-    # def test_command_line_interface_verbose_no_version(self):
-    #     runner = CliRunner()
-    #     result = runner.invoke(cli.main, ['--verbose', '--no-version'])
-    #     self.assertEqual(result.exit_code, 0)
-    #     self.assertNotIn('==', result.output)
-    #     self.assertIn('# Installed as dependency for', result.output)
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
 
-    # def test_command_line_interface_omits_ignored(self):
-    #     runner = CliRunner()
-    #     result = runner.invoke(cli.main)
-    #     self.assertEqual(result.exit_code, 0)
-    #     for package in ['wheel', 'setuptools', 'pip']:
-    #         self.assertFalse(
-    #             any(
-    #                 [
-    #                     p.startswith(package + '==')
-    #                     for p in result.output.split('\n')
-    #                 ]
-    #             )
-    #         )
+        result = os.popen(command).read()
+        self.assertIn('# Installed as dependency for', result)
 
-    # def test_command_line_interface_all(self):
-    #     runner = CliRunner()
-    #     result = runner.invoke(cli.main, ['--all'])
-    #     self.assertEqual(result.exit_code, 0)
-    #     for package in ['pip-chill', 'pip']:
-    #         self.assertIn(package, result.output)
+    def test_command_line_interface_short_verbose(self):
+        command = "pip_chill/cli.py -v"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertIn('# Installed as dependency for', result)
+
+    def test_command_line_interface_verbose_no_version(self):
+        command = "pip_chill/cli.py --verbose --no-version"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertNotIn('==', result)
+        self.assertIn('# Installed as dependency for', result)
+
+    def test_command_line_interface_omits_ignored(self):
+        command = "pip_chill/cli.py"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        for package in ['wheel', 'setuptools', 'pip']:
+            self.assertFalse(
+                any(
+                    [
+                        p.startswith(package + '==')
+                        for p in result.split('\n')
+                    ]
+                )
+            )
+
+    def test_command_line_interface_all(self):
+        command = "pip_chill/cli.py --all"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        for package in ['pip-chill', 'pip']:
+            self.assertIn(package, result)
+
+    def test_command_line_interface_short_all(self):
+        command = "pip_chill/cli.py -a"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        for package in ['pip-chill', 'pip']:
+            self.assertIn(package, result)
+
+    def test_command_line_interface_long_all(self):
+        command = "pip_chill/cli.py --show-all"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        for package in ['pip-chill', 'pip']:
+            self.assertIn(package, result)
+
+
+    def test_command_line_invalid_option(self):
+        command = "pip_chill/cli.py --invalid-option"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 512)
 
 
 if __name__ == "__main__":
