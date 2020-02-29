@@ -9,6 +9,7 @@ Tests for `pip_chill` module.
 """
 
 
+import os
 import sys
 import unittest
 
@@ -54,14 +55,15 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(self.distribution_2, self.distribution_3)
         self.assertEqual(self.distribution_2, self.distribution_2.name)
 
-    # def test_command_line_interface_help(self):
-    #     runner = CliRunner()
-    #     result = runner.invoke(cli.main, ['--help'])
-    #     self.assertEqual(result.exit_code, 0)
-    #     self.assertIn('--no-version', result.output)
-    #     self.assertIn('Omit version numbers', result.output)
-    #     self.assertIn('--help', result.output)
-    #     self.assertIn('Show this message and exit.', result.output)
+    def test_command_line_interface_help(self):
+        returncode = os.system('pip_chill/cli.py --help')
+        self.assertEqual(returncode, 0)
+
+        result = os.popen('pip_chill/cli.py --help').read()
+        self.assertIn('--no-version', result)
+        self.assertIn('omit version numbers', result)
+        self.assertIn('--help', result)
+        self.assertIn('show this help message and exit', result)
 
     # def test_command_line_interface_no_version(self):
     #     runner = CliRunner()
