@@ -72,7 +72,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        self.assertNotIn('==', result)
+        self.assertNotIn("==", result)
 
     def test_command_line_interface_verbose(self):
         command = "pip_chill/cli.py --verbose"
@@ -81,7 +81,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        self.assertIn('# Installed as dependency for', result)
+        self.assertIn("# Installed as dependency for", result)
 
     def test_command_line_interface_short_verbose(self):
         command = "pip_chill/cli.py -v"
@@ -90,7 +90,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        self.assertIn('# Installed as dependency for', result)
+        self.assertIn("# Installed as dependency for", result)
 
     def test_command_line_interface_verbose_no_version(self):
         command = "pip_chill/cli.py --verbose --no-version"
@@ -99,8 +99,8 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        self.assertNotIn('==', result)
-        self.assertIn('# Installed as dependency for', result)
+        self.assertNotIn("==", result)
+        self.assertIn("# Installed as dependency for", result)
 
     def test_command_line_interface_omits_ignored(self):
         command = "pip_chill/cli.py"
@@ -109,14 +109,9 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        for package in ['wheel', 'setuptools', 'pip']:
+        for package in ["wheel", "setuptools", "pip"]:
             self.assertFalse(
-                any(
-                    [
-                        p.startswith(package + '==')
-                        for p in result.split('\n')
-                    ]
-                )
+                any([p.startswith(package + "==") for p in result.split("\n")])
             )
 
     def test_command_line_interface_all(self):
@@ -126,7 +121,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        for package in ['pip-chill', 'pip']:
+        for package in ["pip-chill", "pip"]:
             self.assertIn(package, result)
 
     def test_command_line_interface_short_all(self):
@@ -136,7 +131,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        for package in ['pip-chill', 'pip']:
+        for package in ["pip-chill", "pip"]:
             self.assertIn(package, result)
 
     def test_command_line_interface_long_all(self):
@@ -146,9 +141,8 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        for package in ['pip-chill', 'pip']:
+        for package in ["pip-chill", "pip"]:
             self.assertIn(package, result)
-
 
     def test_command_line_invalid_option(self):
         command = "pip_chill/cli.py --invalid-option"
