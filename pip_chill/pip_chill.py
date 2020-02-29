@@ -6,7 +6,7 @@ import pkg_resources
 
 class Distribution:
     """
-    Represents a distribution package installed in the cutrrent environment.
+    Represents a distribution package installed in the current environment.
     """
 
     def __init__(self, name, version=None, required_by=None):
