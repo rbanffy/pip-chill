@@ -9,9 +9,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [
-    'click',
-]
+requirements = []
 
 test_requirements = [
     'pip'
@@ -19,7 +17,11 @@ test_requirements = [
 
 setup(
     name='pip-chill',
+<<<<<<< HEAD
     version='0.1.10',
+=======
+    version='1.0.0',
+>>>>>>> 0a84ffc50507a4c6fbfa487557e84e2a9facf21a
     description="Like `pip freeze` but lists only the packages that are not "
     "dependencies of installed packages.",
     long_description=readme + '\n\n' + history,
@@ -43,18 +45,20 @@ setup(
     zip_safe=False,
     keywords='pip-chill',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
+        'Environment :: Console',
         'License :: '
         'OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Topic :: Software Development',
     ],
     test_suite='tests',
     tests_require=test_requirements

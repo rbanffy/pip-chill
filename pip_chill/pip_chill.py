@@ -5,12 +5,18 @@ import pkg_resources
 
 
 class Distribution:
+    """
+    Represents a distribution package installed in the cutrrent environment.
+    """
     def __init__(self, name, version=None, required_by=None):
         self.name = name
         self.version = version
         self.required_by = set(required_by) if required_by else set()
 
     def get_name_without_version(self):
+        """
+        Return the name of the package without a version.
+        """
         if self.required_by:
             return '# {} # Installed as dependency for {}' \
                 .format(self.name, ', '.join(self.required_by))
@@ -21,6 +27,10 @@ class Distribution:
             return '# {}=={} # Installed as dependency for {}' \
                 .format(self.name, self.version, ', '.join(self.required_by))
         return '{}=={}'.format(self.name, self.version)
+
+    def __repr__(self):
+        return '<{}.{} instance "{}">'.format(
+            self.__module__, self.__class__.__name__, self.name)
 
     def __eq__(self, other):
         if self is other:

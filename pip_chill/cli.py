@@ -1,35 +1,52 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
 
-import click
+import argparse
 
 import pip_chill
 
 
-@click.command()
-@click.option(
-    '--no-version', is_flag=True, default=False, help='Omit version numbers.')
-@click.option(
-    'show_all', '-a', '--all', is_flag=True, default=False,
-    help='Show all packages.')
-@click.option(
-    '--verbose', '-v', is_flag=True, default=False,
-    help='List commented out dependencies too'
-)
-def main(no_version=False, show_all=False, verbose=False):
+def main():
     """Console script for pip_chill"""
-    distributions, dependencies = pip_chill.chill(show_all=show_all)
+
+    parser = argparse.ArgumentParser(
+        description="Like `pip freeze`, but more relaxed."
+    )
+    parser.add_argument(
+        "--no-version",
+        action="store_true",
+        dest="no_version",
+        help="omit version numbers.",
+    )
+    parser.add_argument(
+        "-a",
+        "--all",
+        "--show-all",
+        action="store_true",
+        dest="show_all",
+        help="show all packages.",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        help="list commented out dependencies too.",
+    )
+    args = parser.parse_args()
+
+    distributions, dependencies = pip_chill.chill(show_all=args.show_all)
     for package in distributions:
-        if no_version:
+        if args.no_version:
             print(package.get_name_without_version())
         else:
             print(package)
 
-    if verbose:
+    if args.verbose:
         for package in dependencies:
-            if no_version:
+            if args.no_version:
                 print(package.get_name_without_version())
             else:
                 print(package)
