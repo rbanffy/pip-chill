@@ -13,8 +13,6 @@ import os
 import sys
 import unittest
 
-# from click.testing import CliRunner
-
 from pip_chill import cli, pip_chill
 from pip_chill.pip_chill import Distribution
 
@@ -56,20 +54,23 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(self.distribution_2, self.distribution_2.name)
 
     def test_command_line_interface_help(self):
-        returncode = os.system('pip_chill/cli.py --help')
+        command = "pip_chill/cli.py --help"
+        returncode = os.system(command)
         self.assertEqual(returncode, 0)
 
-        result = os.popen('pip_chill/cli.py --help').read()
-        self.assertIn('--no-version', result)
-        self.assertIn('omit version numbers', result)
-        self.assertIn('--help', result)
-        self.assertIn('show this help message and exit', result)
+        result = os.popen(command).read()
+        self.assertIn("--no-version", result)
+        self.assertIn("omit version numbers", result)
+        self.assertIn("--help", result)
+        self.assertIn("show this help message and exit", result)
 
-    # def test_command_line_interface_no_version(self):
-    #     runner = CliRunner()
-    #     result = runner.invoke(cli.main, ['--no-version'])
-    #     self.assertEqual(result.exit_code, 0)
-    #     self.assertNotIn('==', result.output)
+    def test_command_line_interface_no_version(self):
+        command = "pip_chill/cli.py --no-version"
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertNotIn('==', result)
 
     # def test_command_line_interface_verbose(self):
     #     runner = CliRunner()
