@@ -3,59 +3,50 @@
 
 from setuptools import setup
 
-with open('README.rst') as readme_file:
+with open("README.rst") as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
+with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = []
 
-test_requirements = [
-    'pip'
-]
+test_requirements = ["pip"]
 
 setup(
-    name='pip-chill',
-    version='1.0.0',
+    name="pip-chill",
+    version="1.0.0",
     description="Like `pip freeze` but lists only the packages that are not "
     "dependencies of installed packages.",
-    long_description=readme + '\n\n' + history,
+    long_description=readme + "\n\n" + history,
     long_description_content_type="text/x-rst",
     author="Ricardo Bánffy",
-    author_email='rbanffy@gmail.com',
-    url='https://github.com/rbanffy/pip-chill',
-    packages=[
-        'pip_chill',
-    ],
-    package_dir={'pip_chill':
-                 'pip_chill'},
-    entry_points={
-        'console_scripts': [
-            'pip-chill=pip_chill.cli:main'
-        ]
-    },
+    author_email="rbanffy@gmail.com",
+    url="https://github.com/rbanffy/pip-chill",
+    packages=["pip_chill",],
+    package_dir={"pip_chill": "pip_chill"},
+    entry_points={"console_scripts": ["pip-chill=pip_chill.cli:main"]},
     include_package_data=True,
     install_requires=requirements,
     license="GNU General Public License v3",
     zip_safe=False,
-    keywords='pip-chill',
+    keywords="pip-chill",
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Developers',
-        'Environment :: Console',
-        'License :: '
-        'OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
-        'Natural Language :: English',
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Environment :: Console",
+        "License :: "
+        "OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+        "Natural Language :: English",
         "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Topic :: Software Development',
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Topic :: Software Development",
     ],
-    test_suite='tests',
-    tests_require=test_requirements
+    test_suite="tests",
+    tests_require=test_requirements,
 )
