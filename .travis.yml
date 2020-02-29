@@ -10,10 +10,6 @@ matrix:
     - os: linux
       language: python
       dist: xenial
-      python: 3.4
-    - os: linux
-      language: python
-      dist: xenial
       python: 3.5
     - os: linux
       language: python
@@ -34,9 +30,6 @@ matrix:
     - os: osx
       language: generic
       env: PYTHON=2.7
-    - os: osx
-      language: generic
-      env: PYTHON=3.4
     - os: osx
       language: generic
       env: PYTHON=3.5
