@@ -2,6 +2,10 @@
 History
 =======
 
+=======
+current
+-------
+
 1.0.2 (2023-04-15)
 ------------------
 * Sort dependencies alphabetically in --verbose
