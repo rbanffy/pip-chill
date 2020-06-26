@@ -26,7 +26,7 @@ matrix:
     - os: linux
       language: python
       dist: bionic
-      python: nightly
+      python: 3.9-dev
 
     - os: linux
       arch: arm
@@ -57,7 +57,7 @@ matrix:
       arch: arm
       language: python
       dist: bionic
-      python: nightly
+      python: 3.9-dev
 
     - os: linux
       arch: ppc64le
