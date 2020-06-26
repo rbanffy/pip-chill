@@ -90,6 +90,11 @@ matrix:
       language: python
       dist: bionic
       python: 3.8
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 3.9-dev
 
     - os: linux
       arch: s390x
@@ -116,6 +121,11 @@ matrix:
       language: python
       dist: bionic
       python: 3.8
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 3.9-dev
 
     - os: osx
       language: generic
