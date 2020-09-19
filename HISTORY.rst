@@ -2,6 +2,12 @@
 History
 =======
 
+current
+-------
+
+* Fix failing flake8 test
+* Bump version to 1.0.1
+
 1.0.0 (2020-02-29)
 ------------------
 

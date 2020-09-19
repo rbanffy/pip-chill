@@ -4,26 +4,32 @@
 matrix:
   include:
     - os: linux
+      arch: amd64
       language: python
       dist: bionic
       python: 2.7
     - os: linux
+      arch: amd64
       language: python
       dist: bionic
       python: 3.5
     - os: linux
+      arch: amd64
       language: python
       dist: bionic
       python: 3.6
     - os: linux
+      arch: amd64
       language: python
       dist: bionic
       python: 3.7
     - os: linux
+      arch: amd64
       language: python
       dist: bionic
       python: 3.8
     - os: linux
+      arch: amd64
       language: python
       dist: bionic
       python: 3.9-dev
@@ -74,6 +80,21 @@ matrix:
       language: python
       dist: bionic
       python: 3.6
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 3.7
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 3.8
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: bionic
+      python: 3.9-dev
 
     - os: linux
       arch: s390x
@@ -90,6 +111,21 @@ matrix:
       language: python
       dist: bionic
       python: 3.6
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 3.7
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 3.8
+    - os: linux
+      arch: s390x
+      language: python
+      dist: bionic
+      python: 3.9-dev
 
     - os: osx
       language: generic
@@ -106,6 +142,9 @@ matrix:
     - os: osx
       language: generic
       env: PYTHON=3.8
+    - os: osx
+      language: generic
+      env: PYTHON=3.9-dev
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install tox-travis
