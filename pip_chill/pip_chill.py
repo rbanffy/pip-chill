@@ -40,9 +40,9 @@ class Distribution:
         if self is other:
             return True
         elif isinstance(other, Distribution):
-            return True if self.name == other.name else False
+            return self.name == other.name
         else:
-            return True if self.name == other else False
+            return self.name == other
 
     def __lt__(self, other):
         return self.name < other.name
