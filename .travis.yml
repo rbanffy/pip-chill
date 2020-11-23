@@ -69,6 +69,11 @@ jobs:
       language: python
       dist: focal
       python: 3.9
+    - os: linux
+      arch: arm64
+      language: python
+      dist: focal
+      python: 3.10-dev
 
     - os: linux
       arch: ppc64le
@@ -136,6 +141,11 @@ jobs:
       language: python
       dist: focal
       python: 3.9
+    - os: linux
+      arch: s390x
+      language: python
+      dist: focal
+      python: 3.10-dev
 
     - os: osx
       language: python
