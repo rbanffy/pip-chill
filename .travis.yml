@@ -2,7 +2,7 @@
 # This file will be regenerated if you run travis_pypi_setup.py
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install tox-travis
+install: pip install tox-travis --use-mirrors
 
 # command to run tests, e.g. python setup.py test
 script: tox
