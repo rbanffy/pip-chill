@@ -5,7 +5,7 @@ History
 current
 -------
 
-* Do Linux tests on Focal where possible (2.7 and 3.7 on ppc64le and s390x run Bionic)
+* Do Linux tests on Focal where possible (2.7 and 3.7 on ppc64le and s390x, 2.7 on arm64 run Bionic)
 * Fix wrong URLs in CONTRIBUTING.rst
 * Add 3.7, 3.8 to ppc64le and s390x, 3.9-dev to macOS
 * Rename nightly as 3.9-dev
