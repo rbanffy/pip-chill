@@ -40,32 +40,32 @@ matrix:
       python: 3.10-dev
 
     - os: linux
-      arch: arm
+      arch: arm64
       language: python
       dist: focal
       python: 2.7
     - os: linux
-      arch: arm
+      arch: arm64
       language: python
       dist: focal
       python: 3.5
     - os: linux
-      arch: arm
+      arch: arm64
       language: python
       dist: focal
       python: 3.6
     - os: linux
-      arch: arm
+      arch: arm64
       language: python
       dist: focal
       python: 3.7
     - os: linux
-      arch: arm
+      arch: arm64
       language: python
       dist: focal
       python: 3.8
     - os: linux
-      arch: arm
+      arch: arm64
       language: python
       dist: focal
       python: 3.9
