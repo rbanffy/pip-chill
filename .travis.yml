@@ -133,23 +133,23 @@ jobs:
       python: 3.9
 
     - os: osx
-      language: generic
+      language: python
       env: PYTHON=2.7
     - os: osx
-      language: generic
+      language: python
       env: PYTHON=3.5
     - os: osx
-      language: generic
+      language: python
       env: PYTHON=3.6
     - os: osx
-      language: generic
+      language: python
       env: PYTHON=3.7
     - os: osx
-      language: generic
+      language: python
       env: PYTHON=3.8
     - os: osx
-      language: generic
-      env: PYTHON=3.9-dev
+      language: python
+      env: PYTHON=3.9
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install tox-travis
