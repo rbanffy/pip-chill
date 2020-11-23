@@ -8,9 +8,9 @@ install: pip install tox-travis
 script: tox
 
 # Global defaults
-dist: bionic
-os: linux
-language: python
+# dist: bionic
+# os: linux
+# language: python
 
 jobs:
   include:
