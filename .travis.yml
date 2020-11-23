@@ -149,23 +149,16 @@ jobs:
       python: 3.9
 
     - os: osx
-      language: python
       env: PYTHON=2.7
     - os: osx
-      language: python
       env: PYTHON=3.5
     - os: osx
-      language: python
       env: PYTHON=3.6
     - os: osx
-      language: python
       env: PYTHON=3.7
     - os: osx
-      language: python
       env: PYTHON=3.8
     - os: osx
-      language: python
       env: PYTHON=3.9
     - os: osx
-      language: python
       env: PYTHON=3.10-dev
