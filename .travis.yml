@@ -73,7 +73,7 @@ jobs:
     - os: linux
       arch: ppc64le
       language: python
-      dist: focal
+      dist: bionic
       python: 2.7
     - os: linux
       arch: ppc64le
@@ -88,7 +88,7 @@ jobs:
     - os: linux
       arch: ppc64le
       language: python
-      dist: focal
+      dist: bionic
       python: 3.7
     - os: linux
       arch: ppc64le
@@ -100,11 +100,16 @@ jobs:
       language: python
       dist: focal
       python: 3.9
+    - os: linux
+      arch: ppc64le
+      language: python
+      dist: focal
+      python: 3.10-dev
 
     - os: linux
       arch: s390x
       language: python
-      dist: focal
+      dist: bionic
       python: 2.7
     - os: linux
       arch: s390x
@@ -119,7 +124,7 @@ jobs:
     - os: linux
       arch: s390x
       language: python
-      dist: focal
+      dist: bionic
       python: 3.7
     - os: linux
       arch: s390x
