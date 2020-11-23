@@ -1,6 +1,17 @@
 # Config file for automatic testing at travis-ci.org
 # This file will be regenerated if you run travis_pypi_setup.py
 
+# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+install: pip install tox-travis
+
+# command to run tests, e.g. python setup.py test
+script: tox
+
+# Global defaults
+dist: bionic
+os: linux
+language: python
+
 jobs:
   include:
     - os: linux
@@ -165,9 +176,6 @@ jobs:
     - os: osx
       language: python
       env: PYTHON=3.9
-
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install tox-travis
-
-# command to run tests, e.g. python setup.py test
-script: tox
+    - os: osx
+      language: python
+      env: PYTHON=3.10-dev
