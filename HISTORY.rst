@@ -5,6 +5,11 @@ History
 current
 -------
 
+* Do Linux tests on Focal
+* Fix wrong URLs in CONTRIBUTING.rst
+* Add 3.7, 3.8 to ppc64le and s390x, 3.9-dev to macOS
+* Rename nightly as 3.9-dev
+* Add explicit amd64 arch to amd64
 * Fix failing flake8 test
 * Bump version to 1.0.1
 
