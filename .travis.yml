@@ -147,11 +147,6 @@ jobs:
       language: python
       dist: focal
       python: 3.9
-    - os: linux
-      arch: s390x
-      language: python
-      dist: focal
-      python: 3.10-dev
 
     - os: osx
       language: python
