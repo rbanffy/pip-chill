@@ -6,11 +6,7 @@ install: pip install tox-travis --use-mirrors
 
 # command to run tests, e.g. python setup.py test
 script: tox
-
-# Global defaults
-# dist: bionic
-# os: linux
-# language: python
+language: python
 
 jobs:
   include:
@@ -149,16 +145,23 @@ jobs:
       python: 3.9
 
     - os: osx
+      python: 2.7
       env: PYTHON=2.7
     - os: osx
+      python: 3.5
       env: PYTHON=3.5
     - os: osx
+      python: 3.6
       env: PYTHON=3.6
     - os: osx
+      python: 3.7
       env: PYTHON=3.7
     - os: osx
+      python: 3.8
       env: PYTHON=3.8
     - os: osx
+      python: 3.9
       env: PYTHON=3.9
     - os: osx
+      python: 3.10-dev
       env: PYTHON=3.10-dev
