@@ -6,116 +6,73 @@ install: pip install tox-travis
 
 # command to run tests, e.g. python setup.py test
 script: tox
+
+# Globals
 language: python
+dist: focal
+os: linux
 
 jobs:
   include:
-    - os: linux
-      arch: amd64
-      dist: focal
+    - arch: amd64
       python: 2.7
-    - os: linux
-      arch: amd64
-      dist: focal
+    - arch: amd64
       python: 3.5
-    - os: linux
-      arch: amd64
-      dist: focal
+    - arch: amd64
       python: 3.6
-    - os: linux
-      arch: amd64
-      dist: focal
+    - arch: amd64
       python: 3.7
-    - os: linux
-      arch: amd64
-      dist: focal
+    - arch: amd64
       python: 3.8
-    - os: linux
-      arch: amd64
-      dist: focal
+    - arch: amd64
       python: 3.9
-    - os: linux
-      arch: amd64
-      dist: focal
+    - arch: amd64
       python: 3.10-dev
 
-    - os: linux
-      arch: arm64
+    - arch: arm64
       dist: bionic
       python: 2.7
-    - os: linux
-      arch: arm64
-      dist: focal
+    - arch: arm64
       python: 3.5
-    - os: linux
-      arch: arm64
-      dist: focal
+    - arch: arm64
       python: 3.6
-    - os: linux
-      arch: arm64
-      dist: focal
+    - arch: arm64
       python: 3.7
-    - os: linux
-      arch: arm64
-      dist: focal
+    - arch: arm64
       python: 3.8
-    - os: linux
-      arch: arm64
-      dist: focal
+    - arch: arm64
       python: 3.9
-    - os: linux
-      arch: arm64
-      dist: focal
+    - arch: arm64
       python: 3.10-dev
 
-    - os: linux
-      arch: ppc64le
+    - arch: ppc64le
       dist: bionic
       python: 2.7
-    - os: linux
-      arch: ppc64le
-      dist: focal
+    - arch: ppc64le
       python: 3.5
-    - os: linux
-      arch: ppc64le
-      dist: focal
+    - arch: ppc64le
       python: 3.6
-    - os: linux
-      arch: ppc64le
+    - arch: ppc64le
       dist: bionic
       python: 3.7
-    - os: linux
-      arch: ppc64le
-      dist: focal
+    - arch: ppc64le
       python: 3.8
-    - os: linux
-      arch: ppc64le
-      dist: focal
+    - arch: ppc64le
       python: 3.9
 
-    - os: linux
-      arch: s390x
+    - arch: s390x
       dist: bionic
       python: 2.7
-    - os: linux
-      arch: s390x
-      dist: focal
+    - arch: s390x
       python: 3.5
-    - os: linux
-      arch: s390x
-      dist: focal
+    - arch: s390x
       python: 3.6
-    - os: linux
-      arch: s390x
+    - arch: s390x
       dist: bionic
       python: 3.7
-    - os: linux
-      arch: s390x
-      dist: focal
+    - arch: s390x
       python: 3.8
-    - os: linux
-      arch: s390x
-      dist: focal
+    - arch: s390x
       python: 3.9
 
     - os: osx
