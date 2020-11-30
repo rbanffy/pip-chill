@@ -2,7 +2,9 @@
 # This file will be regenerated if you run travis_pypi_setup.py
 
 # command to install dependencies, e.g. pip install -r requirements.txt
-install: pip install tox-travis
+install:
+  - pip install tox-travis
+  - pip install --upgrade pip
 
 # command to run tests, e.g. python setup.py test
 script: tox
