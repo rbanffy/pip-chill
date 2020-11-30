@@ -87,9 +87,6 @@ jobs:
       osx_image: xcode12.2
       python: 3.5
       env: PYTHON=3.5
-      script:
-        - cd rbanffy/pip-chill
-        - tox
     - os: osx
       language: generic
       osx_image: xcode12.2
