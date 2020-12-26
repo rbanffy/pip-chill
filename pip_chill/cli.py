@@ -44,7 +44,10 @@ def main():
     )
     args = parser.parse_args()
 
-    distributions, dependencies = pip_chill.chill(show_all=args.show_all, omit_self=args.omit_self)
+    distributions, dependencies = pip_chill.chill(
+        show_all=args.show_all,
+        omit_self=args.omit_self
+    )
     for package in distributions:
         if args.no_version:
             print(package.get_name_without_version())
