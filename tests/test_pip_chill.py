@@ -121,7 +121,9 @@ class TestPip_chill(unittest.TestCase):
 
         result = os.popen(command).read()
         for package in ["wheel", "setuptools", "pip"]:
-            self.assertFalse(any(p.startswith(package + "==") for p in result.split("\n")))
+            self.assertFalse(
+                any(p.startswith(package + "==") for p in result.split("\n"))
+            )
 
     def test_command_line_interface_all(self):
         argument = "--all"
