@@ -51,11 +51,14 @@ class Distribution:
         return hash(self.name)
 
 
-def chill(show_all=False):
+def chill(show_all=False, omit_self=False):
     if show_all:
         ignored_packages = ()
     else:
         ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources"}
+
+    if omit_self:
+        ignored_packages.add("pip-chill")
 
     # Gather all packages that are requirements and will be auto-installed.
     distributions = {}

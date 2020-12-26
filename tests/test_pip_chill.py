@@ -121,9 +121,7 @@ class TestPip_chill(unittest.TestCase):
 
         result = os.popen(command).read()
         for package in ["wheel", "setuptools", "pip"]:
-            self.assertFalse(
-                any([p.startswith(package + "==") for p in result.split("\n")])
-            )
+            self.assertFalse(any(p.startswith(package + "==") for p in result.split("\n")))
 
     def test_command_line_interface_all(self):
         argument = "--all"
@@ -168,6 +166,36 @@ class TestPip_chill(unittest.TestCase):
             self.assertEqual(returncode, 512)
         else:
             self.assertEqual(returncode, 2)
+
+    def test_command_line_interface_omit_self_on_request(self):
+        argument = "--omit-self"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertFalse(any(p.startswith("pip-chill" + "==") for p in result.split("\n")))
+
+    def test_command_line_interface_short_omit_self_on_request(self):
+        argument = "-o"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertFalse(any(p.startswith("pip-chill" + "==") for p in result.split("\n")))
+
+    def test_command_line_interface_doesnt_omit_self_by_default(self):
+        argument = ""
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertTrue(any(p.startswith("pip-chill" + "==") for p in result.split("\n")))
 
 
 if __name__ == "__main__":
