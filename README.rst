@@ -59,6 +59,7 @@ On your terminal, run::
  cookiecutter==1.4.0
  coverage==3.7.1
  django-argonauts==1.0.1
+ pip-chill==1.0.0
  ...
 
 Or, if you want it without version numbers::
@@ -71,6 +72,19 @@ Or, if you want it without version numbers::
  cookiecutter
  coverage
  django-argonauts
+ pip-chill
+ ...
+
+Or, if you dont want pip-chill itself listed::
+
+ $ pip-chill --omit-self
+ asciitree==0.3.1
+ autopep8==1.2.4
+ beautifulsoup4==4.4.0
+ bleach==1.4.1
+ cookiecutter==1.4.0
+ coverage==3.7.1
+ django-argonauts==1.0.1
  ...
 
 Or, if you want to list package dependencies too::
@@ -83,6 +97,7 @@ Or, if you want to list package dependencies too::
  cookiecutter==1.4.0
  coverage==3.7.1
  django-argonauts==1.0.1
+ pip-chill==1.0.0
  # arrow==0.10.0 # Installed as dependency for jinja2-time
  # binaryornot==0.4.4 # Installed as dependency for cookiecutter
  # chardet==3.0.4 # Installed as dependency for binaryornot
