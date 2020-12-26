@@ -10,11 +10,16 @@ Tests for `pip_chill` module.
 
 
 import os
+import platform
 import sys
 import unittest
 
 from pip_chill import pip_chill
 from pip_chill.pip_chill import Distribution
+
+PIP_CHILL_CLI_FULL_PATH = cli.__file__
+PYTHON_EXE_PATH = sys.executable
+is_windows = any(platform.win32_ver())
 
 
 class TestPip_chill(unittest.TestCase):
@@ -54,7 +59,8 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(self.distribution_2, self.distribution_2.name)
 
     def test_command_line_interface_help(self):
-        command = "pip_chill/cli.py --help"
+        argument = "--help"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -66,7 +72,8 @@ class TestPip_chill(unittest.TestCase):
         self.assertIn("show this help message and exit", result)
 
     def test_command_line_interface_no_version(self):
-        command = "pip_chill/cli.py --no-version"
+        argument = "--no-version"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -75,7 +82,8 @@ class TestPip_chill(unittest.TestCase):
         self.assertNotIn("==", result)
 
     def test_command_line_interface_verbose(self):
-        command = "pip_chill/cli.py --verbose"
+        argument = " --verbose"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -84,7 +92,8 @@ class TestPip_chill(unittest.TestCase):
         self.assertIn("# Installed as dependency for", result)
 
     def test_command_line_interface_short_verbose(self):
-        command = "pip_chill/cli.py -v"
+        argument = "-v"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -93,7 +102,8 @@ class TestPip_chill(unittest.TestCase):
         self.assertIn("# Installed as dependency for", result)
 
     def test_command_line_interface_verbose_no_version(self):
-        command = "pip_chill/cli.py --verbose --no-version"
+        argument = "--verbose --no-version"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -103,7 +113,8 @@ class TestPip_chill(unittest.TestCase):
         self.assertIn("# Installed as dependency for", result)
 
     def test_command_line_interface_omits_ignored(self):
-        command = "pip_chill/cli.py"
+        argument = ""
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -113,7 +124,8 @@ class TestPip_chill(unittest.TestCase):
             self.assertFalse(any(p.startswith(package + "==") for p in result.split("\n")))
 
     def test_command_line_interface_all(self):
-        command = "pip_chill/cli.py --all"
+        argument = "--all"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -123,7 +135,8 @@ class TestPip_chill(unittest.TestCase):
             self.assertIn(package, result)
 
     def test_command_line_interface_short_all(self):
-        command = "pip_chill/cli.py -a"
+        argument = "-a"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -133,7 +146,8 @@ class TestPip_chill(unittest.TestCase):
             self.assertIn(package, result)
 
     def test_command_line_interface_long_all(self):
-        command = "pip_chill/cli.py --show-all"
+        argument = "--show-all"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)
@@ -152,10 +166,15 @@ class TestPip_chill(unittest.TestCase):
         self.assertNotIn("pip-chill", result)
 
     def test_command_line_invalid_option(self):
-        command = "pip_chill/cli.py --invalid-option"
+        argument = "--invalid-option"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
-        self.assertEqual(returncode, 512)
+
+        if not is_windows:
+            self.assertEqual(returncode, 512)
+        else:
+            self.assertEqual(returncode, 2)
 
 
 if __name__ == "__main__":
