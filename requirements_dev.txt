@@ -1,4 +1,5 @@
-bandit
+bandit==1.6.2; python_version < "3"
+bandit; python_version >= "3"
 bumpversion
 click
 coverage
