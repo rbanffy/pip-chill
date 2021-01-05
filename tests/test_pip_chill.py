@@ -13,7 +13,7 @@ import os
 import sys
 import unittest
 
-from pip_chill import cli, pip_chill
+from pip_chill import pip_chill
 from pip_chill.pip_chill import Distribution
 
 

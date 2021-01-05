@@ -72,3 +72,4 @@ env2
 # Others
 cache
 .pytest_cache
+.idea
