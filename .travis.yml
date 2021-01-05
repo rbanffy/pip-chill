@@ -17,8 +17,6 @@ os: linux
 jobs:
   include:
     - arch: amd64
-      python: 2.7
-    - arch: amd64
       python: 3.5
     - arch: amd64
       python: 3.6
@@ -31,9 +29,6 @@ jobs:
     - arch: amd64
       python: 3.10-dev
 
-    - arch: arm64
-      dist: bionic
-      python: 2.7
     - arch: arm64
       python: 3.5
     - arch: arm64
@@ -48,9 +43,6 @@ jobs:
       python: 3.10-dev
 
     - arch: ppc64le
-      dist: bionic
-      python: 2.7
-    - arch: ppc64le
       python: 3.5
     - arch: ppc64le
       python: 3.6
@@ -63,9 +55,6 @@ jobs:
       python: 3.9
 
     - arch: s390x
-      dist: bionic
-      python: 2.7
-    - arch: s390x
       python: 3.5
     - arch: s390x
       python: 3.6
@@ -77,11 +66,6 @@ jobs:
     - arch: s390x
       python: 3.9
 
-    - os: osx
-      language: generic
-      osx_image: xcode12.2
-      python: 2.7
-      env: PYTHON=2.7
     - os: osx
       language: generic
       osx_image: xcode12.2
