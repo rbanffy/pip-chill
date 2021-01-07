@@ -55,7 +55,7 @@ def chill(show_all=False):
     if show_all:
         ignored_packages = ()
     else:
-        ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources"}
+        ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources", "pip-chill"}
 
     # Gather all packages that are requirements and will be auto-installed.
     distributions = {}
