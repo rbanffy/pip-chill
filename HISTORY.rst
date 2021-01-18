@@ -2,8 +2,8 @@
 History
 =======
 
-current
--------
+1.0.1 (2021-01-18)
+------------------
 
 * Add `no-chill` option so that pip-chill is not shown as installed
 * Do Linux tests on Focal where possible (2.7 and 3.7 on ppc64le and s390x, 2.7 on arm64 run Bionic)
