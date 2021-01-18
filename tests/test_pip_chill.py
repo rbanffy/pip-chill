@@ -144,6 +144,15 @@ class TestPip_chill(unittest.TestCase):
         for package in ["pip-chill", "pip"]:
             self.assertIn(package, result)
 
+    def test_command_line_interface_no_chill(self):
+        command = "pip_chill/cli.py --no-chill"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertNotIn("pip-chill", result)
+
     def test_command_line_invalid_option(self):
         command = "pip_chill/cli.py --invalid-option"
 
