@@ -1,114 +1,98 @@
 # Config file for automatic testing at travis-ci.org
 # This file will be regenerated if you run travis_pypi_setup.py
 
-matrix:
-  include:
-    - os: linux
-      language: python
-      dist: bionic
-      python: 2.7
-    - os: linux
-      language: python
-      dist: bionic
-      python: 3.5
-    - os: linux
-      language: python
-      dist: bionic
-      python: 3.6
-    - os: linux
-      language: python
-      dist: bionic
-      python: 3.7
-    - os: linux
-      language: python
-      dist: bionic
-      python: 3.8
-    - os: linux
-      language: python
-      dist: bionic
-      python: nightly
-
-    - os: linux
-      arch: arm
-      language: python
-      dist: bionic
-      python: 2.7
-    - os: linux
-      arch: arm
-      language: python
-      dist: bionic
-      python: 3.5
-    - os: linux
-      arch: arm
-      language: python
-      dist: bionic
-      python: 3.6
-    - os: linux
-      arch: arm
-      language: python
-      dist: bionic
-      python: 3.7
-    - os: linux
-      arch: arm
-      language: python
-      dist: bionic
-      python: 3.8
-    - os: linux
-      arch: arm
-      language: python
-      dist: bionic
-      python: nightly
-
-    - os: linux
-      arch: ppc64le
-      language: python
-      dist: bionic
-      python: 2.7
-    - os: linux
-      arch: ppc64le
-      language: python
-      dist: bionic
-      python: 3.5
-    - os: linux
-      arch: ppc64le
-      language: python
-      dist: bionic
-      python: 3.6
-
-    - os: linux
-      arch: s390x
-      language: python
-      dist: bionic
-      python: 2.7
-    - os: linux
-      arch: s390x
-      language: python
-      dist: bionic
-      python: 3.5
-    - os: linux
-      arch: s390x
-      language: python
-      dist: bionic
-      python: 3.6
-
-    - os: osx
-      language: generic
-      env: PYTHON=2.7
-    - os: osx
-      language: generic
-      env: PYTHON=3.5
-    - os: osx
-      language: generic
-      env: PYTHON=3.6
-    - os: osx
-      language: generic
-      env: PYTHON=3.7
-    - os: osx
-      language: generic
-      env: PYTHON=3.8
-
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install tox-travis
+# command to install dependencies, e.g. pip install -r requirements.txt
+install:
+  - pip install tox-travis
+  - pip install --upgrade pip
 
 # command to run tests, e.g. python setup.py test
 script: tox
+
+# Globals
+language: python
+dist: focal
+os: linux
+
+jobs:
+  include:
+    - arch: amd64
+      python: 3.5
+    - arch: amd64
+      python: 3.6
+    - arch: amd64
+      python: 3.7
+    - arch: amd64
+      python: 3.8
+    - arch: amd64
+      python: 3.9
+    - arch: amd64
+      python: 3.10-dev
+
+    - arch: arm64
+      python: 3.5
+    - arch: arm64
+      python: 3.6
+    - arch: arm64
+      python: 3.7
+    - arch: arm64
+      python: 3.8
+    - arch: arm64
+      python: 3.9
+    - arch: arm64
+      python: 3.10-dev
+
+    - arch: ppc64le
+      python: 3.5
+    - arch: ppc64le
+      python: 3.6
+    - arch: ppc64le
+      dist: bionic
+      python: 3.7
+    - arch: ppc64le
+      python: 3.8
+    - arch: ppc64le
+      python: 3.9
+
+    - arch: s390x
+      python: 3.5
+    - arch: s390x
+      python: 3.6
+    - arch: s390x
+      dist: bionic
+      python: 3.7
+    - arch: s390x
+      python: 3.8
+    - arch: s390x
+      python: 3.9
+
+    - os: osx
+      language: generic
+      osx_image: xcode12.2
+      python: 3.5
+      env: PYTHON=3.5
+    - os: osx
+      language: generic
+      osx_image: xcode12.2
+      python: 3.6
+      env: PYTHON=3.6
+    - os: osx
+      language: generic
+      osx_image: xcode12.2
+      python: 3.7
+      env: PYTHON=3.7
+    - os: osx
+      language: generic
+      osx_image: xcode12.2
+      python: 3.8
+      env: PYTHON=3.8
+    - os: osx
+      language: generic
+      osx_image: xcode12.2
+      python: 3.9
+      env: PYTHON=3.9
+    - os: osx
+      language: generic
+      osx_image: xcode12.2
+      python: 3.10-dev
+      env: PYTHON=3.10-dev

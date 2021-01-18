@@ -5,6 +5,12 @@ History
 current
 -------
 
+* Add `no-chill` option so that pip-chill is not shown as installed
+* Do Linux tests on Focal where possible (2.7 and 3.7 on ppc64le and s390x, 2.7 on arm64 run Bionic)
+* Fix wrong URLs in CONTRIBUTING.rst
+* Add 3.7, 3.8, 3.9 to ppc64le and s390x, 3.10-dev to Linux, macOS
+* Rename nightly as 3.10-dev
+* Add explicit amd64 arch to amd64
 * Fix failing flake8 test
 * Bump version to 1.0.1
 
