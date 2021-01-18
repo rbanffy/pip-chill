@@ -1,6 +1,5 @@
 bandit
 bumpversion
-click
 coverage
 flake8
 nose
