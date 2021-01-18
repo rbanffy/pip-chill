@@ -1,5 +1,4 @@
 bandit
-black
 bumpversion
 coverage
 flake8
