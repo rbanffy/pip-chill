@@ -52,54 +52,69 @@ the requirements file bloated and, ultimately, inaccurate.
 On your terminal, run::
 
  $ pip-chill
- asciitree==0.3.1
- autopep8==1.2.4
- beautifulsoup4==4.4.0
- bleach==1.4.1
- cookiecutter==1.4.0
- coverage==3.7.1
- django-argonauts==1.0.1
+ bandit==1.7.0
+ bumpversion==0.6.0
+ click==7.1.2
+ coverage==5.3.1
+ flake8==3.8.4
+ nose==1.3.7
+ pip-chill==1.0.1
+ pytest==6.2.1
  ...
 
 Or, if you want it without version numbers::
 
  $ pip-chill --no-version
- asciitree
- autopep8
- beautifulsoup4
- bleach
- cookiecutter
+ bandit
+ bumpversion
+ click
  coverage
- django-argonauts
+ flake8
+ nose
+ pip-chill
+ pytest
+ ...
+
+Or, if you want it without pip-chill::
+
+ $ pip-chill --no-chill
+ bandit==1.7.0
+ bumpversion==0.6.0
+ click==7.1.2
+ coverage==5.3.1
+ flake8==3.8.4
+ nose==1.3.7
+ pytest==6.2.1
  ...
 
 Or, if you want to list package dependencies too::
 
  $ pip-chill -v
- asciitree==0.3.1
- autopep8==1.2.4
- beautifulsoup4==4.4.0
- bleach==1.4.1
- cookiecutter==1.4.0
- coverage==3.7.1
- django-argonauts==1.0.1
- # arrow==0.10.0 # Installed as dependency for jinja2-time
- # binaryornot==0.4.4 # Installed as dependency for cookiecutter
- # chardet==3.0.4 # Installed as dependency for binaryornot
- # click==6.7 # Installed as dependency for cookiecutter
- # django==1.11.5 # Installed as dependency for django-argonauts
- # future==0.16.0 # Installed as dependency for cookiecutter
- # html5lib==0.999999999 # Installed as dependency for bleach
- # jinja2==2.9.6 # Installed as dependency for jinja2-time, cookiecutter
- # jinja2-time==0.2.0 # Installed as dependency for cookiecutter
- # markupsafe==1.0 # Installed as dependency for jinja2
- # pep8==1.7.0 # Installed as dependency for autopep8
- # poyo==0.4.1 # Installed as dependency for cookiecutter
- # python-dateutil==2.6.1 # Installed as dependency for arrow
- # pytz==2017.2 # Installed as dependency for django
- # six==1.11.0 # Installed as dependency for python-dateutil, html5lib, bleach
- # webencodings==0.5.1 # Installed as dependency for html5lib
- # whichcraft==0.4.1 # Installed as dependency for cookiecutter
+ bandit==1.7.0
+ bumpversion==0.6.0
+ click==7.1.2
+ coverage==5.3.1
+ flake8==3.8.4
+ nose==1.3.7
+ pip-chill==1.0.1
+ pytest==6.2.1
+ sphinx==3.4.3
+ tox==3.21.1
+ twine==3.3.0
+ watchdog==1.0.2
+ # alabaster==0.7.12 # Installed as dependency for sphinx
+ # appdirs==1.4.4 # Installed as dependency for virtualenv
+ # attrs==20.3.0 # Installed as dependency for pytest
+ # babel==2.9.0 # Installed as dependency for sphinx
+ # bleach==3.2.1 # Installed as dependency for readme-renderer
+ # bump2version==1.0.1 # Installed as dependency for bumpversion
+ # certifi==2020.12.5 # Installed as dependency for requests
+ # chardet==4.0.0 # Installed as dependency for requests
+ # colorama==0.4.4 # Installed as dependency for twine
+ # distlib==0.3.1 # Installed as dependency for virtualenv
+ # docutils==0.16 # Installed as dependency for sphinx, readme-renderer
+ # filelock==3.0.12 # Installed as dependency for tox, virtualenv
+ # gitdb==4.0.5 # Installed as dependency for gitpython
  ...
 
 Credits
