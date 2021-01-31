@@ -26,6 +26,7 @@ class TestPip_chill(unittest.TestCase):
         self.distribution_3 = Distribution(
             "pip", "11.0.0", [self.distribution_1]
         )
+        self.expected_packages = ("pip-chill", "pip")
 
     def tearDown(self):
         pass
@@ -39,7 +40,7 @@ class TestPip_chill(unittest.TestCase):
     def test_all(self):
         packages, _ = pip_chill.chill(True)
         package_names = {package.name for package in packages}
-        for package in ["pip-chill", "pip"]:
+        for package in self.expected_packages:
             self.assertIn(package, package_names)
 
     def test_hashes(self):
@@ -119,7 +120,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        for package in ["pip-chill", "pip"]:
+        for package in self.expected_packages:
             self.assertIn(package, result)
 
     def test_command_line_interface_short_all(self):
@@ -129,7 +130,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        for package in ["pip-chill", "pip"]:
+        for package in self.expected_packages:
             self.assertIn(package, result)
 
     def test_command_line_interface_long_all(self):
@@ -139,7 +140,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 0)
 
         result = os.popen(command).read()
-        for package in ["pip-chill", "pip"]:
+        for package in self.expected_packages:
             self.assertIn(package, result)
 
     def test_command_line_interface_no_chill(self):
@@ -156,6 +157,14 @@ class TestPip_chill(unittest.TestCase):
 
         returncode = os.system(command)
         self.assertEqual(returncode, 512)
+
+    def test_dash_m_module(self):
+        command = "python -m pip-chill"
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+        result = os.popen(command).read()
+        for package in self.expected_packages:
+            self.assertIn(package, result)
 
 
 if __name__ == "__main__":
