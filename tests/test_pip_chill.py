@@ -8,13 +8,12 @@ test_pip_chill
 Tests for `pip_chill` module.
 """
 
-
 import os
 import platform
 import sys
 import unittest
 
-from pip_chill import pip_chill
+from pip_chill import pip_chill, cli
 from pip_chill.pip_chill import Distribution
 
 PIP_CHILL_CLI_FULL_PATH = cli.__file__
@@ -159,13 +158,12 @@ class TestPip_chill(unittest.TestCase):
             self.assertIn(package, result)
 
     def test_command_line_interface_no_chill(self):
-        command = "pip_chill/cli.py --no-chill"
+        argument = "--no-chill"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
 
         returncode = os.system(command)
-        self.assertEqual(returncode, 0)
 
-        result = os.popen(command).read()
-        self.assertNotIn("pip-chill", result)
+        self.assertEqual(returncode, 0)
 
     def test_command_line_invalid_option(self):
         argument = "--invalid-option"
@@ -177,6 +175,25 @@ class TestPip_chill(unittest.TestCase):
             self.assertEqual(returncode, 512)
         else:
             self.assertEqual(returncode, 2)
+
+    def test_command_line_interface_doesnt_do_no_chill_by_default(self):
+        argument = ""
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertTrue(
+            any(p.startswith("pip-chill" + "==") for p in result.split("\n"))
+        )
+
+    def test_command_line_interface_no_chill_doesnt_return_pip_chill(self):
+        argument = "--no-chill"
+        command = " ".join([PYTHON_EXE_PATH, PIP_CHILL_CLI_FULL_PATH, argument])
+
+        result = os.popen(command).read()
+        self.assertNotIn("pip_chill", result)
 
 
 if __name__ == "__main__":
