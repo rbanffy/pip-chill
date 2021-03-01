@@ -157,6 +157,31 @@ class TestPip_chill(unittest.TestCase):
         returncode = os.system(command)
         self.assertEqual(returncode, 512)
 
+    def test_command_line_interface_conda(self):
+        command = "pip_chill/cli.py --conda"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertIn("name:", result)
+        self.assertIn("channels:", result)
+        self.assertIn("dependencies:", result)
+        self.assertIn("  - :", result)
+
+
+
+    def test_command_line_interface_short_conda(self):
+        command = "pip_chill/cli.py -c"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertIn("name:", result)
+        self.assertIn("channels:", result)
+        self.assertIn("dependencies:", result)
+        self.assertIn("  - :", result)
 
 if __name__ == "__main__":
     sys.exit(unittest.main())

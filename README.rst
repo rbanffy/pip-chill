@@ -87,6 +87,22 @@ Or, if you want it without pip-chill::
  pytest==6.2.1
  ...
 
+Or, if you want it formatted for conda::
+
+ $ pip-chill --conda
+ name: myenv
+ channels:
+   - defaults
+dependencies:
+  - bandit==1.7.0
+  - bumpversion==0.6.0
+  - click==7.1.2
+  - coverage==5.3.1
+  - flake8==3.8.4
+  - nose==1.3.7
+  - pytest==6.2.1
+ ...
+
 Or, if you want to list package dependencies too::
 
  $ pip-chill -v
