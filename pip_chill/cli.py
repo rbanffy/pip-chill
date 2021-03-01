@@ -56,8 +56,12 @@ def main():
 
     if args.conda:
         import os 
-        print(f'name: {os.environ["CONDA_DEFAULT_ENV"]}')
-        print(os.popen("conda config --show channels").read())
+        import sys 
+        print(f'name: {os.path.split(sys.prefix)[1]}')
+        try: 
+            print(os.popen("conda config --show channels").read())
+        except:
+            print("channels:\n  - defaults")
         print("dependencies:")
         distributions = [f"  - {pkg}" for pkg in distributions]
 
