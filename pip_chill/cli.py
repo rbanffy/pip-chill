@@ -57,13 +57,13 @@ def main():
     if args.conda:
         import os 
         import sys 
-        print(f'name: {os.path.split(sys.prefix)[1]}')
+        print('name: {}'.format(os.path.split(sys.prefix)[1]))
         try: 
             print(os.popen("conda config --show channels").read())
         except:
             print("channels:\n  - defaults")
         print("dependencies:")
-        distributions = [f"  - {pkg}" for pkg in distributions]
+        distributions = ["  - {}".format(pkg) for pkg in distributions]
 
     for package in distributions:
         if args.no_version:
