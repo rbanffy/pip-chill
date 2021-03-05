@@ -13,7 +13,7 @@ import os
 import sys
 import unittest
 
-from pip_chill import pip_chill
+from pip_chill import pip_chill, cli
 from pip_chill.pip_chill import Distribution
 
 
@@ -167,7 +167,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertIn("name:", result)
         self.assertIn("channels:", result)
         self.assertIn("dependencies:", result)
-        self.assertIn("  - :", result)
+        self.assertIn("  - ", result)
 
 
 
@@ -181,7 +181,7 @@ class TestPip_chill(unittest.TestCase):
         self.assertIn("name:", result)
         self.assertIn("channels:", result)
         self.assertIn("dependencies:", result)
-        self.assertIn("  - :", result)
+        self.assertIn("  - ", result)
 
 if __name__ == "__main__":
     sys.exit(unittest.main())
