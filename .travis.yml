@@ -1,16 +1,19 @@
 # Config file for automatic testing at travis-ci.org
 # This file will be regenerated if you run travis_pypi_setup.py
 
+
+before_install:
+  - sudo curl https://sh.rustup.rs -sSf | bash -s -- -y
+
 # command to install dependencies, e.g. pip install -r requirements.txt
 install:
   - pip install tox-travis
   - pip install tox-travis
   - pip install pip --upgrade
-  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
   - export PATH="/root/.cargo/bin:$PATH"
 
 # command to run tests, e.g. python setup.py test
-script: tox
+script: source $HOME/.cargo/env;tox
 
 # Globals
 language: python
