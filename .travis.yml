@@ -3,7 +3,7 @@
 
 
 before_install:
-  - sudo curl https://sh.rustup.rs -sSf | bash -s -- -y
+  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 
 # command to install dependencies, e.g. pip install -r requirements.txt
 install:
@@ -53,7 +53,7 @@ jobs:
     - arch: ppc64le
       python: 3.6
     - arch: ppc64le
-      dist: bionic
+#      dist: bionic
       python: 3.7
     - arch: ppc64le
       python: 3.8
