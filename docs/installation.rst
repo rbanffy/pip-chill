@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/rbanffy/pip_chill
+.. _Github repo: https://github.com/rbanffy/pip-chill
 .. _tarball: https://github.com/rbanffy/pip_chill/tarball/master
