@@ -47,6 +47,12 @@ class TestPip_chill(unittest.TestCase):
         for package in packages:
             self.assertEqual(hash(package), hash(package.name))
 
+    def test_no_chill(self):
+        packages, _ = pip_chill.chill(no_chill=True)
+        hidden = {"wheel", "setuptools", "pip", "pip-chill"}
+        for package in packages:
+            self.assertNotIn(package.name, hidden)
+
     def test_equality(self):
         self.assertNotEqual(self.distribution_1, self.distribution_2)
         self.assertEqual(self.distribution_1, self.distribution_1)
@@ -110,7 +116,9 @@ class TestPip_chill(unittest.TestCase):
 
         result = os.popen(command).read()
         for package in ["wheel", "setuptools", "pip"]:
-            self.assertFalse(any(p.startswith(package + "==") for p in result.split("\n")))
+            self.assertFalse(
+                any(p.startswith(package + "==") for p in result.split("\n"))
+            )
 
     def test_command_line_interface_all(self):
         command = "pip_chill/cli.py --all"
@@ -144,6 +152,15 @@ class TestPip_chill(unittest.TestCase):
 
     def test_command_line_interface_no_chill(self):
         command = "pip_chill/cli.py --no-chill"
+
+        returncode = os.system(command)
+        self.assertEqual(returncode, 0)
+
+        result = os.popen(command).read()
+        self.assertNotIn("pip-chill", result)
+
+    def test_command_line_interface_all_no_chill(self):
+        command = "pip_chill/cli.py --all --no-chill"
 
         returncode = os.system(command)
         self.assertEqual(returncode, 0)

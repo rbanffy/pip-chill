@@ -53,7 +53,7 @@ class Distribution:
 
 def chill(show_all=False, no_chill=False):
     if show_all:
-        ignored_packages = ()
+        ignored_packages = set()
     else:
         ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources"}
 
