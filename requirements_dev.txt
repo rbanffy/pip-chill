@@ -5,6 +5,7 @@ flake8
 nose
 pytest
 sphinx
+ssort
 tox
 twine
 watchdog
