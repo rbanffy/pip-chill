@@ -13,6 +13,7 @@ script: tox
 language: python
 dist: focal
 os: linux
+osx_image: xcode13.2
 
 jobs:
   include:
@@ -50,21 +51,17 @@ jobs:
 
     - os: osx
       language: generic
-      osx_image: xcode12.2
       python: 3.7
       env: PYTHON=3.7
     - os: osx
       language: generic
-      osx_image: xcode12.2
       python: 3.8
       env: PYTHON=3.8
     - os: osx
       language: generic
-      osx_image: xcode12.2
       python: 3.9
       env: PYTHON=3.9
     - os: osx
       language: generic
-      osx_image: xcode12.2
       python: 3.10
       env: PYTHON=3.10
