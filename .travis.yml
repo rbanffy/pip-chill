@@ -40,6 +40,7 @@ jobs:
       python: 3.11
 
     - arch: ppc64le
+      dist: bionic
       python: 3.7
     - arch: ppc64le
       python: 3.8
@@ -47,6 +48,7 @@ jobs:
       python: 3.9
 
     - arch: s390x
+      dist: bionic
       python: 3.7
     - arch: s390x
       python: 3.8
