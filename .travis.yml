@@ -57,7 +57,6 @@ jobs:
 
     - os: osx
       language: generic
-      osx_image: xcode12.2
       python: 3.7
       env: PYTHON=3.7
     - os: osx
