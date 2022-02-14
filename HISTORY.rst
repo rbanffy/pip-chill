@@ -4,7 +4,9 @@ History
 
 current
 -------
-
+* Use `ssort` to topologically sort code
+* Update 3.10-dev to 3.10 on TravisCI
+* Remove support for Python 3.5 and 3.6
 * Update README.rst with --no-chill switch
 * Bump version to 1.0.2
 
