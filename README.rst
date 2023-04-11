@@ -112,7 +112,7 @@ Or, if you want to list package dependencies too::
  # chardet==4.0.0 # Installed as dependency for requests
  # colorama==0.4.4 # Installed as dependency for twine
  # distlib==0.3.1 # Installed as dependency for virtualenv
- # docutils==0.16 # Installed as dependency for sphinx, readme-renderer
+ # docutils==0.16 # Installed as dependency for readme-renderer, sphinx
  # filelock==3.0.12 # Installed as dependency for tox, virtualenv
  # gitdb==4.0.5 # Installed as dependency for gitpython
  ...
