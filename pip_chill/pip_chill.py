@@ -19,15 +19,17 @@ class Distribution:
         Return the name of the package without a version.
         """
         if self.required_by:
+            sorted_required_by = sorted(self.required_by)
             return "# {} # Installed as dependency for {}".format(
-                self.name, ", ".join(self.required_by)
+                self.name, ", ".join(sorted_required_by)
             )
         return self.name
 
     def __str__(self):
         if self.required_by:
+            sorted_required_by = sorted(self.required_by)
             return "# {}=={} # Installed as dependency for {}".format(
-                self.name, self.version, ", ".join(self.required_by)
+                self.name, self.version, ", ".join(sorted_required_by)
             )
         return "{}=={}".format(self.name, self.version)
 
