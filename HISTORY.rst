@@ -2,7 +2,7 @@
 History
 =======
 
-current
+1.0.3
 -------
 * Use `ssort` to topologically sort code
 * Update 3.10-dev to 3.10 on TravisCI
