@@ -25,6 +25,8 @@ jobs:
       python: 3.9
     - arch: amd64
       python: 3.10
+    - arch: amd64
+      python: 3.11
 
     - arch: arm64
       python: 3.7
@@ -34,6 +36,8 @@ jobs:
       python: 3.9
     - arch: arm64
       python: 3.10
+    - arch: arm64
+      python: 3.11
 
     - arch: ppc64le
       python: 3.7
@@ -65,3 +69,7 @@ jobs:
       language: generic
       python: 3.10
       env: PYTHON=3.10
+    - os: osx
+      language: generic
+      python: 3.11
+      env: PYTHON=3.11
