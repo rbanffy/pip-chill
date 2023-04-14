@@ -20,9 +20,7 @@ class Distribution:
         """
         if self.required_by:
             sorted_required_by = sorted(self.required_by)
-            return "# {} # Installed as dependency for {}".format(
-                self.name, ", ".join(sorted_required_by)
-            )
+            return f'# {self.name} # Installed as dependency for {", ".join(sorted_required_by)}'
         return self.name
 
     def __lt__(self, other):
@@ -40,17 +38,13 @@ class Distribution:
         return hash(self.name)
 
     def __repr__(self):
-        return '<{}.{} instance "{}">'.format(
-            self.__module__, self.__class__.__name__, self.name
-        )
+        return f'<{self.__module__}.{self.__class__.__name__} instance "{self.name}">'
 
     def __str__(self):
         if self.required_by:
             sorted_required_by = sorted(self.required_by)
-            return "# {}=={} # Installed as dependency for {}".format(
-                self.name, self.version, ", ".join(sorted_required_by)
-            )
-        return "{}=={}".format(self.name, self.version)
+            return f'# {self.name}=={self.version} # Installed as dependency for {", ".join(sorted_required_by)}'
+        return f"{self.name}=={self.version}"
 
 
 def chill(show_all=False, no_chill=False):
