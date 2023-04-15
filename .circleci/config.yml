@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: python setup.py test
+          command: python3 setup.py test
           name: Test
 
 workflows:
