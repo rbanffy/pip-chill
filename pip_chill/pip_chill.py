@@ -77,6 +77,7 @@ def chill(show_all=False, no_chill=False, no_version=False):
             distributions[distribution.key] = Distribution(
                 distribution.key,
                 distribution.version,
+                hide_version=no_version,
             )
 
         for requirement in distribution.requires():
@@ -87,7 +88,9 @@ def chill(show_all=False, no_chill=False, no_version=False):
                     )
                 else:
                     dependencies[requirement.key] = Distribution(
-                        requirement.key, required_by=(distribution.key,)
+                        requirement.key,
+                        required_by=(distribution.key,),
+                        hide_version=no_version,
                     )
 
             if requirement.key in distributions:
