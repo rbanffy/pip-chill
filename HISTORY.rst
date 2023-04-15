@@ -2,10 +2,11 @@
 History
 =======
 
-1.0.3
--------
+1.0.2 (2023-04-15)
+------------------
+* Sort dependencies alphabetically in --verbose
 * Use `ssort` to topologically sort code
-* Update 3.10-dev to 3.10 on TravisCI
+* Update 3.11-dev to 3.11 on TravisCI
 * Remove support for Python 3.5 and 3.6
 * Update README.rst with --no-chill switch
 * Bump version to 1.0.2

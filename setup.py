@@ -15,7 +15,7 @@ test_requirements = ["pip"]
 
 setup(
     name="pip-chill",
-    version="1.0.3",
+    version="1.0.2",
     description="Like `pip freeze` but lists only the packages that are not "
     "dependencies of installed packages.",
     long_description=readme + "\n\n" + history,
@@ -43,6 +43,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Software Development",
     ],
     test_suite="tests",
