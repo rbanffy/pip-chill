@@ -6,7 +6,11 @@ History
 current
 -------
 
-1.0.2 (2023-04-15)
+1.0.4
+-----
+*
+
+1.0.3 (2023-04-15)
 ------------------
 * Sort dependencies alphabetically in --verbose
 * Use `ssort` to topologically sort code
