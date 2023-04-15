@@ -41,20 +41,16 @@ def main():
     args = parser.parse_args()
 
     distributions, dependencies = pip_chill.chill(
-        show_all=args.show_all, no_chill=args.no_chill
+        show_all=args.show_all,
+        no_chill=args.no_chill,
+        no_version=args.no_version,
     )
     for package in distributions:
-        if args.no_version:
-            print(package.get_name_without_version())
-        else:
-            print(package)
+        print(package)
 
     if args.verbose:
         for package in dependencies:
-            if args.no_version:
-                print(package.get_name_without_version())
-            else:
-                print(package)
+            print(package)
 
 
 if __name__ == "__main__":

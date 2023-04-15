@@ -9,21 +9,13 @@ class Distribution:
     Represents a distribution package installed in the current environment.
     """
 
-    def __init__(self, name, version=None, required_by=None):
+    def __init__(
+        self, name, version=None, required_by=None, hide_version=False
+    ):
         self.name = name
         self.version = version
         self.required_by = set(required_by) if required_by else set()
-
-    def get_name_without_version(self):
-        """
-        Return the name of the package without a version.
-        """
-        if self.required_by:
-            return (
-                f"# {self.name} # Installed as dependency for "
-                f"{', '.join(sorted(self.required_by))}"
-            )
-        return self.name
+        self.hide_version = hide_version
 
     def __lt__(self, other):
         return self.name < other.name
@@ -47,14 +39,22 @@ class Distribution:
 
     def __str__(self):
         if self.required_by:
+            if self.hide_version:
+                return (
+                    f"# {self.name} # Installed as "
+                    f"dependency for {', '.join(sorted(self.required_by))}"
+                )
             return (
                 f"# {self.name}=={self.version} # Installed as "
                 f"dependency for {', '.join(sorted(self.required_by))}"
             )
+        if self.hide_version:
+            return f"{self.name}"
+
         return f"{self.name}=={self.version}"
 
 
-def chill(show_all=False, no_chill=False):
+def chill(show_all=False, no_chill=False, no_version=False):
     if show_all:
         ignored_packages = ()
     else:
