@@ -14,7 +14,7 @@ To install PIP Chill, run this command in your terminal:
 
     $ pip install pip_chill
 
-This is the preferred method to install PIP Chill, as it will always install the most recent stable release. 
+This is the preferred method to install PIP Chill, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -32,13 +32,13 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/rbanffy/pip_chill
+    $ git clone git://github.com/rbanffy/pip-chill
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/rbanffy/pip_chill/tarball/master
+    $ curl  -OL https://github.com/rbanffy/pip-chill/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/rbanffy/pip_chill
-.. _tarball: https://github.com/rbanffy/pip_chill/tarball/master
+.. _Github repo: https://github.com/rbanffy/pip-chill
+.. _tarball: https://github.com/rbanffy/pip-chill/tarball/master

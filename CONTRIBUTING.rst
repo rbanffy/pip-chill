@@ -15,7 +15,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/rbanffy/pip_chill/issues.
+Report bugs at https://github.com/rbanffy/pip-chill/issues.
 
 If you are reporting a bug, please include:
 
@@ -46,7 +46,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/rbanffy/pip_chill/issues.
+The best way to send feedback is to file an issue at https://github.com/rbanffy/pip-chill/issues.
 
 If you are proposing a feature:
 
