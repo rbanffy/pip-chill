@@ -3,36 +3,31 @@
 
 # command to install dependencies, e.g. pip install -r requirements.txt
 install:
-  - pip install tox-travis
   - pip install --upgrade pip
+  - pip install tox-travis
 
 # command to run tests, e.g. python setup.py test
-script: tox
+script: time tox
 
 # Globals
 language: python
 dist: focal
 os: linux
+osx_image: xcode13.2
 
 jobs:
   include:
     - arch: amd64
-      python: 3.5
-    - arch: amd64
-      python: 3.6
-    - arch: amd64
       python: 3.7
     - arch: amd64
       python: 3.8
     - arch: amd64
       python: 3.9
     - arch: amd64
-      python: 3.10-dev
+      python: 3.10
+    - arch: amd64
+      python: 3.11
 
-    - arch: arm64
-      python: 3.5
-    - arch: arm64
-      python: 3.6
     - arch: arm64
       python: 3.7
     - arch: arm64
@@ -40,14 +35,11 @@ jobs:
     - arch: arm64
       python: 3.9
     - arch: arm64
-      python: 3.10-dev
+      python: 3.10
+    - arch: arm64
+      python: 3.11
 
     - arch: ppc64le
-      python: 3.5
-    - arch: ppc64le
-      python: 3.6
-    - arch: ppc64le
-      dist: bionic
       python: 3.7
     - arch: ppc64le
       python: 3.8
@@ -55,11 +47,6 @@ jobs:
       python: 3.9
 
     - arch: s390x
-      python: 3.5
-    - arch: s390x
-      python: 3.6
-    - arch: s390x
-      dist: bionic
       python: 3.7
     - arch: s390x
       python: 3.8
@@ -68,31 +55,21 @@ jobs:
 
     - os: osx
       language: generic
-      osx_image: xcode12.2
-      python: 3.5
-      env: PYTHON=3.5
-    - os: osx
-      language: generic
-      osx_image: xcode12.2
-      python: 3.6
-      env: PYTHON=3.6
-    - os: osx
-      language: generic
-      osx_image: xcode12.2
       python: 3.7
       env: PYTHON=3.7
     - os: osx
       language: generic
-      osx_image: xcode12.2
       python: 3.8
       env: PYTHON=3.8
     - os: osx
       language: generic
-      osx_image: xcode12.2
       python: 3.9
       env: PYTHON=3.9
     - os: osx
       language: generic
-      osx_image: xcode12.2
-      python: 3.10-dev
-      env: PYTHON=3.10-dev
+      python: 3.10
+      env: PYTHON=3.10
+    - os: osx
+      language: generic
+      python: 3.11
+      env: PYTHON=3.11

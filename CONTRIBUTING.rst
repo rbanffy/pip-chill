@@ -26,8 +26,9 @@ If you are reporting a bug, please include:
 Fix Bugs
 ~~~~~~~~
 
-Look through the GitHub issues for bugs. Anything tagged with "bug"
-and "help wanted" is open to whoever wants to implement it.
+Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
+wanted" is open to whoever wants to implement it. Remember to start from the
+`develop` branch.
 
 Implement Features
 ~~~~~~~~~~~~~~~~~~
@@ -101,14 +102,13 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 2.6, 2.7, 3.3, 3.4 and 3.5, and for PyPy. Check
-   https://travis-ci.org/rbanffy/pip-chill/pull_requests
+3. The pull request should work for Python 3.7+, and for PyPy. Check
+   https://travis-ci.org/rbanffy/pip_chill/pull_requests
    and make sure that the tests pass for all supported Python versions.
 
 Tips
 ----
 
 To run a subset of tests::
-
 
     $ python -m unittest tests.test_pip_chill

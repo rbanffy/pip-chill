@@ -19,22 +19,14 @@ class Distribution:
         Return the name of the package without a version.
         """
         if self.required_by:
-            return "# {} # Installed as dependency for {}".format(
-                self.name, ", ".join(self.required_by)
+            return (
+                f"# {self.name} # Installed as dependency for "
+                f"{', '.join(sorted(self.required_by))}"
             )
         return self.name
 
-    def __str__(self):
-        if self.required_by:
-            return "# {}=={} # Installed as dependency for {}".format(
-                self.name, self.version, ", ".join(self.required_by)
-            )
-        return "{}=={}".format(self.name, self.version)
-
-    def __repr__(self):
-        return '<{}.{} instance "{}">'.format(
-            self.__module__, self.__class__.__name__, self.name
-        )
+    def __lt__(self, other):
+        return self.name < other.name
 
     def __eq__(self, other):
         if self is other:
@@ -44,11 +36,22 @@ class Distribution:
         else:
             return self.name == other
 
-    def __lt__(self, other):
-        return self.name < other.name
-
     def __hash__(self):
         return hash(self.name)
+
+    def __repr__(self):
+        return (
+            f'<{self.__module__}.{self.__class__.__name__} instance "'
+            f'{self.name}">'
+        )
+
+    def __str__(self):
+        if self.required_by:
+            return (
+                f"# {self.name}=={self.version} # Installed as "
+                f"dependency for {', '.join(sorted(self.required_by))}"
+            )
+        return f"{self.name}=={self.version}"
 
 
 def chill(show_all=False, no_chill=False):
