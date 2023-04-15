@@ -75,7 +75,8 @@ def chill(show_all=False, no_chill=False, no_version=False):
             dependencies[distribution.key].version = distribution.version
         else:
             distributions[distribution.key] = Distribution(
-                distribution.key, distribution.version
+                distribution.key,
+                distribution.version,
             )
 
         for requirement in distribution.requires():
