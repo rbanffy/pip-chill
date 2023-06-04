@@ -31,10 +31,9 @@ class Distribution:
     def __eq__(self, other):
         if self is other:
             return True
-        elif isinstance(other, Distribution):
+        if isinstance(other, Distribution):
             return self.name == other.name
-        else:
-            return self.name == other
+        return self.name == other
 
     def __hash__(self):
         return hash(self.name)
@@ -75,23 +74,23 @@ def chill(show_all=False, no_chill=False):
             dependencies[distribution.key].version = distribution.version
         else:
             distributions[distribution.key] = Distribution(
-                distribution.key, distribution.version
+                distribution.key, distribution.version,
             )
 
         for requirement in distribution.requires():
             if requirement.key not in ignored_packages:
                 if requirement.key in dependencies:
                     dependencies[requirement.key].required_by.add(
-                        distribution.key
+                        distribution.key,
                     )
                 else:
                     dependencies[requirement.key] = Distribution(
-                        requirement.key, required_by=(distribution.key,)
+                        requirement.key, required_by=(distribution.key,),
                     )
 
             if requirement.key in distributions:
                 dependencies[requirement.key].version = distributions.pop(
-                    requirement.key
+                    requirement.key,
                 ).version
 
     return sorted(distributions.values()), sorted(dependencies.values())

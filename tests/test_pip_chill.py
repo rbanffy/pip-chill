@@ -21,10 +21,10 @@ class TestPip_chill(unittest.TestCase):
     def setUp(self):
         self.distribution_1 = Distribution("pip-chill", "2.0.0", [])
         self.distribution_2 = Distribution(
-            "pip", "10.0.0", [self.distribution_1]
+            "pip", "10.0.0", [self.distribution_1],
         )
         self.distribution_3 = Distribution(
-            "pip", "11.0.0", [self.distribution_1]
+            "pip", "11.0.0", [self.distribution_1],
         )
 
     def tearDown(self):
