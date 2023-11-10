@@ -49,7 +49,7 @@ from the list. The list also makes no distinction about the packages
 you actually care about and packages your packages care about, making
 the requirements file bloated and, ultimately, inaccurate.
 
-On your terminal, run::
+On your terminal, run::
 
  $ pip-chill
  bandit==1.7.0
