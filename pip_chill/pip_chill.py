@@ -25,8 +25,7 @@ class Distribution:
             return True
         if isinstance(other, Distribution):
             return self.name == other.name
-        else:
-            return self.name == other
+        return self.name == other
 
     def __hash__(self):
         return hash(self.name)
