@@ -17,7 +17,7 @@ from pip_chill import pip_chill
 from pip_chill.pip_chill import Distribution
 
 
-class TestPip_chill(unittest.TestCase):
+class TestPipChill(unittest.TestCase):
     def setUp(self):
         self.distribution_1 = Distribution("pip-chill", "2.0.0", [])
         self.distribution_2 = Distribution(

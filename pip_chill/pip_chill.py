@@ -23,7 +23,7 @@ class Distribution:
     def __eq__(self, other):
         if self is other:
             return True
-        elif isinstance(other, Distribution):
+        if isinstance(other, Distribution):
             return self.name == other.name
         else:
             return self.name == other
@@ -55,6 +55,10 @@ class Distribution:
 
 
 def chill(show_all=False, no_chill=False, no_version=False):
+    """
+    Returns a tuple of dicts, one with the the packages, other with their
+    dependencies.
+    """
     if show_all:
         ignored_packages = ()
     else:
@@ -68,9 +72,11 @@ def chill(show_all=False, no_chill=False, no_version=False):
     dependencies = {}
 
     for distribution in pkg_resources.working_set:
+        # Skip packages to be ignored.
         if distribution.key in ignored_packages:
             continue
 
+        # Populate the distributions dict.
         if distribution.key in dependencies:
             dependencies[distribution.key].version = distribution.version
         else:
@@ -80,6 +86,7 @@ def chill(show_all=False, no_chill=False, no_version=False):
                 hide_version=no_version,
             )
 
+        # Go over the requirements of this package and remove redundant ones.
         for requirement in distribution.requires():
             if requirement.key not in ignored_packages:
                 if requirement.key in dependencies:
@@ -93,6 +100,7 @@ def chill(show_all=False, no_chill=False, no_version=False):
                         hide_version=no_version,
                     )
 
+            # If the requirement is in the distributions list, remove it.
             if requirement.key in distributions:
                 dependencies[requirement.key].version = distributions.pop(
                     requirement.key
