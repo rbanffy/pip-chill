@@ -2,13 +2,10 @@
 History
 =======
 
-=======
-current
--------
-
 1.0.4
 -----
 * Support Python 3.12
+* Misc improvements
 
 1.0.3 (2023-04-15)
 ------------------
