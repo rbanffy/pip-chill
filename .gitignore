@@ -74,3 +74,4 @@ env2
 cache
 .pytest_cache
 .idea
+.vscode
