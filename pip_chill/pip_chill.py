@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Lists installed packages that are not dependencies of others"""
 
-import pkg_resources
+from pkg_resources import working_set
 
 
 class Distribution:
@@ -70,7 +70,19 @@ def chill(show_all=False, no_chill=False, no_version=False):
     distributions = {}
     dependencies = {}
 
-    for distribution in pkg_resources.working_set:
+    for distribution in working_set:
+
+        # working_set is a list of pkg_resources.EggInfoDistribution. Of note
+        # for us are the key and version attributes and the requires() method.
+        # The requires() method returns an iterable of
+        # pkg_resources.Requirement objects. We'll use the key attribute to
+        # trim the requirements.
+
+        # importlib.metadata import distributions returns an iterable of
+        # importlib.metadata.PathDistribution objects. We'll be interested in
+        # the name, version and requires attributes. The requires attribute is
+        # a string representing the requirement in requirements.txt syntax.
+
         # Skip packages to be ignored.
         if distribution.key in ignored_packages:
             continue
