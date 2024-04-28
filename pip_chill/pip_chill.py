@@ -65,8 +65,8 @@ def chill(
         ignored_packages.add("pip-chill")
 
     # Gather all packages that are requirements and will be auto-installed.
-    distributions = {}
-    dependencies = {}
+    distributions: "dict[str, Distribution]" = {}
+    dependencies: "dict[str, Distribution]" = {}
 
     for distribution in pkg_resources.working_set:
         if distribution.key in ignored_packages:
