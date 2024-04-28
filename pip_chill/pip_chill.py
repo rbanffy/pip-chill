@@ -53,7 +53,9 @@ class Distribution:
         return f"{self.name}=={self.version}"
 
 
-def chill(show_all=False, no_chill=False):
+def chill(
+    show_all: bool = False, no_chill: bool = False
+) -> "tuple[list[Distribution], list[Distribution]]":
     if show_all:
         ignored_packages = ()
     else:
