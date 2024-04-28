@@ -2,6 +2,10 @@
 History
 =======
 
+1.0.3 (...)
+------------------
+* Add dependency on `setuptools` for python >= 3.12 to get access to `pkg_resources`.
+
 1.0.2 (2023-04-15)
 ------------------
 * Sort dependencies alphabetically in --verbose
