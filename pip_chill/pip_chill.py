@@ -93,5 +93,11 @@ def chill(show_all=False, no_chill=False):
                 dependencies[requirement.key].version = distributions.pop(
                     requirement.key
                 ).version
+    
+    # Package 'pip' is kinda special. If `show_all`` is True, we want to elevate it
+    # from a dependency to a distribution, even if it is a dependency of another package.
+    if show_all and "pip" in dependencies and "pip" not in distributions:
+        dep = dependencies.pop("pip")
+        distributions[dep.name] = Distribution(dep.name, dep.version)
 
     return sorted(distributions.values()), sorted(dependencies.values())
