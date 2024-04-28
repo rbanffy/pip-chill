@@ -40,9 +40,7 @@ class Distribution:
         return hash(self.name)
 
     def __repr__(self):
-        return (
-            f'<{self.__module__}.{self.__class__.__name__} instance "' f'{self.name}">'
-        )
+        return f"<{self.__module__}.{self.__class__.__name__} instance '{self.name}'>"
 
     def __str__(self):
         if self.required_by:
