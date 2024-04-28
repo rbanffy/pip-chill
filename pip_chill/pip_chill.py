@@ -41,8 +41,7 @@ class Distribution:
 
     def __repr__(self):
         return (
-            f'<{self.__module__}.{self.__class__.__name__} instance "'
-            f'{self.name}">'
+            f'<{self.__module__}.{self.__class__.__name__} instance "' f'{self.name}">'
         )
 
     def __str__(self):
@@ -81,9 +80,7 @@ def chill(show_all=False, no_chill=False):
         for requirement in distribution.requires():
             if requirement.key not in ignored_packages:
                 if requirement.key in dependencies:
-                    dependencies[requirement.key].required_by.add(
-                        distribution.key
-                    )
+                    dependencies[requirement.key].required_by.add(distribution.key)
                 else:
                     dependencies[requirement.key] = Distribution(
                         requirement.key, required_by=(distribution.key,)
@@ -93,7 +90,7 @@ def chill(show_all=False, no_chill=False):
                 dependencies[requirement.key].version = distributions.pop(
                     requirement.key
                 ).version
-    
+
     # Package 'pip' is kinda special. If `show_all`` is True, we want to elevate it
     # from a dependency to a distribution, even if it is a dependency of another package.
     if show_all and "pip" in dependencies and "pip" not in distributions:
