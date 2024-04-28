@@ -57,7 +57,7 @@ def chill(
     show_all: bool = False, no_chill: bool = False
 ) -> "tuple[list[Distribution], list[Distribution]]":
     if show_all:
-        ignored_packages = ()
+        ignored_packages = set()
     else:
         ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources"}
 
