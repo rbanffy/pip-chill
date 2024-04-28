@@ -10,7 +10,7 @@ with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = [
-    "setuptools",
+    "setuptools; python_version >= '3.12'",
 ]
 
 test_requirements = ["pip"]
