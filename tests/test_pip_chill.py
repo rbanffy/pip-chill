@@ -37,7 +37,7 @@ class TestPip_chill(unittest.TestCase):
             self.assertNotIn(package.name, hidden)
 
     def test_all(self):
-        packages, _ = pip_chill.chill(True)
+        packages, _ = pip_chill.chill(show_all=True)
         package_names = {package.name for package in packages}
         for package in ["pip-chill", "pip"]:
             self.assertIn(package, package_names)
