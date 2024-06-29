@@ -91,13 +91,4 @@ def chill(
                     requirement.key
                 ).version
 
-    # There are some packages which we normally ignore, but in the show_all
-    # mode we want to show. If they happen to have landed in the dependencies
-    # list we want to elevate them to the distributions list.
-    if show_all:
-        for package in {"pip", "wheel", "setuptools", "pkg-resources"}:
-            if package in dependencies and package not in distributions:
-                dep = dependencies.pop(package)
-                distributions[dep.name] = Distribution(dep.name, dep.version)
-
     return sorted(distributions.values()), sorted(dependencies.values())
