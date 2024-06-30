@@ -8,7 +8,6 @@ test_pip_chill
 Tests for `pip_chill` module.
 """
 
-
 import os
 import sys
 import unittest
@@ -20,12 +19,8 @@ from pip_chill.pip_chill import Distribution
 class TestPip_chill(unittest.TestCase):
     def setUp(self):
         self.distribution_1 = Distribution("pip-chill", "2.0.0", [])
-        self.distribution_2 = Distribution(
-            "pip", "10.0.0", [self.distribution_1]
-        )
-        self.distribution_3 = Distribution(
-            "pip", "11.0.0", [self.distribution_1]
-        )
+        self.distribution_2 = Distribution("pip", "10.0.0", [self.distribution_1])
+        self.distribution_3 = Distribution("pip", "11.0.0", [self.distribution_1])
 
     def tearDown(self):
         pass
@@ -37,7 +32,7 @@ class TestPip_chill(unittest.TestCase):
             self.assertNotIn(package.name, hidden)
 
     def test_all(self):
-        packages, _ = pip_chill.chill(True)
+        packages, _ = pip_chill.chill(show_all=True)
         package_names = {package.name for package in packages}
         for package in ["pip-chill", "pip"]:
             self.assertIn(package, package_names)
@@ -110,7 +105,9 @@ class TestPip_chill(unittest.TestCase):
 
         result = os.popen(command).read()
         for package in ["wheel", "setuptools", "pip"]:
-            self.assertFalse(any(p.startswith(f"{package}==") for p in result.split("\n")))
+            self.assertFalse(
+                any(p.startswith(f"{package}==") for p in result.split("\n"))
+            )
 
     def test_command_line_interface_all(self):
         command = "pip_chill/cli.py --all"

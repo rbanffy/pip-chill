@@ -40,10 +40,7 @@ class Distribution:
         return hash(self.name)
 
     def __repr__(self):
-        return (
-            f'<{self.__module__}.{self.__class__.__name__} instance "'
-            f'{self.name}">'
-        )
+        return f"<{self.__module__}.{self.__class__.__name__} instance '{self.name}'>"
 
     def __str__(self):
         if self.required_by:
@@ -54,9 +51,11 @@ class Distribution:
         return f"{self.name}=={self.version}"
 
 
-def chill(show_all=False, no_chill=False):
+def chill(
+    show_all: bool = False, no_chill: bool = False
+) -> "tuple[list[Distribution], list[Distribution]]":
     if show_all:
-        ignored_packages = ()
+        ignored_packages = set()
     else:
         ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources"}
 
@@ -64,8 +63,8 @@ def chill(show_all=False, no_chill=False):
         ignored_packages.add("pip-chill")
 
     # Gather all packages that are requirements and will be auto-installed.
-    distributions = {}
-    dependencies = {}
+    distributions: "dict[str, Distribution]" = {}
+    dependencies: "dict[str, Distribution]" = {}
 
     for distribution in pkg_resources.working_set:
         if distribution.key in ignored_packages:
@@ -81,9 +80,7 @@ def chill(show_all=False, no_chill=False):
         for requirement in distribution.requires():
             if requirement.key not in ignored_packages:
                 if requirement.key in dependencies:
-                    dependencies[requirement.key].required_by.add(
-                        distribution.key
-                    )
+                    dependencies[requirement.key].required_by.add(distribution.key)
                 else:
                     dependencies[requirement.key] = Distribution(
                         requirement.key, required_by=(distribution.key,)
