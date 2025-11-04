@@ -1,13 +1,75 @@
 # -*- coding: utf-8 -*-
 """Lists installed packages that are not dependencies of others"""
-
+import re
 import sys
+import warnings
+from functools import lru_cache
 from importlib import metadata
 from pathlib import Path
-from re import split
-from typing import Generator, Union
+from typing import Dict, Generator, List, Union
+
+from packaging.requirements import Requirement
 
 STANDARD_PACKAGES = ("pip", "setuptools", "wheel")
+
+
+def _normalize_name(dist: str) -> str:
+    return dist.lower().replace("_", "-")
+
+
+rgx_pkg_name = r"([A-Za-z][\w.+\-]*)"  # base name (starts with a letter)
+rgx_extras = r"(\[[^\]]+\])?"  # the extras contents including brackets
+rgx_operator = r"(?:==|!=|>=|<=|~=|>|<)"
+rgx_version = rf"{rgx_operator}\s*[0-9]+(?:\.[0-9]+){{,2}}"
+rgx_version_list = rf"(?:\s*{rgx_version}(?:\s*,\s*{rgx_version})*)?"
+rgx_marker = r"(?:\s*;\s*[A-Za-z0-9_\.\s<>=!~'\"(),\-]+)?"
+rgx_comments = r"(?:\s*#.*)?"
+rgx_req_line = rf"^{rgx_pkg_name}{rgx_extras}{rgx_version_list}{rgx_marker}{rgx_comments}$"
+ptn_req_line = re.compile(rgx_req_line, re.ASCII)
+
+
+def fallback_extract_name_extras(name: str) -> str:
+    if not name.strip():
+        warnings.warn(f"Invalid empty requirement string: {name!r}")
+        return ""
+
+    # Match <package>[extras] ignoring version specifiers
+    match = ptn_req_line.match(name)
+    if match:
+        parts = match.groups(default="")
+        extras = parts[1]
+        if extras:
+            # remove brackets and split, then sort
+            extras_list = [e.strip() for e in extras[1:-1].split(",")]
+            extras_sorted = "[" + ",".join(sorted(extras_list)) + "]"
+            parts = (parts[0], extras_sorted) + parts[2:]
+        return "".join(parts)
+
+        return "".join(match.groups(default=""))
+
+    warnings.warn(f"Invalid requirement string: {name!r}")
+    return name
+
+
+def extract_name_extras(name: str) -> str:
+    try:
+        req = Requirement(name)
+        extras = f"[{','.join(sorted(req.extras))}]" if req.extras else ""
+        return f"{req.name}{extras}"
+    except Exception:
+        return fallback_extract_name_extras(name)
+
+
+@lru_cache(maxsize=None)
+def _find_egg_links() -> List[Path]:
+    """Return all .egg-link paths in non-standard locations."""
+    egg_links = []
+    for path_entry in sys.path:
+        path = Path(path_entry)
+        if not path.exists() or "site-packages" in str(path):
+            continue
+        egg_links.extend(path.glob("*.egg-link"))
+    return egg_links
 
 
 class Distribution:
@@ -17,6 +79,7 @@ class Distribution:
 
     def __init__(self, name, version=None, required_by=None):
         self.name = name
+        self.keyname = _normalize_name(name)
         self.version = version
         self.required_by = set(required_by) if required_by else set()
 
@@ -57,40 +120,59 @@ class Distribution:
         return f"{self.name}=={self.version}"
 
 
-class _LegacyDistributionShim:
+class _LocalDistributionShim:
     """A minimal stand-in for importlib.metadata.Distribution for legacy packages."""
 
-    def __init__(self, name, location=None):
-        self._name = name
-        self._location = location
+    def __init__(self, location: Union[str, Path]):
+        self._location = Path(location)
+        self._name = None
+        self._version = None
+        self._requires = None
+        self._load_metadata()
+
+    def _load_metadata(self):
+        """
+        Attempts to load the distribution metadata from the path.
+        """
+        if not self._location.exists():
+            return
+
+        try:
+            dist = metadata.PathDistribution(self._location)
+            self._name = dist.metadata.get("Name", self._location.name)
+            self._version = dist.metadata.get("Version", "unknown")
+            requires = dist.requires or []
+            self._requires = [
+                req if isinstance(req, Requirement) else Requirement(req) for req in requires
+            ]
+        except Exception:
+            # fallback if metadata cannot be read
+            self._name = self._location.name
+            self._version = "unknown"
+            self._requires = []
 
     @property
     def metadata(self):
-        return {"Name": self._name}
+        return {"Name": self._name or self._location.name}
 
     @property
-    def version(self):
-        return "unknown"
+    def key(self) -> str:
+        return _normalize_name(self._name or "")
 
     @property
-    def requires(self):
-        return []
+    def version(self) -> str:
+        return self._version or "unknown"
 
-    def __repr__(self):
-        return f"<LegacyDist {self._name} from {self._location}>"
+    @property
+    def requires(self) -> List[Requirement]:
+        return self._requires or []
 
-
-def normalize_name(dist: str) -> str:
-    return dist.lower().replace("_", "-")
-
-
-def remove_version(name: str) -> str:
-    sep = split(pattern=r"[^\w\-\.\[\]]", string=name, maxsplit=1)
-    return sep[0]
+    def __repr__(self) -> str:
+        return f"<LocalDistShim {self._name or self._location} version={self.version}>"
 
 
 def iter_all_distributions() -> (
-    Generator[Union[metadata.Distribution, _LegacyDistributionShim], None, None]
+    Generator[Union[metadata.Distribution, _LocalDistributionShim], None, None]
 ):
     """
     Yield all installed distributions in the current environment, including editable installs,
@@ -100,70 +182,59 @@ def iter_all_distributions() -> (
     """
     seen = set()  # track normalized package names
 
-    # Yield standard distributions from importlib.metadata
-    for dist in metadata.distributions():
-        key = normalize_name(dist.metadata["Name"])
-        if key not in seen:
-            seen.add(key)
-            yield dist
-
-    # Yield editable installs (.egg-link)
-    for path_entry in sys.path:
-        path = Path(path_entry)
-        if not path.exists():
-            continue
-
-        # .egg-link files (editable installs)
-        for egg_link in path.glob("*.egg-link"):
-            try:
-                with egg_link.open() as f:
-                    target = f.readline().strip()
-                shim = _LegacyDistributionShim(target)
-                key = normalize_name(shim.metadata["Name"])
-            except Exception:
-                continue
-
-            if key not in seen:
-                seen.add(key)
-                yield shim
-
     # Ensure standard top-level packages exist
     # These are normally included by pip/virtualenv
     for pkg in STANDARD_PACKAGES:
-        if pkg not in seen:
-            try:
-                dist = metadata.distribution(pkg)
-                key = normalize_name(dist.metadata["Name"])
-                if key not in seen:
-                    seen.add(key)
-                    yield dist
-            except metadata.PackageNotFoundError:
-                continue
+        try:
+            dist = metadata.distribution(pkg)
+            package_name = _normalize_name(dist.metadata["Name"])
+            if package_name not in seen:
+                seen.add(package_name)
+                yield dist
+        except metadata.PackageNotFoundError:
+            continue
+
+    # Yield standard distributions from importlib.metadata
+    for dist in metadata.distributions():
+        package_name = _normalize_name(dist.metadata["Name"])
+        if package_name not in seen:
+            seen.add(package_name)
+            yield dist
+
+    # Yield editable installs (.egg-link) / non-standard paths
+    for egg_link in _find_egg_links():
+        try:
+            target_path = egg_link.read_text().splitlines()[0].strip()
+            dist = _LocalDistributionShim(target_path)
+            if not dist._name:
+                dist._name = egg_link.stem
+        except Exception:
+            continue
+
+        if dist.key not in seen:
+            seen.add(dist.key)
+            yield dist
 
 
 def chill(
     show_all: bool = False, no_chill: bool = False
-) -> "tuple[list[Distribution], list[Distribution]]":
-    if show_all:
-        ignored_packages = set()
-    else:
-        ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources"}
+) -> "tuple[List[Distribution], List[Distribution]]":
+
+    ignored_packages = set() if show_all else {"pip", "wheel", "setuptools", "pkg-resources"}
 
     if no_chill:
         ignored_packages.add("pip-chill")
 
-    distributions: dict[str, Distribution] = {}
-    dependencies: dict[str, Distribution] = {}
+    distributions: Dict[str, Distribution] = {}
+    dependencies: Dict[str, Distribution] = {}
 
     for distribution in iter_all_distributions():
         try:
-            distribution_name = distribution.metadata["Name"]
+            distribution_name = getattr(distribution, "name", distribution.metadata["Name"])
         except Exception:
             continue
 
-        distribution_key = normalize_name(distribution_name)
-        # print("D distribution_key:", distribution_key)
-
+        distribution_key = _normalize_name(distribution_name)
         if distribution_key in ignored_packages:
             continue
 
@@ -173,28 +244,29 @@ def chill(
             dependencies[distribution_key].version = getattr(distribution, "version", "unknown")
         else:
             distributions[distribution_key] = Distribution(
-                distribution_key,
+                distribution_name,
                 getattr(distribution, "version", "unknown"),
             )
 
         for requirement in requires:
-            try:
-                requirement_name = requirement.split(";", 1)[0].strip().split()[0]
-                requirement_key = normalize_name(remove_version(requirement_name))
-            except Exception:
-                continue
+            if isinstance(requirement, Requirement):
+                requirement_name = requirement.name
+                requirement_key = _normalize_name(requirement_name)
+            else:
+                try:
+                    requirement_name = requirement.split(";", 1)[0].strip()
+                    requirement_key = _normalize_name(extract_name_extras(requirement_name))
+                except Exception:
+                    continue
 
-            if requirement_key in ignored_packages:
-                continue
-
-            if requirement_key in STANDARD_PACKAGES:
+            if requirement_key in ignored_packages or requirement_key in STANDARD_PACKAGES:
                 continue
 
             if requirement_key in dependencies:
                 dependencies[requirement_key].required_by.add(distribution_key)
             else:
                 dependencies[requirement_key] = Distribution(
-                    requirement_key, required_by=(distribution_key,)
+                    requirement_key, required_by={distribution_key}
                 )
 
             if requirement_key in distributions:
