@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 """Lists installed packages that are not dependencies of others"""
 
-import pkg_resources
+import sys
+from importlib import metadata
+from pathlib import Path
+from re import split
+from typing import Generator, Union
+
+STANDARD_PACKAGES = ("pip", "setuptools", "wheel")
 
 
 class Distribution:
@@ -51,6 +57,90 @@ class Distribution:
         return f"{self.name}=={self.version}"
 
 
+class _LegacyDistributionShim:
+    """A minimal stand-in for importlib.metadata.Distribution for legacy packages."""
+
+    def __init__(self, name, location=None):
+        self._name = name
+        self._location = location
+
+    @property
+    def metadata(self):
+        return {"Name": self._name}
+
+    @property
+    def version(self):
+        return "unknown"
+
+    @property
+    def requires(self):
+        return []
+
+    def __repr__(self):
+        return f"<LegacyDist {self._name} from {self._location}>"
+
+
+def normalize_name(dist: str) -> str:
+    return dist.lower().replace("_", "-")
+
+
+def remove_version(name: str) -> str:
+    sep = split(pattern=r"[^\w\-\.\[\]]", string=name, maxsplit=1)
+    return sep[0]
+
+
+def iter_all_distributions() -> (
+    Generator[Union[metadata.Distribution, _LegacyDistributionShim], None, None]
+):
+    """
+    Yield all installed distributions in the current environment, including editable installs,
+    mimicking pkg_resources.working_set as closely as possible.
+
+    Returns a generator of metadata.Distribution or _LegacyDistributionShim objects.
+    """
+    seen = set()  # track normalized package names
+
+    # Yield standard distributions from importlib.metadata
+    for dist in metadata.distributions():
+        key = normalize_name(dist.metadata["Name"])
+        if key not in seen:
+            seen.add(key)
+            yield dist
+
+    # Yield editable installs (.egg-link)
+    for path_entry in sys.path:
+        path = Path(path_entry)
+        if not path.exists():
+            continue
+
+        # .egg-link files (editable installs)
+        for egg_link in path.glob("*.egg-link"):
+            try:
+                with egg_link.open() as f:
+                    target = f.readline().strip()
+                shim = _LegacyDistributionShim(target)
+                key = normalize_name(shim.metadata["Name"])
+            except Exception:
+                continue
+
+            if key not in seen:
+                seen.add(key)
+                yield shim
+
+    # Ensure standard top-level packages exist
+    # These are normally included by pip/virtualenv
+    for pkg in STANDARD_PACKAGES:
+        if pkg not in seen:
+            try:
+                dist = metadata.distribution(pkg)
+                key = normalize_name(dist.metadata["Name"])
+                if key not in seen:
+                    seen.add(key)
+                    yield dist
+            except metadata.PackageNotFoundError:
+                continue
+
+
 def chill(
     show_all: bool = False, no_chill: bool = False
 ) -> "tuple[list[Distribution], list[Distribution]]":
@@ -62,33 +152,52 @@ def chill(
     if no_chill:
         ignored_packages.add("pip-chill")
 
-    # Gather all packages that are requirements and will be auto-installed.
-    distributions: "dict[str, Distribution]" = {}
-    dependencies: "dict[str, Distribution]" = {}
+    distributions: dict[str, Distribution] = {}
+    dependencies: dict[str, Distribution] = {}
 
-    for distribution in pkg_resources.working_set:
-        if distribution.key in ignored_packages:
+    for distribution in iter_all_distributions():
+        try:
+            distribution_name = distribution.metadata["Name"]
+        except Exception:
             continue
 
-        if distribution.key in dependencies:
-            dependencies[distribution.key].version = distribution.version
+        distribution_key = normalize_name(distribution_name)
+        # print("D distribution_key:", distribution_key)
+
+        if distribution_key in ignored_packages:
+            continue
+
+        requires = getattr(distribution, "requires", None) or []
+
+        if distribution_key in dependencies:
+            dependencies[distribution_key].version = getattr(distribution, "version", "unknown")
         else:
-            distributions[distribution.key] = Distribution(
-                distribution.key, distribution.version
+            distributions[distribution_key] = Distribution(
+                distribution_key,
+                getattr(distribution, "version", "unknown"),
             )
 
-        for requirement in distribution.requires():
-            if requirement.key not in ignored_packages:
-                if requirement.key in dependencies:
-                    dependencies[requirement.key].required_by.add(distribution.key)
-                else:
-                    dependencies[requirement.key] = Distribution(
-                        requirement.key, required_by=(distribution.key,)
-                    )
+        for requirement in requires:
+            try:
+                requirement_name = requirement.split(";", 1)[0].strip().split()[0]
+                requirement_key = normalize_name(remove_version(requirement_name))
+            except Exception:
+                continue
 
-            if requirement.key in distributions:
-                dependencies[requirement.key].version = distributions.pop(
-                    requirement.key
-                ).version
+            if requirement_key in ignored_packages:
+                continue
+
+            if requirement_key in STANDARD_PACKAGES:
+                continue
+
+            if requirement_key in dependencies:
+                dependencies[requirement_key].required_by.add(distribution_key)
+            else:
+                dependencies[requirement_key] = Distribution(
+                    requirement_key, required_by=(distribution_key,)
+                )
+
+            if requirement_key in distributions:
+                dependencies[requirement_key].version = distributions.pop(requirement_key).version
 
     return sorted(distributions.values()), sorted(dependencies.values())

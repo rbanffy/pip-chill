@@ -4,6 +4,7 @@ coverage
 flake8
 nose
 pytest
+setuptools
 sphinx
 ssort
 tox

@@ -2,6 +2,11 @@
 History
 =======
 
+1.0.4 (...)
+------------------
+* Remove dependency to obsolete `pkg_resources`.
+* Dropped support to 3.7 as a consequence of relying `importlib.metadata``
+
 1.0.3 (...)
 ------------------
 * Add dependency on `setuptools` for python >= 3.12 to get access to `pkg_resources`.

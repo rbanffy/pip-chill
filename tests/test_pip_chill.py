@@ -105,9 +105,7 @@ class TestPip_chill(unittest.TestCase):
 
         result = os.popen(command).read()
         for package in ["wheel", "setuptools", "pip"]:
-            self.assertFalse(
-                any(p.startswith(f"{package}==") for p in result.split("\n"))
-            )
+            self.assertFalse(any(p.startswith(f"{package}==") for p in result.split("\n")))
 
     def test_command_line_interface_all(self):
         command = "pip_chill/cli.py --all"
@@ -156,4 +154,4 @@ class TestPip_chill(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    sys.exit(unittest.main())
+    sys.exit(unittest.main())  # type: ignore

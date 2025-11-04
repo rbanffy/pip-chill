@@ -14,3 +14,4 @@ Contributors
 * Luke Skibinski https://github.com/lsh-0
 * Piotr Surowiec https://github.com/Agrendalath
 * Marcin Konowalczyk https://github.com/MarcinKonowalczyk
+* Olivier Martineau https://github.com/OlivierMartineau
