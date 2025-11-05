@@ -178,7 +178,7 @@ def iter_all_distributions() -> (
     Yield all installed distributions in the current environment, including editable installs,
     mimicking pkg_resources.working_set as closely as possible.
 
-    Returns a generator of metadata.Distribution or _LegacyDistributionShim objects.
+    Returns a generator of metadata.Distribution or _LocalDistributionShim objects.
     """
     seen = set()  # track normalized package names
 

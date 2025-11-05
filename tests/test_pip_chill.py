@@ -18,6 +18,7 @@ from typing import Optional
 from pip_chill import pip_chill
 from pip_chill.pip_chill import (
     Distribution,
+    _LocalDistributionShim,
     extract_name_extras,
     fallback_extract_name_extras,
     rgx_extras,
@@ -188,6 +189,36 @@ class TestPip_chill(unittest.TestCase):
         assert re.match(rgx_req_line, "bump >= 1.3.2")
         assert not re.match(rgx_req_line, "invalid package string")
 
+    def test_distribution_str_and_name_without_version(self):
+        dist_top = Distribution("foo", "1.2.3")
+        dist_dep = Distribution("bar", "2.0", required_by={"foo"})
+
+        self.assertEqual(str(dist_top), "foo==1.2.3")
+        self.assertEqual(dist_top.get_name_without_version(), "foo")
+
+        self.assertIn("bar", str(dist_dep))
+        self.assertIn("Installed as dependency for foo", str(dist_dep))
+        self.assertIn("Installed as dependency for foo", dist_dep.get_name_without_version())
+
+    def test_local_distribution_shim(self):
+        # Simulate a missing or minimal Distribution object
+        legacy = _LocalDistributionShim("legacy-pkg")
+
+        # Check that defaults are set
+        self.assertEqual(legacy.metadata["Name"], "legacy-pkg")
+        self.assertEqual(legacy.version, "unknown")
+        self.assertEqual(legacy.requires, [])
+
+        # If it has str() or name helpers, test those too
+        self.assertIn("legacy-pkg", str(legacy))
+
+    def test_local_distribution_shim_fallback(self):
+        # Nonexistent path
+        dist = _LocalDistributionShim("/nonexistent/path")
+        self.assertEqual(dist.metadata["Name"], "path")
+        self.assertEqual(dist.version, "unknown")
+        self.assertEqual(dist.requires, [])
+
     def test_fallback_extract_name_extras(self):
         for req_string, expected, should_warn in TEST_REQUIREMENTS:
             with self.subTest(req=req_string):
@@ -226,24 +257,6 @@ class TestPip_chill(unittest.TestCase):
                         any("Invalid" in str(warning.message) for warning in w),
                         f"Unexpected warning for {req_string!r}",
                     )
-
-    def test_distribution_str_and_name_without_version(self):
-        dist_top = Distribution("foo", "1.2.3")
-        dist_dep = Distribution("bar", "2.0", required_by={"foo"})
-
-        self.assertEqual(str(dist_top), "foo==1.2.3")
-        self.assertEqual(dist_top.get_name_without_version(), "foo")
-
-        self.assertIn("bar", str(dist_dep))
-        self.assertIn("Installed as dependency for foo", str(dist_dep))
-        self.assertIn("Installed as dependency for foo", dist_dep.get_name_without_version())
-
-    def test_local_distribution_shim_fallback(self):
-        # Nonexistent path
-        dist = pip_chill._LocalDistributionShim("/nonexistent/path")
-        self.assertEqual(dist.metadata["Name"], "path")
-        self.assertEqual(dist.version, "unknown")
-        self.assertEqual(dist.requires, [])
 
 
 if __name__ == "__main__":
