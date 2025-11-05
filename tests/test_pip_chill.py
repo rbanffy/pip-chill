@@ -79,20 +79,23 @@ class TestPip_chill(unittest.TestCase):
         self.distribution_2 = Distribution("pip", "10.0.0", [self.distribution_1])
         self.distribution_3 = Distribution("pip", "11.0.0", [self.distribution_1])
 
+    def assertAllIn(self, members, target):
+        [self.assertIn(member, target) for member in members]
+
+    def assertAllNotIn(self, members, target):
+        [self.assertNotIn(member, target) for member in members]
+
     def tearDown(self):
         pass
 
     def test_pip_ommitted(self):
         packages, _ = pip_chill.chill()
-        self.assertNotIn("setuptools", packages)
-        self.assertNotIn("wheel", packages)
-        self.assertNotIn("pip", packages)
+        self.assertAllNotIn(["pip", "setuptools", "wheel"], packages)
 
     def test_all(self):
         packages, _ = pip_chill.chill(show_all=True)
         package_names = {package.name for package in packages}
-        self.assertIn("pip", package_names)
-        self.assertIn("pip-chill", package_names)
+        self.assertAllIn(["pip", "pip-chill"], package_names)
 
     def test_hashes(self):
         packages, _ = pip_chill.chill()
@@ -116,23 +119,19 @@ class TestPip_chill(unittest.TestCase):
         return result
 
     def test_command_line_interface_help(self):
-        result = self._run_cli("--help")
-        self.assertIn("--no-version", result)
-        self.assertIn("omit version numbers", result)
-        self.assertIn("--help", result)
-        self.assertIn("show this help message and exit", result)
+        self.assertAllIn(
+            ["--no-version", "omit version numbers", "--help", "show this help message and exit"],
+            self._run_cli("--help"),
+        )
 
     def test_command_line_interface_no_version(self):
-        result = self._run_cli("--no-version")
-        self.assertNotIn("==", result)
+        self.assertNotIn("==", self._run_cli("--no-version"))
 
     def test_command_line_interface_verbose(self):
-        result = self._run_cli("--verbose")
-        self.assertIn("# Installed as dependency for", result)
+        self.assertIn("# Installed as dependency for", self._run_cli("--verbose"))
 
     def test_command_line_interface_short_verbose(self):
-        result = self._run_cli("-v")
-        self.assertIn("# Installed as dependency for", result)
+        self.assertIn("# Installed as dependency for", self._run_cli("-v"))
 
     def test_command_line_interface_verbose_no_version(self):
         result = self._run_cli("--verbose --no-version")
@@ -145,23 +144,16 @@ class TestPip_chill(unittest.TestCase):
             self.assertFalse(any(p.startswith(f"{package}==") for p in result.splitlines()))
 
     def test_command_line_interface_all(self):
-        result = self._run_cli("--all")
-        self.assertIn("pip", result)
-        self.assertIn("pip-chill", result)
+        self.assertAllIn(["pip", "pip-chill"], self._run_cli("--all"))
 
     def test_command_line_interface_short_all(self):
-        result = self._run_cli("-a")
-        self.assertIn("pip", result)
-        self.assertIn("pip-chill", result)
+        self.assertAllIn(["pip", "pip-chill"], self._run_cli("-a"))
 
     def test_command_line_interface_long_all(self):
-        result = self._run_cli("--show-all")
-        self.assertIn("pip", result)
-        self.assertIn("pip-chill", result)
+        self.assertAllIn(["pip", "pip-chill"], self._run_cli("--show-all"))
 
     def test_command_line_interface_no_chill(self):
-        result = self._run_cli("--no-chill")
-        self.assertNotIn("pip-chill", result)
+        self.assertNotIn("pip-chill", self._run_cli("--no-chill"))
 
     def test_command_line_invalid_option(self):
         command = "pip_chill/cli.py --invalid-option"
@@ -169,25 +161,25 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 512)
 
     def test_regex(self):
-        assert re.match(_RGX_OPERATOR, "==")
-        assert re.match(_RGX_OPERATOR, ">")
-        assert re.match(_RGX_VERSION, ">2")
-        assert re.match(_RGX_VERSION_LIST, ">2.4")
-        assert re.match(_RGX_VERSION_LIST, ">2.3.4")
-        assert re.match(_RGX_VERSION_LIST, ">=2.3.4, <4")
-        assert re.match(_RGX_VERSION_LIST, "")
-        assert re.match(_RGX_EXTRAS, "[>=2.3.4]")
-        assert re.match(_RGX_REQ_LINE, "requests[extras]")
-        assert re.match(_RGX_REQ_LINE, "requests[extra1,extra2]")
-        assert re.match(_RGX_REQ_LINE, "requests[extra1, extra2]")
-        assert re.match(_RGX_REQ_LINE, "requests>2.6")
-        assert re.match(_RGX_REQ_LINE, "requests[extra]>=2")
-        assert re.match(_RGX_REQ_LINE, "bar[foo, dev]~=2; python_version<'3.10'")
-        assert re.match(
-            _RGX_REQ_LINE, "bar[foo, dev]~=2; python_version<'3.10' # My needless comment"
+        self.assertTrue(re.match(_RGX_OPERATOR, "=="))
+        self.assertTrue(re.match(_RGX_OPERATOR, ">"))
+        self.assertTrue(re.match(_RGX_VERSION, ">2"))
+        self.assertTrue(re.match(_RGX_VERSION_LIST, ">2.4"))
+        self.assertTrue(re.match(_RGX_VERSION_LIST, ">2.3.4"))
+        self.assertTrue(re.match(_RGX_VERSION_LIST, ">=2.3.4, <4"))
+        self.assertTrue(re.match(_RGX_VERSION_LIST, ""))
+        self.assertTrue(re.match(_RGX_EXTRAS, "[>=2.3.4]"))
+        self.assertTrue(re.match(_RGX_REQ_LINE, "requests[extras]"))
+        self.assertTrue(re.match(_RGX_REQ_LINE, "requests[extra1,extra2]"))
+        self.assertTrue(re.match(_RGX_REQ_LINE, "requests[extra1, extra2]"))
+        self.assertTrue(re.match(_RGX_REQ_LINE, "requests>2.6"))
+        self.assertTrue(re.match(_RGX_REQ_LINE, "requests[extra]>=2"))
+        self.assertTrue(re.match(_RGX_REQ_LINE, "bar[foo, dev]~=2; python_version<'3.10'"))
+        self.assertTrue(
+            re.match(_RGX_REQ_LINE, "bar[foo, dev]~=2; python_version<'3.10' # My needless comment")
         )
-        assert re.match(_RGX_REQ_LINE, "bump >= 1.3.2")
-        assert not re.match(_RGX_REQ_LINE, "invalid package string")
+        self.assertTrue(re.match(_RGX_REQ_LINE, "bump >= 1.3.2"))
+        self.assertFalse(re.match(_RGX_REQ_LINE, "invalid package string"))
 
     def test_distribution_str_and_name_without_version(self):
         dist_top = Distribution("foo", "1.2.3")
@@ -227,35 +219,23 @@ class TestPip_chill(unittest.TestCase):
                     result = _fallback_extract_name_extras(req_string)
 
                     self.assertEqual(result, expected, f"Failed for: {req_string!r}")
-
-                    if should_warn:
-                        self.assertTrue(
-                            any("Invalid" in str(warning.message) for warning in w),
-                            f"Expected warning for {req_string!r}",
-                        )
-                    else:
-                        self.assertFalse(
-                            any("Invalid" in str(warning.message) for warning in w),
-                            f"Unexpected warning for {req_string!r}",
-                        )
+                    self.assertEqual(
+                        any("Invalid" in str(w.message) for w in w),
+                        should_warn,
+                        f"Warning mismatch for {req_string!r}",
+                    )
 
     def test_extract_name_extras(self):
         for req_string, expected, should_warn in TEST_REQUIREMENTS:
-            with warnings.catch_warnings(record=True) as w:
-                warnings.simplefilter("always")
-                result = _extract_name_extras(req_string)
-
-                self.assertEqual(result, expected, f"Failed for: {req_string!r}")
-
-                if should_warn:
-                    self.assertTrue(
-                        any("Invalid" in str(warning.message) for warning in w),
-                        f"Expected warning for {req_string!r}",
-                    )
-                else:
-                    self.assertFalse(
-                        any("Invalid" in str(warning.message) for warning in w),
-                        f"Unexpected warning for {req_string!r}",
+            with self.subTest(req=req_string):
+                with warnings.catch_warnings(record=True) as w:
+                    warnings.simplefilter("always")
+                    result = _extract_name_extras(req_string)
+                    self.assertEqual(result, expected, f"Failed for: {req_string!r}")
+                    self.assertEqual(
+                        any("Invalid" in str(w.message) for w in w),
+                        should_warn,
+                        f"Warning mismatch for {req_string!r}",
                     )
 
 

@@ -10,14 +10,15 @@ with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = [
-    "setuptools; python_version >= '3.12'",
+    "packaging"
+    # "setuptools; python_version >= '3.12'",
 ]
 
 test_requirements = ["pip"]
 
 setup(
     name="pip-chill",
-    version="1.0.2",
+    version="1.0.4",
     description="Like `pip freeze` but lists only the packages that are not "
     "dependencies of installed packages.",
     long_description=readme + "\n\n" + history,
@@ -29,7 +30,7 @@ setup(
     package_dir={"pip_chill": "pip_chill"},
     entry_points={"console_scripts": ["pip-chill=pip_chill.cli:main"]},
     include_package_data=True,
-    install_requires=requirements,
+    install_requires="packaging",
     license="GNU General Public License v3",
     zip_safe=False,
     keywords="pip-chill",
@@ -40,11 +41,13 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Topic :: Software Development",
     ],
     test_suite="tests",

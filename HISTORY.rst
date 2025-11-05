@@ -5,7 +5,7 @@ History
 1.0.4 (...)
 ------------------
 * Remove dependency to obsolete `pkg_resources`.
-* Dropped support to 3.7 as a consequence of relying `importlib.metadata``
+* Dropped support to 3.7 as a consequence of relying on `importlib.metadata` and `packaging`
 
 1.0.3 (...)
 ------------------

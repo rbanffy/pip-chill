@@ -8,7 +8,7 @@ from importlib import metadata
 from pathlib import Path
 from typing import Dict, Generator, List, Union
 
-from packaging.requirements import Requirement
+from packaging.requirements import InvalidRequirement, Requirement
 
 _STANDARD_PACKAGES = ("pip", "setuptools", "wheel")
 
@@ -123,6 +123,24 @@ class Distribution:
         return f"{self.name}=={self.version}"
 
 
+def _extract_name_version_requires_from_location(location: Path):
+    dist = metadata.PathDistribution(location)
+    name = getattr(dist.metadata, "Name") or location.name
+    version = getattr(dist.metadata, "Version") or "unknown"
+    dist_requires = dist.requires or []
+    requires = []
+    for req in dist_requires:
+        if isinstance(req, Requirement):
+            requires.append(req)
+        else:
+            try:
+                requires.append(Requirement(req))
+            except InvalidRequirement as e:
+                warnings.warn(f"Skipping invalid requirement {req!r}: {e}")
+
+    return name, version, requires
+
+
 class _LocalDistributionShim:
     """A minimal stand-in for importlib.metadata.Distribution for legacy packages."""
 
@@ -133,7 +151,7 @@ class _LocalDistributionShim:
         self._requires = None
         self._load_metadata()
 
-    def _load_metadata(self):
+    def _load_metadata(self):  # sourcery skip: extract-method
         """
         Attempts to load the distribution metadata from the path.
         """
@@ -141,20 +159,9 @@ class _LocalDistributionShim:
             return
 
         try:
-            dist = metadata.PathDistribution(self._location)
-            self._name = dist.metadata.get("Name", self._location.name)
-            self._version = dist.metadata.get("Version", "unknown")
-            requires = dist.requires or []
-            parsed_requires = []
-            for req in requires:
-                try:
-                    parsed_requires.append(
-                        req if isinstance(req, Requirement) else Requirement(req)
-                    )
-                except Exception:
-                    # Skip malformed requirement entries
-                    continue
-            self._requires = parsed_requires
+            self._name, self._version, self._requires = (
+                _extract_name_version_requires_from_location(self._location)
+            )
         except Exception:
             # fallback if metadata cannot be read
             self._name = self._location.name
@@ -218,9 +225,12 @@ def _iter_all_distributions() -> (
             dist = _LocalDistributionShim(target_path)
             if not dist._name:
                 dist._name = egg_link.stem
-        except Exception:
+        except OSError as e:
+            warnings.warn(f"Skipping egg-link {egg_link}: {e}")
             continue
-
+        except Exception as e:
+            warnings.warn(f"Failed to read egg-link {egg_link}: {e}")
+            continue
         if dist.key not in seen:
             seen.add(dist.key)
             yield dist
@@ -241,7 +251,8 @@ def chill(
     for distribution in _iter_all_distributions():
         try:
             distribution_name = getattr(distribution, "name", distribution.metadata["Name"])
-        except Exception:
+        except Exception as e:
+            warnings.warn(f"Skipping distribution {distribution!r}: {e}")
             continue
 
         distribution_key = _normalize_name(distribution_name)
@@ -266,7 +277,11 @@ def chill(
                 try:
                     requirement_name = requirement.split(";", 1)[0].strip()
                     requirement_key = _normalize_name(_extract_name_extras(requirement_name))
-                except Exception:
+                except Exception as e:
+                    warnings.warn(
+                        f"Skipping invalid requirement string {requirement!r}"
+                        f" from {distribution_name}: {e}"
+                    )
                     continue
 
             if requirement_key in ignored_packages or requirement_key in _STANDARD_PACKAGES:

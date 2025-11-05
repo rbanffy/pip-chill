@@ -10,3 +10,4 @@ ssort
 tox
 twine
 watchdog
+packaging
