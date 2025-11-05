@@ -17,15 +17,15 @@ from typing import Optional
 
 from pip_chill import pip_chill
 from pip_chill.pip_chill import (
+    _RGX_EXTRAS,
+    _RGX_OPERATOR,
+    _RGX_REQ_LINE,
+    _RGX_VERSION,
+    _RGX_VERSION_LIST,
     Distribution,
+    _extract_name_extras,
+    _fallback_extract_name_extras,
     _LocalDistributionShim,
-    extract_name_extras,
-    fallback_extract_name_extras,
-    rgx_extras,
-    rgx_operator,
-    rgx_req_line,
-    rgx_version,
-    rgx_version_list,
 )
 
 TEST_REQUIREMENTS = [
@@ -84,15 +84,15 @@ class TestPip_chill(unittest.TestCase):
 
     def test_pip_ommitted(self):
         packages, _ = pip_chill.chill()
-        hidden = {"wheel", "setuptools", "pip"}
-        for package in packages:
-            self.assertNotIn(package.name, hidden)
+        self.assertNotIn("setuptools", packages)
+        self.assertNotIn("wheel", packages)
+        self.assertNotIn("pip", packages)
 
     def test_all(self):
         packages, _ = pip_chill.chill(show_all=True)
         package_names = {package.name for package in packages}
-        for package in ["pip-chill", "pip"]:
-            self.assertIn(package, package_names)
+        self.assertIn("pip", package_names)
+        self.assertIn("pip-chill", package_names)
 
     def test_hashes(self):
         packages, _ = pip_chill.chill()
@@ -146,18 +146,18 @@ class TestPip_chill(unittest.TestCase):
 
     def test_command_line_interface_all(self):
         result = self._run_cli("--all")
-        for package in ["pip-chill", "pip"]:
-            self.assertIn(package, result)
+        self.assertIn("pip", result)
+        self.assertIn("pip-chill", result)
 
     def test_command_line_interface_short_all(self):
         result = self._run_cli("-a")
-        for package in ["pip-chill", "pip"]:
-            self.assertIn(package, result)
+        self.assertIn("pip", result)
+        self.assertIn("pip-chill", result)
 
     def test_command_line_interface_long_all(self):
         result = self._run_cli("--show-all")
-        for package in ["pip-chill", "pip"]:
-            self.assertIn(package, result)
+        self.assertIn("pip", result)
+        self.assertIn("pip-chill", result)
 
     def test_command_line_interface_no_chill(self):
         result = self._run_cli("--no-chill")
@@ -169,25 +169,25 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(returncode, 512)
 
     def test_regex(self):
-        assert re.match(rgx_operator, "==")
-        assert re.match(rgx_operator, ">")
-        assert re.match(rgx_version, ">2")
-        assert re.match(rgx_version_list, ">2.4")
-        assert re.match(rgx_version_list, ">2.3.4")
-        assert re.match(rgx_version_list, ">=2.3.4, <4")
-        assert re.match(rgx_version_list, "")
-        assert re.match(rgx_extras, "[>=2.3.4]")
-        assert re.match(rgx_req_line, "requests[extras]")
-        assert re.match(rgx_req_line, "requests[extra1,extra2]")
-        assert re.match(rgx_req_line, "requests[extra1, extra2]")
-        assert re.match(rgx_req_line, "requests>2.6")
-        assert re.match(rgx_req_line, "requests[extra]>=2")
-        assert re.match(rgx_req_line, "bar[foo, dev]~=2; python_version<'3.10'")
+        assert re.match(_RGX_OPERATOR, "==")
+        assert re.match(_RGX_OPERATOR, ">")
+        assert re.match(_RGX_VERSION, ">2")
+        assert re.match(_RGX_VERSION_LIST, ">2.4")
+        assert re.match(_RGX_VERSION_LIST, ">2.3.4")
+        assert re.match(_RGX_VERSION_LIST, ">=2.3.4, <4")
+        assert re.match(_RGX_VERSION_LIST, "")
+        assert re.match(_RGX_EXTRAS, "[>=2.3.4]")
+        assert re.match(_RGX_REQ_LINE, "requests[extras]")
+        assert re.match(_RGX_REQ_LINE, "requests[extra1,extra2]")
+        assert re.match(_RGX_REQ_LINE, "requests[extra1, extra2]")
+        assert re.match(_RGX_REQ_LINE, "requests>2.6")
+        assert re.match(_RGX_REQ_LINE, "requests[extra]>=2")
+        assert re.match(_RGX_REQ_LINE, "bar[foo, dev]~=2; python_version<'3.10'")
         assert re.match(
-            rgx_req_line, "bar[foo, dev]~=2; python_version<'3.10' # My needless comment"
+            _RGX_REQ_LINE, "bar[foo, dev]~=2; python_version<'3.10' # My needless comment"
         )
-        assert re.match(rgx_req_line, "bump >= 1.3.2")
-        assert not re.match(rgx_req_line, "invalid package string")
+        assert re.match(_RGX_REQ_LINE, "bump >= 1.3.2")
+        assert not re.match(_RGX_REQ_LINE, "invalid package string")
 
     def test_distribution_str_and_name_without_version(self):
         dist_top = Distribution("foo", "1.2.3")
@@ -224,7 +224,7 @@ class TestPip_chill(unittest.TestCase):
             with self.subTest(req=req_string):
                 with warnings.catch_warnings(record=True) as w:
                     warnings.simplefilter("always")
-                    result = fallback_extract_name_extras(req_string)
+                    result = _fallback_extract_name_extras(req_string)
 
                     self.assertEqual(result, expected, f"Failed for: {req_string!r}")
 
@@ -243,7 +243,7 @@ class TestPip_chill(unittest.TestCase):
         for req_string, expected, should_warn in TEST_REQUIREMENTS:
             with warnings.catch_warnings(record=True) as w:
                 warnings.simplefilter("always")
-                result = extract_name_extras(req_string)
+                result = _extract_name_extras(req_string)
 
                 self.assertEqual(result, expected, f"Failed for: {req_string!r}")
 

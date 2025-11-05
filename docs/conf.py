@@ -13,8 +13,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
+import sys
 
 # If extensions (or modules to document with autodoc) are in another
 # directory, add these directories to sys.path here. If the directory is
@@ -55,8 +55,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"PIP Chill"
-copyright = u"2016, Ricardo Bánffy"
+project = "PIP Chill"
+copyright = "2016, Ricardo Bánffy"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -209,8 +209,8 @@ latex_documents = [
     (
         "index",
         "pip_chill.tex",
-        u"PIP Chill Documentation",
-        u"Ricardo Bánffy",
+        "PIP Chill Documentation",
+        "Ricardo Bánffy",
         "manual",
     ),
 ]
@@ -240,9 +240,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ("index", "pip_chill", u"PIP Chill Documentation", [u"Ricardo Bánffy"], 1)
-]
+man_pages = [("index", "pip_chill", "PIP Chill Documentation", ["Ricardo Bánffy"], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -257,8 +255,8 @@ texinfo_documents = [
     (
         "index",
         "pip_chill",
-        u"PIP Chill Documentation",
-        u"Ricardo Bánffy",
+        "PIP Chill Documentation",
+        "Ricardo Bánffy",
         "pip_chill",
         "One line description of project.",
         "Miscellaneous",

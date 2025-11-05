@@ -10,54 +10,53 @@ from typing import Dict, Generator, List, Union
 
 from packaging.requirements import Requirement
 
-STANDARD_PACKAGES = ("pip", "setuptools", "wheel")
+_STANDARD_PACKAGES = ("pip", "setuptools", "wheel")
+
+_RGX_PKG_NAME = r"([A-Za-z][\w.+\-]*)"  # base name (starts with a letter)
+_RGX_EXTRAS = r"(\[[^\]]+\])?"  # the extras contents including brackets
+_RGX_OPERATOR = r"(?:==|!=|>=|<=|~=|>|<)"
+_RGX_VERSION = rf"{_RGX_OPERATOR}\s*[0-9]+(?:\.[0-9]+){{,2}}"
+_RGX_VERSION_LIST = rf"(?:\s*{_RGX_VERSION}(?:\s*,\s*{_RGX_VERSION})*)?"
+_RGX_MARKER = r"(?:\s*;\s*[A-Za-z0-9_\.\s<>=!~'\"(),\-]+)?"
+_RGX_COMMENTS = r"(?:\s*#.*)?"
+_RGX_REQ_LINE = rf"^{_RGX_PKG_NAME}{_RGX_EXTRAS}{_RGX_VERSION_LIST}{_RGX_MARKER}{_RGX_COMMENTS}$"
+_PTN_REQ_LINE = re.compile(_RGX_REQ_LINE, re.ASCII)
 
 
-def _normalize_name(dist: str) -> str:
-    return dist.lower().replace("_", "-")
-
-
-rgx_pkg_name = r"([A-Za-z][\w.+\-]*)"  # base name (starts with a letter)
-rgx_extras = r"(\[[^\]]+\])?"  # the extras contents including brackets
-rgx_operator = r"(?:==|!=|>=|<=|~=|>|<)"
-rgx_version = rf"{rgx_operator}\s*[0-9]+(?:\.[0-9]+){{,2}}"
-rgx_version_list = rf"(?:\s*{rgx_version}(?:\s*,\s*{rgx_version})*)?"
-rgx_marker = r"(?:\s*;\s*[A-Za-z0-9_\.\s<>=!~'\"(),\-]+)?"
-rgx_comments = r"(?:\s*#.*)?"
-rgx_req_line = rf"^{rgx_pkg_name}{rgx_extras}{rgx_version_list}{rgx_marker}{rgx_comments}$"
-ptn_req_line = re.compile(rgx_req_line, re.ASCII)
-
-
-def fallback_extract_name_extras(name: str) -> str:
+def _fallback_extract_name_extras(name: str) -> str:
+    """
+    Form a requirement string, extract with a regular expression the name and optional extras
+    within the brackets
+    """
     if not name.strip():
         warnings.warn(f"Invalid empty requirement string: {name!r}")
         return ""
 
-    # Match <package>[extras] ignoring version specifiers
-    match = ptn_req_line.match(name)
-    if match:
-        parts = match.groups(default="")
-        extras = parts[1]
-        if extras:
+    if match_package_and_extras := _PTN_REQ_LINE.match(name):
+        parts = match_package_and_extras.groups(default="")
+        if extras := parts[1]:
             # remove brackets and split, then sort
             extras_list = [e.strip() for e in extras[1:-1].split(",")]
             extras_sorted = "[" + ",".join(sorted(extras_list)) + "]"
             parts = (parts[0], extras_sorted) + parts[2:]
         return "".join(parts)
 
-        return "".join(match.groups(default=""))
-
     warnings.warn(f"Invalid requirement string: {name!r}")
     return name
 
 
-def extract_name_extras(name: str) -> str:
+def _extract_name_extras(name: str) -> str:
+    """Form a requirement string, extract the name and optional extras within the brackets"""
     try:
         req = Requirement(name)
         extras = f"[{','.join(sorted(req.extras))}]" if req.extras else ""
         return f"{req.name}{extras}"
     except Exception:
-        return fallback_extract_name_extras(name)
+        return _fallback_extract_name_extras(name)
+
+
+def _normalize_name(dist: str) -> str:
+    return dist.lower().replace("_", "-")
 
 
 @lru_cache(maxsize=None)
@@ -66,7 +65,12 @@ def _find_egg_links() -> List[Path]:
     egg_links = []
     for path_entry in sys.path:
         path = Path(path_entry)
-        if not path.exists() or "site-packages" in str(path):
+        if (
+            not path.exists()
+            or path.name == "site-packages"
+            or path.parts
+            and path.parts[-1] == "site-packages"
+        ):
             continue
         egg_links.extend(path.glob("*.egg-link"))
     return egg_links
@@ -100,10 +104,9 @@ class Distribution:
     def __eq__(self, other):
         if self is other:
             return True
-        elif isinstance(other, Distribution):
+        if isinstance(other, Distribution):
             return self.name == other.name
-        else:
-            return self.name == other
+        return self.name == other
 
     def __hash__(self):
         return hash(self.name)
@@ -142,9 +145,16 @@ class _LocalDistributionShim:
             self._name = dist.metadata.get("Name", self._location.name)
             self._version = dist.metadata.get("Version", "unknown")
             requires = dist.requires or []
-            self._requires = [
-                req if isinstance(req, Requirement) else Requirement(req) for req in requires
-            ]
+            parsed_requires = []
+            for req in requires:
+                try:
+                    parsed_requires.append(
+                        req if isinstance(req, Requirement) else Requirement(req)
+                    )
+                except Exception:
+                    # Skip malformed requirement entries
+                    continue
+            self._requires = parsed_requires
         except Exception:
             # fallback if metadata cannot be read
             self._name = self._location.name
@@ -171,7 +181,7 @@ class _LocalDistributionShim:
         return f"<LocalDistShim {self._name or self._location} version={self.version}>"
 
 
-def iter_all_distributions() -> (
+def _iter_all_distributions() -> (
     Generator[Union[metadata.Distribution, _LocalDistributionShim], None, None]
 ):
     """
@@ -184,7 +194,7 @@ def iter_all_distributions() -> (
 
     # Ensure standard top-level packages exist
     # These are normally included by pip/virtualenv
-    for pkg in STANDARD_PACKAGES:
+    for pkg in _STANDARD_PACKAGES:
         try:
             dist = metadata.distribution(pkg)
             package_name = _normalize_name(dist.metadata["Name"])
@@ -228,7 +238,7 @@ def chill(
     distributions: Dict[str, Distribution] = {}
     dependencies: Dict[str, Distribution] = {}
 
-    for distribution in iter_all_distributions():
+    for distribution in _iter_all_distributions():
         try:
             distribution_name = getattr(distribution, "name", distribution.metadata["Name"])
         except Exception:
@@ -255,11 +265,11 @@ def chill(
             else:
                 try:
                     requirement_name = requirement.split(";", 1)[0].strip()
-                    requirement_key = _normalize_name(extract_name_extras(requirement_name))
+                    requirement_key = _normalize_name(_extract_name_extras(requirement_name))
                 except Exception:
                     continue
 
-            if requirement_key in ignored_packages or requirement_key in STANDARD_PACKAGES:
+            if requirement_key in ignored_packages or requirement_key in _STANDARD_PACKAGES:
                 continue
 
             if requirement_key in dependencies:
