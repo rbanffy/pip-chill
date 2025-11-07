@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pip-chill"
+version = "1.0.4"
+description = "Lists installed packages that are not dependencies of others"
+authors = [
+    { name = "Ricardo Bánffy", email = "rbanffy@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+keywords = ["pip", "dependencies", "python"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "packaging>=23.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "tox",
+    "flake8",
+    "pylint",
+    "bandit",
+    "setuptools_scm"
+]
+
+[tool.setuptools.packages.find]
+where = ["pip_chill"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "node-and-date"
+
+[tool.flake8]
+exclude = ["docs"]
+max-line-length = 100
+
