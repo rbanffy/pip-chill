@@ -80,10 +80,10 @@ class TestPip_chill(unittest.TestCase):
         self.distribution_3 = Distribution("pip", "11.0.0", [self.distribution_1])
 
     def assertAllIn(self, members, target):
-        [self.assertIn(member, target) for member in members]
+        return [self.assertIn(member, target) for member in members]
 
     def assertAllNotIn(self, members, target):
-        [self.assertNotIn(member, target) for member in members]
+        return [self.assertNotIn(member, target) for member in members]
 
     def tearDown(self):
         pass
