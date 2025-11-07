@@ -29,7 +29,7 @@ def _fallback_extract_name_extras(name: str) -> str:
     within the brackets
     """
     if not name.strip():
-        warnings.warn(f"Invalid empty requirement string: {name!r}")
+        warnings.warn(f"Invalid empty requirement string: {name!r}", stacklevel=2)
         return ""
 
     if match_package_and_extras := _PTN_REQ_LINE.match(name):
@@ -41,7 +41,7 @@ def _fallback_extract_name_extras(name: str) -> str:
             parts = (parts[0], extras_sorted) + parts[2:]
         return "".join(parts)
 
-    warnings.warn(f"Invalid requirement string: {name!r}")
+    warnings.warn(f"Invalid requirement string: {name!r}", stacklevel=2)
     return name
 
 
@@ -125,8 +125,9 @@ class Distribution:
 
 def _extract_name_version_requires_from_location(location: Path):
     dist = metadata.PathDistribution(location)
-    name = getattr(dist.metadata, "Name") or location.name
-    version = getattr(dist.metadata, "Version") or "unknown"
+    meta: metadata.PackageMetadata = dist.metadata
+    name = meta["Name"] if "Name" in meta else location.name
+    version = meta["Version"] if "Version" in meta else "unknown"
     dist_requires = dist.requires or []
     requires = []
     for req in dist_requires:
@@ -136,7 +137,7 @@ def _extract_name_version_requires_from_location(location: Path):
             try:
                 requires.append(Requirement(req))
             except InvalidRequirement as e:
-                warnings.warn(f"Skipping invalid requirement {req!r}: {e}")
+                warnings.warn(f"Skipping invalid requirement {req!r}: {e}", stacklevel=2)
 
     return name, version, requires
 
@@ -146,7 +147,7 @@ class _LocalDistributionShim:
 
     def __init__(self, location: Union[str, Path]):
         self._location = Path(location)
-        self._name = None
+        self.name = None
         self._version = None
         self._requires = None
         self._load_metadata()
@@ -159,22 +160,22 @@ class _LocalDistributionShim:
             return
 
         try:
-            self._name, self._version, self._requires = (
-                _extract_name_version_requires_from_location(self._location)
+            self.name, self._version, self._requires = _extract_name_version_requires_from_location(
+                self._location
             )
         except Exception:
             # fallback if metadata cannot be read
-            self._name = self._location.name
+            self.name = self._location.name
             self._version = "unknown"
             self._requires = []
 
     @property
     def metadata(self):
-        return {"Name": self._name or self._location.name}
+        return {"Name": self.name or self._location.name}
 
     @property
     def key(self) -> str:
-        return _normalize_name(self._name or "")
+        return _normalize_name(self.name or "")
 
     @property
     def version(self) -> str:
@@ -185,7 +186,7 @@ class _LocalDistributionShim:
         return self._requires or []
 
     def __repr__(self) -> str:
-        return f"<LocalDistShim {self._name or self._location} version={self.version}>"
+        return f"<LocalDistShim {self.name or self._location} version={self.version}>"
 
 
 def _iter_all_distributions() -> (
@@ -223,13 +224,13 @@ def _iter_all_distributions() -> (
         try:
             target_path = egg_link.read_text().splitlines()[0].strip()
             dist = _LocalDistributionShim(target_path)
-            if not dist._name:
-                dist._name = egg_link.stem
+            if not dist.name:
+                dist.name = egg_link.stem
         except OSError as e:
-            warnings.warn(f"Skipping egg-link {egg_link}: {e}")
+            warnings.warn(f"Skipping egg-link {egg_link}: {e}", stacklevel=2)
             continue
         except Exception as e:
-            warnings.warn(f"Failed to read egg-link {egg_link}: {e}")
+            warnings.warn(f"Failed to read egg-link {egg_link}: {e}", stacklevel=2)
             continue
         if dist.key not in seen:
             seen.add(dist.key)
@@ -250,23 +251,22 @@ def chill(
 
     for distribution in _iter_all_distributions():
         try:
-            distribution_name = getattr(distribution, "name", distribution.metadata["Name"])
+            distribution_name = distribution.name or distribution.metadata["Name"]
         except Exception as e:
-            warnings.warn(f"Skipping distribution {distribution!r}: {e}")
+            warnings.warn(f"Skipping distribution {distribution!r}: {e}", stacklevel=2)
             continue
 
         distribution_key = _normalize_name(distribution_name)
         if distribution_key in ignored_packages:
             continue
 
-        requires = getattr(distribution, "requires", None) or []
+        requires = distribution.requires or []
 
         if distribution_key in dependencies:
-            dependencies[distribution_key].version = getattr(distribution, "version", "unknown")
+            dependencies[distribution_key].version = distribution.version or "unknown"
         else:
             distributions[distribution_key] = Distribution(
-                distribution_name,
-                getattr(distribution, "version", "unknown"),
+                distribution_name, distribution.version or "unknown"
             )
 
         for requirement in requires:
@@ -280,7 +280,8 @@ def chill(
                 except Exception as e:
                     warnings.warn(
                         f"Skipping invalid requirement string {requirement!r}"
-                        f" from {distribution_name}: {e}"
+                        f" from {distribution_name}: {e}",
+                        stacklevel=2,
                     )
                     continue
 

@@ -8,8 +8,8 @@ test_pip_chill
 Tests for `pip_chill` module.
 """
 
-import os
 import re
+import subprocess  # nosec B404
 import sys
 import unittest
 import warnings
@@ -109,18 +109,22 @@ class TestPip_chill(unittest.TestCase):
         self.assertEqual(self.distribution_2, self.distribution_2.name)
 
     def _run_cli(self, args: Optional[str] = None):
-        command = f"pip_chill/cli.py {args}" if args else "pip_chill/cli.py"
+        cmd = ["python", "pip_chill/cli.py"]
+        if args:
+            cmd.extend(args.split())
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
-
-        with os.popen(command) as pipe:
-            result = pipe.read()
-        return result
+        result = subprocess.run(cmd, capture_output=True, text=True)  # nosec B404, B603
+        self.assertEqual(result.returncode, 0)
+        return result.stdout
 
     def test_command_line_interface_help(self):
         self.assertAllIn(
-            ["--no-version", "omit version numbers", "--help", "show this help message and exit"],
+            [
+                "--no-version",
+                "omit version numbers",
+                "--help",
+                "show this help message and exit",
+            ],
             self._run_cli("--help"),
         )
 
@@ -156,9 +160,13 @@ class TestPip_chill(unittest.TestCase):
         self.assertNotIn("pip-chill", self._run_cli("--no-chill"))
 
     def test_command_line_invalid_option(self):
-        command = "pip_chill/cli.py --invalid-option"
-        returncode = os.system(command)
-        self.assertEqual(returncode, 512)
+        result = subprocess.run(
+            ["python", "pip_chill/cli.py", "--invalid-option"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )  # nosec B404, B603, B607
+        self.assertEqual(result.returncode, 2)
 
     def test_regex(self):
         self.assertTrue(re.match(_RGX_OPERATOR, "=="))
@@ -176,7 +184,10 @@ class TestPip_chill(unittest.TestCase):
         self.assertTrue(re.match(_RGX_REQ_LINE, "requests[extra]>=2"))
         self.assertTrue(re.match(_RGX_REQ_LINE, "bar[foo, dev]~=2; python_version<'3.10'"))
         self.assertTrue(
-            re.match(_RGX_REQ_LINE, "bar[foo, dev]~=2; python_version<'3.10' # My needless comment")
+            re.match(
+                _RGX_REQ_LINE,
+                "bar[foo, dev]~=2; python_version<'3.10' # My needless comment",
+            )
         )
         self.assertTrue(re.match(_RGX_REQ_LINE, "bump >= 1.3.2"))
         self.assertFalse(re.match(_RGX_REQ_LINE, "invalid package string"))
