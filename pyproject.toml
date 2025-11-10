@@ -13,8 +13,6 @@ license = { file = "LICENSE" }
 keywords = ["pip", "dependencies", "python"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -42,12 +40,16 @@ where = ["pip_chill"]
 version_scheme = "post-release"
 local_scheme = "node-and-date"
 
+[tool.bandit.assert_used]
+skips = ["*/test_*.py", "*/test_*.py"]
+
 [tool.black]
 line-length = 100
-target-version = ["py38", "py39", "py310", "py311", "py312", "py313"]
+target-version = ["py310", "py311", "py312", "py313"]
 
 [tool.isort]
 profile = "black"
-
-[tool.flake8]
-exclude = ["docs"]
+line_length = 100
+known_first_party = ["pip_chill"]
+multi_line_output = 3
+include_trailing_comma = true

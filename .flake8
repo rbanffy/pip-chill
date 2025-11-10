@@ -1,3 +1,13 @@
 [flake8]
 max-line-length = 100
-extend-ignore = E203, W503
+extend-select = B907
+; extend-ignore = E203, W503, I101
+exclude =
+    docs
+    migrations
+    __pycache__
+    env
+    .env
+    venv
+    .venv
+    .tox

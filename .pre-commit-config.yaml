@@ -41,7 +41,7 @@ repos:
     rev: 1.8.6
     hooks:
       - id: bandit
-        args: ["-r", "pip_chill"]
+        args: ['-c', 'pyproject.toml', '-v']
 
   # Run pytest to ensure tests pass on commit
   - repo: local

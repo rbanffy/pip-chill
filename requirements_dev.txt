@@ -1,8 +1,11 @@
 bandit
+black
 bumpversion
 coverage
 flake8
+isort
 nose
+packaging
 pytest
 setuptools
 sphinx
@@ -10,4 +13,3 @@ ssort
 tox
 twine
 watchdog
-packaging
