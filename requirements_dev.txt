@@ -6,6 +6,7 @@ flake8
 isort
 nose
 packaging
+pylint
 pytest
 setuptools
 sphinx

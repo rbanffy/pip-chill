@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from .pip_chill import chill
 
 __author__ = "Ricardo Bánffy"

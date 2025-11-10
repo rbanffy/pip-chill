@@ -54,14 +54,14 @@ def test_main_calls_chill_with_expected_flags(
     assert fake_chill == expected_flags
 
 
-def test_main_with_no_version(monkeypatch, fake_chill, capsys):
+def test_main_with_no_version(monkeypatch, capsys):
     monkeypatch.setattr(sys, "argv", ["pip-chill", "--no-version"])
     cli.main()
     captured = capsys.readouterr()
     assert captured.out.strip() == "mockpkg"
 
 
-def test_main_with_verbose(monkeypatch, fake_chill, capsys):
+def test_main_with_verbose(monkeypatch, capsys):
     monkeypatch.setattr(sys, "argv", ["pip-chill", "--verbose"])
     cli.main()
     captured = capsys.readouterr()
@@ -71,7 +71,7 @@ def test_main_with_verbose(monkeypatch, fake_chill, capsys):
     assert "dep==0.1.0" in lines
 
 
-def test_main_with_no_version_and_verbose(monkeypatch, fake_chill, capsys):
+def test_main_with_no_version_and_verbose(monkeypatch, capsys):
     monkeypatch.setattr(sys, "argv", ["pip-chill", "--no-version", "--verbose"])
     cli.main()
     captured = capsys.readouterr()

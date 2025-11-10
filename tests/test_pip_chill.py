@@ -65,7 +65,7 @@ TEST_REQUIREMENTS = [
 
 
 @pytest.fixture
-def distributions():
+def get_distributions():
     d1 = Distribution("pip-chill", "2.0.0", [])
     d2 = Distribution("pip", "10.0.0", [d1])
     d3 = Distribution("pip", "11.0.0", [d1])
@@ -96,8 +96,8 @@ def test_distribution_hash():
     assert all(hash(p) == hash(p.name) for p in packages)
 
 
-def test_distribution_equality(distributions):
-    d1, d2, d3 = distributions
+def test_distribution_equality(get_distributions):
+    d1, d2, d3 = get_distributions
     assert d1 != d2
     assert d1 == d1
     assert d2 == d3
@@ -118,7 +118,7 @@ def test_distribution_equality(distributions):
 def test_cli_invocations(args, expected_code):
     cli_args = args.split()
     cmd = ["python", "pip_chill/cli.py"] + cli_args
-    result = subprocess.run(cmd, capture_output=True, text=True)  # nosec B404,B603
+    result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # nosec B404,B603
     assert result.returncode == expected_code
 
     assert (
@@ -141,9 +141,7 @@ def test_cli_invocations(args, expected_code):
 @pytest.mark.parametrize("flag", ["--all", "-a", "--show-all"])
 def test_cli_all_flags(flag):
     result = subprocess.run(
-        ["python", "pip_chill/cli.py", flag],
-        capture_output=True,
-        text=True,
+        ["python", "pip_chill/cli.py", flag], capture_output=True, text=True, check=True
     )  # nosec B404, B603, B607
     assert result.returncode == 0
     assert all(pkg in result.stdout for pkg in ["pip", "pip-chill"])
@@ -151,7 +149,7 @@ def test_cli_all_flags(flag):
 
 def test_cli_no_chill():
     result = subprocess.run(
-        ["python", "pip_chill/cli.py", "--no-chill"], capture_output=True, text=True
+        ["python", "pip_chill/cli.py", "--no-chill"], capture_output=True, text=True, check=True
     )  # nosec B404, B603, B607
     assert result.returncode == 0
     assert "pip-chill" not in result.stdout
@@ -197,12 +195,11 @@ def test_chill_skips_distribution_with_exception(monkeypatch):
             return []
 
     monkeypatch.setattr("pip_chill.pip_chill.iter_all_distributions", lambda: [BadDist()])
-    import warnings
 
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
-        dists, deps = __import__("pip_chill.pip_chill").pip_chill.chill()
-    assert dists == []
+        dists, _ = __import__("pip_chill.pip_chill").pip_chill.chill()
+    assert not dists
     assert any("Skipping distribution" in str(wi.message) for wi in w)
 
 
@@ -220,7 +217,7 @@ def test_local_distribution_shim_defaults():
     legacy = LocalDistributionShim("legacy-pkg")
     assert legacy.metadata["Name"] == "legacy-pkg"
     assert legacy.version == "unknown"
-    assert legacy.requires == []
+    assert not legacy.requires
     assert "legacy-pkg" in str(legacy)
 
 
@@ -228,14 +225,14 @@ def test_local_distribution_shim_fallback():
     dist = LocalDistributionShim("/nonexistent/path")
     assert dist.metadata["Name"] == "path"
     assert dist.version == "unknown"
-    assert dist.requires == []
+    assert not dist.requires
 
 
 def test_local_distribution_shim_load_metadata_fallback(tmp_path):
     shim = LocalDistributionShim(tmp_path / "no_such_file")
-    assert shim.version == "unknown"
-    assert shim.requires == []
     assert shim.metadata["Name"] == "no_such_file"
+    assert shim.version == "unknown"
+    assert not shim.requires
 
 
 @pytest.mark.parametrize("func", [extract_name_extras, fallback_extract_name_extras])
@@ -289,5 +286,5 @@ def test_chill_handles_missing_name(monkeypatch):
             return {"Name": "dummy"}
 
     monkeypatch.setattr("pip_chill.pip_chill.iter_all_distributions", lambda: [DummyDist()])
-    distributions, deps = chill()
+    distributions, _ = chill()
     assert any(d.name == "dummy" for d in distributions)

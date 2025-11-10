@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # pip_chill documentation build configuration file, created by
 # sphinx-quickstart on Tue Jul  9 22:26:36 2013.
@@ -16,8 +15,6 @@
 import os
 import sys
 
-import pip_chill
-
 # If extensions (or modules to document with autodoc) are in another
 # directory, add these directories to sys.path here. If the directory is
 # relative to the documentation root, use os.path.abspath to make it
@@ -33,6 +30,7 @@ project_root = os.path.dirname(cwd)
 # version is used.
 sys.path.insert(0, project_root)
 
+import pip_chill  # noqa: E402
 
 # -- General configuration ---------------------------------------------
 
@@ -57,7 +55,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "PIP Chill"
-copyright = "2016, Ricardo Bánffy"
+COPYRIGHT = "2016, Ricardo Bánffy"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
