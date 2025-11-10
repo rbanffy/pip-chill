@@ -62,4 +62,4 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
-        args: ['--exit-zero', 'pip_chill']
+        args: ['pip_chill', '--exit-zero']

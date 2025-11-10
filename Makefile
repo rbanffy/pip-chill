@@ -86,10 +86,12 @@ docs: venv ## generate Sphinx HTML documentation
 
 # -------- Packaging / Release ---------------------------------------------------------------------
 
-dist: venv clean ## build source and wheel package
+build: venv clean ## build source and wheel package
 	$(PIP) install build
 	$(PY) -m build
 	@ls -l dist
+
+dist: build
 
 release: venv clean ## build and upload release
 	$(PIP) install twine

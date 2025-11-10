@@ -9,7 +9,7 @@ description = "Lists installed packages that are not dependencies of others"
 authors = [{ name = "Ricardo Bánffy", email = "rbanffy@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.8"
-license = { file = "LICENSE" }
+license-files = ["LICENSE"]
 keywords = ["pip", "dependencies", "python"]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -17,7 +17,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dependencies = ["packaging>=23.0"]
