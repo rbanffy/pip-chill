@@ -59,9 +59,9 @@ install: venv clean  ## install package in editable mode
 	$(PIP) install -e .[dev]
 
 lint: venv ## check style with flake8
-	$(PIP) install flake8
-	$(PIP) install flake8-bugbear flake8-import-order
+	$(PIP) install flake8 flake8-bugbear flake8-import-order pylint
 	$(VENV_DIR)/bin/flake8 pip_chill tests
+	$(VENV_DIR)/bin/pylint pip_chill --exit-zero
 
 test: venv ## run tests quickly
 	$(PIP) install pytest
