@@ -4,7 +4,7 @@ import warnings
 
 import pytest
 
-from pip_chill.pip_chill import (  # noqa: I101
+from pip_chill.pip_chill import (  # noqa: I100, I101
     RGX_EXTRAS,
     RGX_OPERATOR,
     RGX_REQ_LINE,

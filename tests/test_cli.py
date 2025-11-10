@@ -2,7 +2,7 @@ import sys
 
 import pytest
 
-import pip_chill.cli as cli
+import pip_chill.cli as cli  # noqa: I100
 
 
 class MockDistribution:

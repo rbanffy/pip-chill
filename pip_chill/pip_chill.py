@@ -60,19 +60,14 @@ def normalize_name(dist: str) -> str:
 
 
 @lru_cache(maxsize=None)
-def find_egg_links() -> List[Path]:
-    """Return all .egg-link paths in non-standard locations."""
-    egg_links = []
-    for path_entry in sys.path:
-        path = Path(path_entry)
-        if (
-            not path.exists()
-            or path.name == "site-packages"
-            or (path.parts and path.parts[-1] == "site-packages")
-        ):
-            continue
-        egg_links.extend(path.glob("*.egg-link"))
-    return egg_links
+def find_egg_links() -> Generator[Path, None, None]:
+    """Yield all .egg-link paths in non-standard locations."""
+    return (
+        egg_link
+        for path_entry in sys.path
+        if Path(path_entry).exists() and "site-packages" not in Path(path_entry).parts
+        for egg_link in Path(path_entry).glob("*.egg-link")
+    )
 
 
 class Distribution:
