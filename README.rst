@@ -53,11 +53,8 @@ On your terminal, run::
 
  $ pip-chill
  bandit==1.7.0
- bumpversion==0.6.0
- click==7.1.2
  coverage==5.3.1
  flake8==3.8.4
- nose==1.3.7
  pip-chill==1.0.1
  pytest==6.2.1
  ...
@@ -66,11 +63,8 @@ Or, if you want it without version numbers::
 
  $ pip-chill --no-version
  bandit
- bumpversion
- click
  coverage
  flake8
- nose
  pip-chill
  pytest
  ...
@@ -79,11 +73,8 @@ Or, if you want it without pip-chill::
 
  $ pip-chill --no-chill
  bandit==1.7.0
- bumpversion==0.6.0
- click==7.1.2
  coverage==5.3.1
  flake8==3.8.4
- nose==1.3.7
  pytest==6.2.1
  ...
 
@@ -91,17 +82,13 @@ Or, if you want to list package dependencies too::
 
  $ pip-chill -v
  bandit==1.7.0
- bumpversion==0.6.0
- click==7.1.2
  coverage==5.3.1
  flake8==3.8.4
- nose==1.3.7
  pip-chill==1.0.1
  pytest==6.2.1
  sphinx==3.4.3
  tox==3.21.1
  twine==3.3.0
- watchdog==1.0.2
  # alabaster==0.7.12 # Installed as dependency for sphinx
  # appdirs==1.4.4 # Installed as dependency for virtualenv
  # attrs==20.3.0 # Installed as dependency for pytest

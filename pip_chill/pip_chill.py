@@ -302,6 +302,13 @@ def chill(
             )
 
         for requirement in requires:
+            # Skip optional extras
+            if isinstance(requirement, Requirement) and requirement.extras:
+                continue
+            # fallback: also skip strings with '; extra' if present
+            if isinstance(requirement, str) and "; extra" in requirement:
+                continue
+
             update_dist_and_deps(
                 requirement,
                 distribution_name,

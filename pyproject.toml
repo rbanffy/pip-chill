@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pip-chill"
-version = "1.0.4"
+dynamic = ["version"]
 description = "Lists installed packages that are not dependencies of others"
 authors = [{ name = "Ricardo Bánffy", email = "rbanffy@gmail.com" }]
 readme = "README.md"
@@ -22,23 +22,24 @@ classifiers = [
 dependencies = ["packaging>=23.0"]
 
 [project.optional-dependencies]
-dev = [
-    "bandit",
-    "flake8",
-    "pre-commit",
-    "pylint",
-    "pytest",
-    "setuptools_scm",
-    "tox",
-]
+dev = ["black", "setuptools_scm"]
+test = ["pytest", "bandit", "flake8", "pylint", "pre-commit", "tox"]
+docs = ["sphinx"]
 
 [tool.setuptools.packages.find]
 where = ["pip_chill"]
 
+# ------ Version numbers
 [tool.setuptools_scm]
 version_scheme = "post-release"
 local_scheme = "node-and-date"
 
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+
+# ------ Code quality / security
 [tool.bandit.assert_used]
 skips = ["*/test_*.py", "*/test_*.py"]
 

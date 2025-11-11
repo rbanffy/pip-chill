@@ -6,19 +6,21 @@ from pip_chill import cli  # noqa: I100
 
 
 class MockDistribution:
-    def __str__(self):
-        return "mockpkg==1.0.0"
 
     def get_name_without_version(self):
         return "mockpkg"
 
+    def __str__(self):
+        return "mockpkg==1.0.0"
+
 
 class MockDependency:
-    def __str__(self):
-        return "dep==0.1.0"
 
     def get_name_without_version(self):
         return "dep"
+
+    def __str__(self):
+        return "dep==0.1.0"
 
 
 @pytest.fixture(autouse=True)
