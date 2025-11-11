@@ -41,14 +41,14 @@ def main():
     distributions, dependencies = pip_chill.chill(show_all=args.show_all, no_chill=args.no_chill)
     for package in distributions:
         if args.no_version:
-            print(package.get_name_without_version())
+            print(package.name_without_version)
         else:
             print(package)
 
     if args.verbose:
         for package in dependencies:
             if args.no_version:
-                print(package.get_name_without_version())
+                print(package.name_without_version)
             else:
                 print(package)
 

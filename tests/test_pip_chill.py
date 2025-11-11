@@ -11,12 +11,12 @@ from pip_chill.pip_chill import (  # noqa: I100, I101
     RGX_VERSION,
     RGX_VERSION_LIST,
     Distribution,
-    LocalDistributionShim,
+    _extract_name_extras,
+    _fallback_extract_name_extras,
+    _get_name_version_requires_from_location,
+    _LocalDistributionShim,
+    _update_dist_and_deps,
     chill,
-    extract_name_extras,
-    fallback_extract_name_extras,
-    get_name_version_requires_from_location,
-    update_dist_and_deps,
 )
 
 TEST_REQUIREMENTS = [
@@ -174,10 +174,10 @@ def test_distribution_str_and_name_without_version():
     dist_top = Distribution("foo", "1.2.3")
     dist_dep = Distribution("bar", "2.0", required_by={"foo"})
     assert str(dist_top) == "foo==1.2.3"
-    assert dist_top.get_name_without_version() == "foo"
+    assert dist_top.name_without_version == "foo"
     assert "bar" in str(dist_dep)
     assert "Installed as dependency for foo" in str(dist_dep)
-    assert "Installed as dependency for foo" in dist_dep.get_name_without_version()
+    assert "Installed as dependency for foo" in dist_dep.name_without_version
 
 
 def test_chill_skips_distribution_with_exception(monkeypatch):
@@ -194,7 +194,7 @@ def test_chill_skips_distribution_with_exception(monkeypatch):
         def requires(self):
             return []
 
-    monkeypatch.setattr("pip_chill.pip_chill.iter_all_distributions", lambda: [BadDist()])
+    monkeypatch.setattr("pip_chill.pip_chill._iter_all_distributions", lambda: [BadDist()])
 
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
@@ -207,14 +207,14 @@ def test_update_dist_and_deps_moves_distribution():
     dist = Distribution("pkg", "1.2.3")
     distributions = {"pkg": dist}
     dependencies = {"other": Distribution("other")}
-    update_dist_and_deps("pkg", "foo", "foo", distributions, dependencies, set())
+    _update_dist_and_deps("pkg", "foo", "foo", distributions, dependencies, set())
     assert "pkg" not in distributions
     assert dependencies["pkg"].version == "1.2.3"
     assert "foo" in dependencies["pkg"].required_by
 
 
 def test_local_distribution_shim_defaults():
-    legacy = LocalDistributionShim("legacy-pkg")
+    legacy = _LocalDistributionShim("legacy-pkg")
     assert legacy.metadata["Name"] == "legacy-pkg"
     assert legacy.version == "unknown"
     assert not legacy.requires
@@ -222,20 +222,20 @@ def test_local_distribution_shim_defaults():
 
 
 def test_local_distribution_shim_fallback():
-    dist = LocalDistributionShim("/nonexistent/path")
+    dist = _LocalDistributionShim("/nonexistent/path")
     assert dist.metadata["Name"] == "path"
     assert dist.version == "unknown"
     assert not dist.requires
 
 
 def test_local_distribution_shim_load_metadata_fallback(tmp_path):
-    shim = LocalDistributionShim(tmp_path / "no_such_file")
+    shim = _LocalDistributionShim(tmp_path / "no_such_file")
     assert shim.metadata["Name"] == "no_such_file"
     assert shim.version == "unknown"
     assert not shim.requires
 
 
-@pytest.mark.parametrize("func", [extract_name_extras, fallback_extract_name_extras])
+@pytest.mark.parametrize("func", [_extract_name_extras, _fallback_extract_name_extras])
 @pytest.mark.parametrize("req,expected,should_warn", TEST_REQUIREMENTS)
 def test_extract_name_extras_variants(func, req, expected, should_warn):
     with warnings.catch_warnings(record=True) as w:
@@ -250,7 +250,7 @@ def test_extract_name_extras_variants(func, req, expected, should_warn):
 def test_fallback_extract_name_extras_warns(req):
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
-        result = fallback_extract_name_extras(req)
+        result = _fallback_extract_name_extras(req)
     assert isinstance(result, str)
     assert any("Invalid" in str(wi.message) for wi in w)
 
@@ -258,7 +258,7 @@ def test_fallback_extract_name_extras_warns(req):
 def test_get_name_version_requires_from_location_invalid(tmp_path):
     dummy_file = tmp_path / "dummy.dist-info"
     dummy_file.write_text("not a valid metadata")
-    name, version, requires = get_name_version_requires_from_location(dummy_file)
+    name, version, requires = _get_name_version_requires_from_location(dummy_file)
     assert isinstance(name, str)
     assert isinstance(version, str)
     assert isinstance(requires, list)
@@ -269,7 +269,7 @@ def test_update_dist_and_deps_invalid_requirement():
     dependencies = {}
     with warnings.catch_warnings(record=True) as warn:
         warnings.simplefilter("always")
-        update_dist_and_deps("pkg ???", "dist", "dist", distributions, dependencies, set())
+        _update_dist_and_deps("pkg ???", "dist", "dist", distributions, dependencies, set())
     assert any("Skipping invalid requirement" in str(warn_i.message) for warn_i in warn) or any(
         "Invalid requirement string" in str(warn_i.message) for warn_i in warn
     )
@@ -285,6 +285,6 @@ def test_chill_handles_missing_name(monkeypatch):
         def metadata(self):
             return {"Name": "dummy"}
 
-    monkeypatch.setattr("pip_chill.pip_chill.iter_all_distributions", lambda: [DummyDist()])
+    monkeypatch.setattr("pip_chill.pip_chill._iter_all_distributions", lambda: [DummyDist()])
     distributions, _ = chill()
     assert any(d.name == "dummy" for d in distributions)

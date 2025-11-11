@@ -6,7 +6,7 @@ History
 ------------------
 * Remove dependency to obsolete `pkg_resources`.
 * Dropped support to 3.7, 3.8 and 3.9 as a consequence of relying on `importlib.metadata` and `packaging`
-* Adding support to 3.11, 3.12, 3.13 and upcoming releases.
+* Adding support to 3.11, 3.12, 3.13 and 3.14.
 
 1.0.3 (...)
 ------------------

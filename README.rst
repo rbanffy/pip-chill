@@ -3,23 +3,45 @@ PIP Chill - Make requirements with only the packages you need
 =============================================================
 
 
-.. image:: https://img.shields.io/pypi/v/pip-chill.svg
-        :target: https://pypi.python.org/pypi/pip-chill
+.. image:: https://github.com/rbanffy/pip-chill/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/rbanffy/pip-chill/actions
+   :alt: CI Status
 
-.. image:: https://img.shields.io/travis/rbanffy/pip-chill.svg
-        :target: https://travis-ci.org/rbanffy/pip-chill
+.. image:: https://img.shields.io/pypi/v/pip-chill.svg
+   :target: https://pypi.org/project/pip-chill/
+   :alt: PyPI Version
+
+.. image:: https://img.shields.io/pypi/l/pip-chill.svg
+   :target: https://pypi.org/project/pip-chill/
+   :alt: License
+
+.. image:: https://img.shields.io/pypi/pyversions/pip-chill.svg
+   :target: https://pypi.org/project/pip-chill/
+   :alt: Python Versions
 
 .. image:: https://readthedocs.org/projects/pip-chill/badge/?version=latest
-        :target: https://pip-chill.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+   :target: https://pip-chill.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation
 
-.. image:: https://pyup.io/repos/github/rbanffy/pip-chill/shield.svg
-     :target: https://pyup.io/repos/github/rbanffy/pip-chill/
-     :alt: Updates
+.. .. image:: https://img.shields.io/pypi/v/pip-chill.svg
+..         :target: https://pypi.python.org/pypi/pip-chill
 
-.. image:: https://api.codacy.com/project/badge/Grade/1100f4243bb54a279a3ee6458847b4a7
-   :target: https://app.codacy.com/app/rbanffy/pip-chill?utm_source=github.com&utm_medium=referral&utm_content=rbanffy/pip-chill&utm_campaign=Badge_Grade_Dashboard
-   :alt: Codacy Badge
+.. .. image:: https://img.shields.io/travis/rbanffy/pip-chill.svg
+..         :target: https://travis-ci.org/rbanffy/pip-chill
+
+.. .. image:: https://readthedocs.org/projects/pip-chill/badge/?version=latest
+..         :target: https://pip-chill.readthedocs.io/en/latest/?badge=latest
+..         :alt: Documentation Status
+
+.. .. image:: https://pyup.io/repos/github/rbanffy/pip-chill/shield.svg
+..      :target: https://pyup.io/repos/github/rbanffy/pip-chill/
+..      :alt: Updates
+
+.. .. image:: https://api.codacy.com/project/badge/Grade/1100f4243bb54a279a3ee6458847b4a7
+..    :target: https://app.codacy.com/app/rbanffy/pip-chill?utm_source=github.com&utm_medium=referral&utm_content=rbanffy/pip-chill&utm_campaign=Badge_Grade_Dashboard
+..    :alt: Codacy Badge
+
+
 
 Like `pip freeze` but lists only the packages that are not
 dependencies of installed packages.

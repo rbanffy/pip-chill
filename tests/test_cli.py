@@ -7,7 +7,8 @@ from pip_chill import cli  # noqa: I100
 
 class MockDistribution:
 
-    def get_name_without_version(self):
+    @property
+    def name_without_version(self):
         return "mockpkg"
 
     def __str__(self):
@@ -16,7 +17,8 @@ class MockDistribution:
 
 class MockDependency:
 
-    def get_name_without_version(self):
+    @property
+    def name_without_version(self):
         return "dep"
 
     def __str__(self):

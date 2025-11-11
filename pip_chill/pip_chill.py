@@ -23,7 +23,7 @@ RGX_REQ_LINE = rf"^{RGX_PKG_NAME}{RGX_EXTRAS}{RGX_VERSION_LIST}{RGX_MARKER}{RGX_
 PTN_REQ_LINE = re.compile(RGX_REQ_LINE, re.ASCII)
 
 
-def fallback_extract_name_extras(name: str) -> str:
+def _fallback_extract_name_extras(name: str) -> str:
     """
     Form a requirement string, extract with a regular expression the name and optional extras
     within the brackets
@@ -45,22 +45,22 @@ def fallback_extract_name_extras(name: str) -> str:
     return name
 
 
-def extract_name_extras(name: str) -> str:
+def _extract_name_extras(name: str) -> str:
     """Form a requirement string, extract the name and optional extras within the brackets"""
     try:
         req = Requirement(name)
         extras = f"[{','.join(sorted(req.extras))}]" if req.extras else ""
         return f"{req.name}{extras}"
     except Exception:
-        return fallback_extract_name_extras(name)
+        return _fallback_extract_name_extras(name)
 
 
-def normalize_name(dist: str) -> str:
+def _normalize_name(dist: str) -> str:
     return dist.lower().replace("_", "-")
 
 
 @lru_cache(maxsize=None)
-def find_egg_links() -> Generator[Path, None, None]:
+def _find_egg_links() -> Generator[Path, None, None]:
     """Yield all .egg-link paths in non-standard locations."""
     return (
         egg_link
@@ -77,11 +77,12 @@ class Distribution:
 
     def __init__(self, name, version=None, required_by=None):
         self.name = name
-        self.keyname = normalize_name(name)
+        self.keyname = _normalize_name(name)
         self.version = version
         self.required_by = set(required_by) if required_by else set()
 
-    def get_name_without_version(self):
+    @property
+    def name_without_version(self):
         """
         Return the name of the package without a version.
         """
@@ -117,7 +118,7 @@ class Distribution:
         return f"{self.name}=={self.version}"
 
 
-def get_name_version_requires_from_location(location: Path):
+def _get_name_version_requires_from_location(location: Path):
     dist = metadata.PathDistribution(location)
     meta: metadata.PackageMetadata = dist.metadata
     name = meta["Name"] if "Name" in meta else location.name
@@ -136,7 +137,7 @@ def get_name_version_requires_from_location(location: Path):
     return name, version, requires
 
 
-class LocalDistributionShim:
+class _LocalDistributionShim:
     """A minimal stand-in for importlib.metadata.Distribution for legacy packages."""
 
     def _load_metadata(self):  # sourcery skip: extract-method
@@ -147,7 +148,7 @@ class LocalDistributionShim:
             return
 
         try:
-            self.name, self._version, self._requires = get_name_version_requires_from_location(
+            self.name, self._version, self._requires = _get_name_version_requires_from_location(
                 self._location
             )
         except Exception:
@@ -169,7 +170,7 @@ class LocalDistributionShim:
 
     @property
     def key(self) -> str:
-        return normalize_name(self.name or "")
+        return _normalize_name(self.name or "")
 
     @property
     def version(self) -> str:
@@ -183,8 +184,8 @@ class LocalDistributionShim:
         return f"<LocalDistShim {self.name or self._location} version={self.version}>"
 
 
-def iter_all_distributions() -> (
-    Generator[Union[metadata.Distribution, LocalDistributionShim], None, None]
+def _iter_all_distributions() -> (
+    Generator[Union[metadata.Distribution, _LocalDistributionShim], None, None]
 ):
     """
     Yield all installed distributions in the current environment, including editable installs,
@@ -199,7 +200,7 @@ def iter_all_distributions() -> (
     for pkg in STANDARD_PACKAGES:
         try:
             dist = metadata.distribution(pkg)
-            package_name = normalize_name(dist.metadata["Name"])
+            package_name = _normalize_name(dist.metadata["Name"])
             if package_name not in seen:
                 seen.add(package_name)
                 yield dist
@@ -208,16 +209,16 @@ def iter_all_distributions() -> (
 
     # Yield standard distributions from importlib.metadata
     for dist in metadata.distributions():
-        package_name = normalize_name(dist.metadata["Name"])
+        package_name = _normalize_name(dist.metadata["Name"])
         if package_name not in seen:
             seen.add(package_name)
             yield dist
 
     # Yield editable installs (.egg-link) / non-standard paths
-    for egg_link in find_egg_links():
+    for egg_link in _find_egg_links():
         try:
             target_path = egg_link.read_text().splitlines()[0].strip()
-            dist = LocalDistributionShim(target_path)
+            dist = _LocalDistributionShim(target_path)
             if not dist.name:
                 dist.name = egg_link.stem
         except OSError as e:
@@ -231,7 +232,7 @@ def iter_all_distributions() -> (
             yield dist
 
 
-def update_dist_and_deps(
+def _update_dist_and_deps(
     requirement,
     distribution_name: str,
     distribution_key: str,
@@ -242,11 +243,11 @@ def update_dist_and_deps(
     """Process a single requirement and update distributions and dependencies in-place."""
     if isinstance(requirement, Requirement):
         requirement_name = requirement.name
-        requirement_key = normalize_name(requirement_name)
+        requirement_key = _normalize_name(requirement_name)
     else:
         try:
             requirement_name = requirement.split(";", 1)[0].strip()
-            requirement_key = normalize_name(extract_name_extras(requirement_name))
+            requirement_key = _normalize_name(_extract_name_extras(requirement_name))
         except Exception as e:
             warnings.warn(
                 f"Skipping invalid requirement string {requirement!r} "
@@ -281,14 +282,14 @@ def chill(
     distributions: Dict[str, Distribution] = {}
     dependencies: Dict[str, Distribution] = {}
 
-    for distribution in iter_all_distributions():
+    for distribution in _iter_all_distributions():
         try:
             distribution_name = distribution.name or distribution.metadata["Name"]
         except Exception as e:
             warnings.warn(f"Skipping distribution {distribution!r}: {e}", stacklevel=2)
             continue
 
-        distribution_key = normalize_name(distribution_name)
+        distribution_key = _normalize_name(distribution_name)
         if distribution_key in ignored_packages:
             continue
 
@@ -309,7 +310,7 @@ def chill(
             if isinstance(requirement, str) and "; extra" in requirement:
                 continue
 
-            update_dist_and_deps(
+            _update_dist_and_deps(
                 requirement,
                 distribution_name,
                 distribution_key,
