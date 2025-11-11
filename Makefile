@@ -56,7 +56,7 @@ venv:  ## create virtual environment
 	@$(PIP) install --upgrade pip setuptools wheel
 
 install: venv clean  ## install package in editable mode
-	$(PIP) install -e .[dev]
+	$(PIP) install -e ".[dev,test,docs]"
 
 lint: venv ## check style with flake8
 	$(PIP) install flake8 flake8-bugbear flake8-import-order pylint

@@ -72,7 +72,7 @@ Ready to contribute? Here's how to set up `pip_chill` for local development.
 4. Install your local copy in editable mode::
 
     $ cd pip_chill/
-    $ pip install -e .[dev]
+    $ pip install -e ".[dev,test,docs]"
 
 5. Install pre-commit hooks::
 

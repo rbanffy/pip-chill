@@ -31,7 +31,7 @@ jobs:
 
       - name: Install package with dev dependencies
         run: |
-          pip install ".[dev]"
+          pip install ".[dev,test,docs]"
 
       - name: Lint with flake8
         run: |
