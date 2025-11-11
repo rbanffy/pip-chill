@@ -1,7 +1,10 @@
 bandit==1.8.6
 black==25.11.0
-coverage
-flake8
-pylint
-pytest
-tox
+coverage==7.11.3
+flake8==7.3.0
+isort==7.0.0
+pre_commit==4.4.0
+pylint==4.0.2
+pytest==9.0.0
+setuptools-scm==9.2.2
+tox==4.32.0
