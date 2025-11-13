@@ -8,3 +8,4 @@ pylint==4.0.2
 pytest==9.0.0
 setuptools-scm==9.2.2
 tox==4.32.0
+setuptools>=80

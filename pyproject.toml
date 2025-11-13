@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
 ]
+# ------ Dependencies
 dependencies = ["packaging>=25.0"]
 
 [project.optional-dependencies]
@@ -27,10 +28,10 @@ dev = ["black", "setuptools_scm"]
 test = ["pytest", "bandit", "flake8", "pylint", "pre-commit", "tox"]
 docs = ["sphinx"]
 
+# ------ Packaging
 [tool.setuptools.packages.find]
 where = ["pip_chill"]
 
-# ------ Version numbers
 [tool.setuptools_scm]
 version_scheme = "post-release"
 local_scheme = "node-and-date"
