@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=80", "wheel", "setuptools_scm"]
+requires = ["setuptools==80.9.0", "wheel", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -21,11 +21,18 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 # ------ Dependencies
-dependencies = ["packaging>=25.0"]
+dependencies = ["packaging==25.0"]
 
 [project.optional-dependencies]
-dev = ["black", "setuptools_scm"]
-test = ["pytest", "bandit", "flake8", "pylint", "pre-commit", "tox"]
+dev = ["black==25.11.0", "setuptools-scm==9.2.2"]
+test = [
+    "pytest==9.0.0",
+    "bandit==1.8.6",
+    "flake8==7.3.0",
+    "pylint==4.0.2",
+    "pre-commit==4.4.0",
+    "tox==4.32.0",
+]
 docs = ["sphinx"]
 
 # ------ Packaging
