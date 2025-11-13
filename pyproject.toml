@@ -33,7 +33,7 @@ test = [
     "pre-commit==4.4.0",
     "tox==4.32.0",
 ]
-docs = ["sphinx==8.2.3"]
+docs = ["sphinx==8.1.3"]
 
 # ------ Packaging
 [tool.setuptools.packages.find]
