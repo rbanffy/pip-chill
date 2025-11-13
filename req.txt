@@ -6,44 +6,69 @@ pre_commit==4.4.0
 pylint==4.0.2
 pytest==9.0.1
 setuptools-scm==9.2.2
+Sphinx==8.2.3
 tox==4.32.0
+# alabaster==1.0.0 # Installed as dependency for sphinx
 # astroid==4.0.2 # Installed as dependency for pylint
+# babel==2.17.0 # Installed as dependency for sphinx
+# backports.zoneinfo==None # Installed as dependency for babel
+# brotli==None # Installed as dependency for urllib3
+# brotlicffi==None # Installed as dependency for urllib3
 # cachetools==6.2.1 # Installed as dependency for tox
+# certifi==2025.11.12 # Installed as dependency for requests
 # cfgv==3.4.0 # Installed as dependency for pre-commit
 # chardet==5.2.0 # Installed as dependency for tox
+# charset-normalizer==3.4.4 # Installed as dependency for requests
 # click==8.3.0 # Installed as dependency for black
-# colorama==0.4.6 # Installed as dependency for bandit, click, pylint, pytest, tox
+# colorama==0.4.6 # Installed as dependency for bandit, click, pylint, pytest, sphinx, tox
 # dill==0.4.0 # Installed as dependency for pylint
 # distlib==0.4.0 # Installed as dependency for virtualenv
+# docutils==0.21.2 # Installed as dependency for sphinx
 # exceptiongroup==None # Installed as dependency for pytest
 # filelock==3.20.0 # Installed as dependency for tox, virtualenv
 # identify==2.6.15 # Installed as dependency for pre-commit
+# idna==3.11 # Installed as dependency for requests
+# imagesize==1.4.1 # Installed as dependency for sphinx
 # importlib-metadata==8.7.0 # Installed as dependency for virtualenv
 # importlib-resources==None # Installed as dependency for importlib-metadata
 # iniconfig==2.3.0 # Installed as dependency for pytest
 # isort==7.0.0 # Installed as dependency for pylint
+# jinja2==3.1.6 # Installed as dependency for sphinx
 # markdown-it-py==4.0.0 # Installed as dependency for rich
+# markupsafe==3.0.3 # Installed as dependency for jinja2
 # mccabe==0.7.0 # Installed as dependency for flake8, pylint
 # mdurl==0.1.2 # Installed as dependency for markdown-it-py
 # mypy-extensions==1.1.0 # Installed as dependency for black
 # nodeenv==1.9.1 # Installed as dependency for pre-commit
-# packaging==25.0 # Installed as dependency for black, pyproject-api, pytest, setuptools-scm, tox
+# packaging==25.0 # Installed as dependency for black, pyproject-api, pytest, setuptools-scm, sphinx, tox
 # pathspec==0.12.1 # Installed as dependency for black
 # platformdirs==4.5.0 # Installed as dependency for black, pylint, tox, virtualenv
 # pluggy==1.6.0 # Installed as dependency for pytest, tox
 # pycodestyle==2.14.0 # Installed as dependency for flake8
 # pyflakes==3.4.0 # Installed as dependency for flake8
-# pygments==2.19.2 # Installed as dependency for pytest, rich
+# pygments==2.19.2 # Installed as dependency for pytest, rich, sphinx
 # pyproject-api==1.10.0 # Installed as dependency for tox
 # pytest-freezer==None # Installed as dependency for virtualenv
 # pytest-ruff==None # Installed as dependency for importlib-metadata, zipp
 # pytokens==0.3.0 # Installed as dependency for black
+# pytz==None # Installed as dependency for babel
 # pyyaml==6.0.3 # Installed as dependency for bandit, pre-commit
+# requests==2.32.5 # Installed as dependency for sphinx
 # rich==14.2.0 # Installed as dependency for bandit
+# roman-numerals-py==3.1.0 # Installed as dependency for sphinx
+# snowballstemmer==3.0.1 # Installed as dependency for sphinx
+# sphinxcontrib-applehelp==2.0.0 # Installed as dependency for sphinx
+# sphinxcontrib-devhelp==2.0.0 # Installed as dependency for sphinx
+# sphinxcontrib-htmlhelp==2.1.0 # Installed as dependency for sphinx
+# sphinxcontrib-jsmath==1.0.1 # Installed as dependency for sphinx
+# sphinxcontrib-qthelp==2.0.0 # Installed as dependency for sphinx
+# sphinxcontrib-serializinghtml==2.0.0 # Installed as dependency for sphinx
 # stevedore==5.5.0 # Installed as dependency for bandit
 # time-machine==None # Installed as dependency for virtualenv
 # tomli==None # Installed as dependency for bandit, black, coverage, pylint, pyproject-api, pytest, setuptools-scm, tox
 # tomlkit==0.13.3 # Installed as dependency for pylint
 # typing-extensions==4.15.0 # Installed as dependency for astroid, black, importlib-metadata, pylint, setuptools-scm, tox, virtualenv
+# tzdata==None # Installed as dependency for babel
+# urllib3==2.5.0 # Installed as dependency for requests
 # virtualenv==20.35.4 # Installed as dependency for pre-commit, tox
 # zipp==3.23.0 # Installed as dependency for importlib-metadata
