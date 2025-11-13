@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # Keep GitHub Actions up to date
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly' # or "weekly" if you prefer
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: 'ci'
+      include: 'scope'
