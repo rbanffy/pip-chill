@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-function lint_added_file () {
+function lint_added_file() {
     # This is called for every file added in the current branch. This
     # is the place we should feel more free to validate files more
     # rigorously so that nothing we don't like can enter the codebase.
@@ -10,19 +10,20 @@ function lint_added_file () {
     # Get the type of the file and choose what to do.
     type=$(file --mime-type -b "$1")
     case $type in
-        "text/x-shellscript")
-            shellcheck "$1"
-            ;;
-        "text/x-python")
-            isort -faas "$1"
-            black -l 79 "$1"
-            ;;
-        *)
-            echo "File $1 was not processed"
+    "text/x-shellscript")
+        shellcheck "$1"
+        ;;
+    "text/x-python")
+        isort -faas "$1"
+        black -l 79 "$1"
+        ;;
+    *)
+        echo "File $1 was not processed"
+        ;;
     esac
 }
 
-function lint_modified_file () {
+function lint_modified_file() {
     # This is called for every file modified in the current branch. We
     # may want to tone validations down a notch here in relation to
     # what we do with new files if we fear disturbing existing code or
@@ -32,27 +33,26 @@ function lint_modified_file () {
     # Get the type of the file and choose what to do.
     type=$(file --mime-type -b "$1")
     case $type in
-        "text/x-shellscript")
-            shellcheck "$1"
-            ;;
-        "text/x-python")
-            isort -faas "$1"
-            black -l 79 "$1"
-            ;;
-        *)
-            echo "File $1 was not processed"
+    "text/x-shellscript")
+        shellcheck "$1"
+        ;;
+    "text/x-python")
+        isort -faas "$1"
+        black -l 100 "$1"
+        ;;
+    *)
+        echo "File $1 was not processed"
+        ;;
     esac
 }
 
 # Iterate over the files added on this branch
 # Sadly, it's not trivial to figure out what branch we branched from.
-for file in $(git diff --name-only --diff-filter=A develop)
-do
+for file in $(git diff --name-only --diff-filter=A develop); do
     lint_added_file "$file"
 done
 
 # Iterate over the files modified on this commit
-for file in $(git diff --name-only --diff-filter=M HEAD)
-do
+for file in $(git diff --name-only --diff-filter=M HEAD); do
     lint_modified_file "$file"
 done

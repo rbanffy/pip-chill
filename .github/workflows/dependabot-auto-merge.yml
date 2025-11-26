@@ -1,0 +1,18 @@
+# .github/workflows/dependabot-auto-merge.yml
+name: Dependabot Auto Merge
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  auto-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-merge Dependabot PRs
+        uses: pascalgn/dependabot-auto-merge-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: squash
+          merge-strategy: merge

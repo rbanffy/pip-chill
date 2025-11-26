@@ -8,9 +8,7 @@ import pip_chill
 def main():
     """Console script for pip_chill"""
 
-    parser = argparse.ArgumentParser(
-        description="Like `pip freeze`, but more relaxed."
-    )
+    parser = argparse.ArgumentParser(description="Like `pip freeze`, but more relaxed.")
     parser.add_argument(
         "--no-version",
         action="store_true",
@@ -40,22 +38,20 @@ def main():
     )
     args = parser.parse_args()
 
-    distributions, dependencies = pip_chill.chill(
-        show_all=args.show_all, no_chill=args.no_chill
-    )
+    distributions, dependencies = pip_chill.chill(show_all=args.show_all, no_chill=args.no_chill)
     for package in distributions:
         if args.no_version:
-            print(package.get_name_without_version())
+            print(package.name_without_version)
         else:
             print(package)
 
     if args.verbose:
         for package in dependencies:
             if args.no_version:
-                print(package.get_name_without_version())
+                print(package.name_without_version)
             else:
                 print(package)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

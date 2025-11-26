@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pip-chill"
+dynamic = ["version"]
+description = "Lists installed packages that are not dependencies of others"
+authors = [{ name = "Ricardo Bánffy", email = "rbanffy@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.10"
+license-files = ["LICENSE"]
+keywords = ["pip", "dependencies", "python"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+]
+# ------ Dependencies
+dependencies = ["packaging==25.0"]
+
+[project.optional-dependencies]
+dev = ["black==25.11.0", "setuptools-scm==9.2.2"]
+test = [
+    "pytest==9.0.0",
+    "bandit==1.8.6",
+    "flake8==7.3.0",
+    "pylint==4.0.2",
+    "pre-commit==4.4.0",
+    "tox==4.32.0",
+]
+docs = ["sphinx==8.1.3"]
+
+# ------ Packaging
+[tool.setuptools.packages.find]
+where = ["pip_chill"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "node-and-date"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+
+# ------ Code quality / security
+[tool.bandit.assert_used]
+skips = ["*/test_*.py", "*/test_*.py"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312", "py313"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["pip_chill"]
+multi_line_output = 3
+include_trailing_comma = true

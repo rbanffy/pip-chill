@@ -1,5 +1,6 @@
 .PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
+
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
 try:
@@ -21,66 +22,78 @@ for line in sys.stdin:
 		print("%-20s %s" % (target, help))
 endef
 export PRINT_HELP_PYSCRIPT
+
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
-help:
+help: ## Show this help
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+
+
+# -------- Cleaning --------------------------------------------------------------------------------
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
-
 clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -rf {} +
+	rm -fr build/ dist/ .eggs/
+	find . \( -name '*.egg-info' -o -name '*.egg' \) -exec rm -rf {} +
 
 clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*.py[co]' -delete
 	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
+	find . -name '__pycache__' -type d -exec rm -rf {} +
 
 clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
-	rm -f .coverage
-	rm -fr htmlcov/
+	rm -fr .tox/ .coverage htmlcov/
 
-lint: ## check style with flake8
-	flake8 pip_chill tests
+# -------- Development / Testing -------------------------------------------------------------------
 
-test: ## run tests quickly with the default Python
-	python setup.py test
+VENV_DIR := .venv
+PY := $(VENV_DIR)/bin/python
+PIP := $(VENV_DIR)/bin/pip
 
-test-all: ## run tests on every Python version with tox
-	tox
+venv:  ## create virtual environment
+	@test -d $(VENV_DIR) || python -m venv $(VENV_DIR)
+	@$(PIP) install --upgrade pip setuptools wheel
 
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source pip_chill setup.py test
-	coverage report -m
-	coverage html
+install: venv clean  ## install package in editable mode
+	$(PIP) install -e ".[dev,test,docs]"
+
+lint: venv ## check style with flake8
+	$(PIP) install flake8 flake8-bugbear flake8-import-order pylint
+	$(VENV_DIR)/bin/flake8 pip_chill tests
+	$(VENV_DIR)/bin/pylint pip_chill --exit-zero
+
+test: venv ## run tests quickly
+	$(PIP) install pytest
+	$(VENV_DIR)/bin/pytest
+
+coverage: venv ## run coverage
+	$(PIP) install coverage pytest
+	$(VENV_DIR)/bin/coverage run --source pip_chill -m pytest
+	$(VENV_DIR)/bin/coverage report -m
+	$(VENV_DIR)/bin/coverage html
 	$(BROWSER) htmlcov/index.html
 
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/pip_chill.rst
-	rm -f docs/modules.rst
+# -------- Documentation ---------------------------------------------------------------------------
+
+docs: venv ## generate Sphinx HTML documentation
+	$(PIP) install sphinx
+	rm -f docs/pip_chill.rst docs/modules.rst
 	sphinx-apidoc -o docs/ pip_chill
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
-# servedocs: docs ## compile the docs watching for changes
-# 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
+# -------- Packaging / Release ---------------------------------------------------------------------
 
-release: clean ## package and upload a release
-	python setup.py sdist upload
-	python setup.py bdist_wheel upload
+build: venv clean ## build source and wheel package
+	$(PIP) install build
+	$(PY) -m build
+	@ls -l dist
 
-dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist
-	ls -l dist
+dist: build
 
-install: clean ## install the package to the active Python's site-packages
-	python setup.py install
+release: venv clean ## build and upload release
+	$(PIP) install twine
+	$(PY) -m build
+	$(PY) -m twine upload dist/*

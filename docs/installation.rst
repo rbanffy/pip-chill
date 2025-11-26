@@ -22,30 +22,38 @@ you through the process.
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
-
 From sources
 ------------
 
-The sources for PIP Chill can be downloaded from the `Github repo`_.
+The sources for PIP Chill can be downloaded from the `GitHub repo`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/rbanffy/pip-chill
+    $ git clone https://github.com/rbanffy/pip-chill
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/rbanffy/pip-chill/tarball/master
+    $ curl -OL https://github.com/rbanffy/pip-chill/tarball/master
 
-Once you have a copy of the source, you can install it with:
+Once you have a copy of the source, you can install it in a virtual environment:
 
 .. code-block:: console
 
-    $ python setup.py install
+    $ python -m venv .venv
+    $ source .venv/bin/activate   # On Windows: .venv\Scripts\activate
+    $ pip install -e .
 
+This will install PIP Chill in “editable” mode, so changes to the source are immediately reflected.
 
-.. _Github repo: https://github.com/rbanffy/pip-chill
+Alternatively, if you prefer using the Makefile:
+
+.. code-block:: console
+
+    $ make install
+
+.. _GitHub repo: https://github.com/rbanffy/pip-chill
 .. _tarball: https://github.com/rbanffy/pip-chill/tarball/master

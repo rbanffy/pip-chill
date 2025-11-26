@@ -2,18 +2,18 @@ name: Mark stale issues and pull requests
 
 on:
   schedule:
-  - cron: "30 1 * * *"
+    - cron: '30 1 * * *' # runs daily at 01:30 UTC
 
 jobs:
   stale:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/stale@v3
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        stale-issue-message: 'Stale issue message'
-        stale-pr-message: 'Stale pull request message'
-        stale-issue-label: 'no-issue-activity'
-        stale-pr-label: 'no-pr-activity'
+      - uses: actions/stale@v10
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-stale: 30 # mark as stale after 30 days of inactivity
+          days-before-close: 7 # close 7 days after marking stale
+          stale-issue-message: 'Stale issue message'
+          stale-pr-message: 'Stale pull request message'
+          stale-label: 'no-activity' # label applied to stale items
+          exempt-labels: 'pinned,important' # labels to skip

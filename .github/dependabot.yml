@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: 'github-actions' # we want to keep GitHub Actions up to date
+    directory: '/' # the location of workflows
+    schedule:
+      interval: 'monthly' # check once a month (can be "weekly" or "daily")
+    open-pull-requests-limit: 3 # max PRs open at once
+    commit-message:
+      prefix: 'ci'
+      include: 'scope'

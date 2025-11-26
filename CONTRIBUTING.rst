@@ -4,8 +4,8 @@
 Contributing
 ============
 
-Contributions are welcome, and they are greatly appreciated! Every
-little bit helps, and credit will always be given.
+Contributions are welcome and greatly appreciated!
+Every little bit helps, and credit will always be given.
 
 You can contribute in many ways:
 
@@ -40,8 +40,7 @@ Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
 PIP Chill could always use more documentation, whether as part of the
-official PIP Chill docs, in docstrings, or even on the web in blog posts,
-articles, and such.
+official docs, in docstrings, or even on the web in blog posts, articles, etc.
 
 Submit Feedback
 ~~~~~~~~~~~~~~~
@@ -52,8 +51,7 @@ If you are proposing a feature:
 
 * Explain in detail how it would work.
 * Keep the scope as narrow as possible, to make it easier to implement.
-* Remember that this is a volunteer-driven project, and that contributions
-  are welcome :)
+* Remember that this is a volunteer-driven project, and contributions are welcome :)
 
 Get Started!
 ------------
@@ -65,50 +63,68 @@ Ready to contribute? Here's how to set up `pip_chill` for local development.
 
     $ git clone git@github.com:your_name_here/pip_chill.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. (Optional) Create and activate a virtual environment::
 
-    $ mkvirtualenv pip_chill
+    $ python -m venv .venv
+    $ source .venv/bin/activate   # Unix/macOS
+    $ .venv\Scripts\activate      # Windows
+
+4. Install your local copy in editable mode::
+
     $ cd pip_chill/
-    $ python setup.py develop
+    $ pip install -e ".[dev,test,docs]"
 
-4. Create a branch for local development::
+5. Install pre-commit hooks::
+
+    $ pre-commit install
+
+
+6. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox::
+7. When done, check that your changes pass style checks and tests::
 
     $ flake8 pip_chill tests
-    $ python setup.py test or py.test
+    $ pytest
     $ tox
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+   Alternatively, you can use the small script that launches all 3 tests as a shortcut
+   if you need to repeatedly test your code.
 
-6. Commit your changes and push your branch to GitHub::
+    $ source ./dev-test.sh
+
+   To get flake8 and tox, just install them into your virtualenv:
+
+    $ pip install flake8 tox
+
+8. Commit your changes and push your branch to GitHub::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-7. Submit a pull request through the GitHub website.
+9. Submit a pull request through the GitHub website.
 
 Pull Request Guidelines
 -----------------------
 
-Before you submit a pull request, check that it meets these guidelines:
+Before submitting a pull request, check that it meets these guidelines:
 
 1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put
+
+2. If the pull request adds functionality, update the docs. Put
    your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst.
-3. The pull request should work for Python 3.7+, and for PyPy. Check
-   https://travis-ci.org/rbanffy/pip_chill/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+   feature to the list in `README.rst`.
+
+3. The pull request should work for Python 3.8+ and for PyPy.
+   Make sure that the tests pass for all supported Python versions.
 
 Tips
 ----
 
 To run a subset of tests::
 
-    $ python -m unittest tests.test_pip_chill
+    $ pytest tests/test_pip_chill.py
