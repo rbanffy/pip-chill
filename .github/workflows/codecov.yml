@@ -2,10 +2,10 @@ name: Codecov
 run-name: ${{ github.actor }} Codecov
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  codecov:
     runs-on: ubuntu-latest
     steps:
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
