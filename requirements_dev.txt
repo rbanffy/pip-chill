@@ -1,12 +1,12 @@
 bandit
-black
-bumpversion
 coverage
 flake8
 nose
 pytest
+pytest-cov
 sphinx
 ssort
 tox
 twine
 watchdog
+ruff
