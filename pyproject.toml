@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pip-chill"
+version = "1.0.4"
+description = "Like `pip freeze` but lists only the packages that are not dependencies of installed packages."
+readme = {file = "README.rst", content-type = "text/x-rst"}
+requires-python = ">=3.7"
+license = {text = "GNU General Public License v3"}
+authors = [
+    {name = "Ricardo Bánffy", email = "rbanffy@gmail.com"}
+]
+keywords = ["pip-chill"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Environment :: Console",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/rbanffy/pip-chill"
+
+[project.scripts]
+pip-chill = "pip_chill.cli:main"
+
+[tool.setuptools]
+packages = ["pip_chill"]
+package-dir = {pip_chill = "pip_chill"}
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.package-data]
+"*" = ["*.rst", "*.txt", "*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
