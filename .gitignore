@@ -68,7 +68,7 @@ target/
 .venv
 .venv3
 .env
-env2
+venv*
 
 # Others
 cache
