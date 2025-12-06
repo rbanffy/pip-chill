@@ -4,9 +4,9 @@ flake8
 nose
 pytest
 pytest-cov
+ruff
 sphinx
 ssort
 tox
 twine
 watchdog
-ruff
