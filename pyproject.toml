@@ -47,3 +47,5 @@ testpaths = ["tests"]
 [tool.pylint.main]
 disable = ["C0103", "C0115", "C0116", "W0622"]
 
+[tool.ruff]
+line-length = 79

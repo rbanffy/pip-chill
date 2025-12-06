@@ -8,7 +8,6 @@ test_pip_chill
 Tests for `pip_chill` module.
 """
 
-
 import os
 import sys
 import unittest

@@ -71,7 +71,6 @@ def chill(show_all=False, no_chill=False, no_version=False):
     dependencies = {}
 
     for distribution in working_set:
-
         # working_set is a list of pkg_resources.EggInfoDistribution. Of note
         # for us are the key and version attributes and the requires() method.
         # The requires() method returns an iterable of

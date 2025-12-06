@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 "Pip-chill module root"
 
-
 from .pip_chill import chill
 
 __author__ = "Ricardo Bánffy"
