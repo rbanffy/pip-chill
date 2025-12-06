@@ -1,5 +1,11 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""
+PIP Chill documentation build configuration file.
+"""
+import os
+import sys
+
+import pip_chill
+
 #
 # pip_chill documentation build configuration file, created by
 # sphinx-quickstart on Tue Jul  9 22:26:36 2013.
@@ -12,9 +18,6 @@
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
-
-import sys
-import os
 
 # If extensions (or modules to document with autodoc) are in another
 # directory, add these directories to sys.path here. If the directory is
@@ -29,9 +32,7 @@ project_root = os.path.dirname(cwd)
 # Insert the project root dir as the first element in the PYTHONPATH.
 # This lets us ensure that the source package is imported, and that its
 # version is used.
-sys.path.insert(0, project_root)
-
-import pip_chill
+sys.path.insert(0, project_root)\
 
 # -- General configuration ---------------------------------------------
 
@@ -55,8 +56,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"PIP Chill"
-copyright = u"2016, Ricardo Bánffy"
+project = "PIP Chill"
+copyright = "2016-2025, Ricardo Bánffy"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -209,8 +210,8 @@ latex_documents = [
     (
         "index",
         "pip_chill.tex",
-        u"PIP Chill Documentation",
-        u"Ricardo Bánffy",
+        "PIP Chill Documentation",
+        "Ricardo Bánffy",
         "manual",
     ),
 ]
@@ -241,7 +242,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ("index", "pip_chill", u"PIP Chill Documentation", [u"Ricardo Bánffy"], 1)
+    ("index", "pip_chill", "PIP Chill Documentation", ["Ricardo Bánffy"], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -257,8 +258,8 @@ texinfo_documents = [
     (
         "index",
         "pip_chill",
-        u"PIP Chill Documentation",
-        u"Ricardo Bánffy",
+        "PIP Chill Documentation",
+        "Ricardo Bánffy",
         "pip_chill",
         "One line description of project.",
         "Miscellaneous",
