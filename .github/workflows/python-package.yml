@@ -41,7 +41,8 @@ jobs:
         python -m flake8 pip_chill tests --count --max-complexity=10 --max-line-length=79 --statistics
     - name: Check with bandit
       run: |
-        python -m bandit -r pip_chill tests
+        # Don't check the tests directory - it runs a process inside a shell.
+        python -m bandit -r pip_chill 
     - name: Test with pytest
       run: |
         python -m pytest
