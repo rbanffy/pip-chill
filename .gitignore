@@ -75,3 +75,6 @@ cache
 .pytest_cache
 .idea
 .vscode
+node_modules
+package-lock.json
+pip-chill.prof
