@@ -4,6 +4,9 @@ PIP Chill documentation build configuration file.
 import os
 import sys
 
+from pygments.lexers.data import TomlLexer
+from sphinx.highlighting import lexers
+
 import pip_chill
 
 #
@@ -99,6 +102,9 @@ exclude_patterns = ["_build"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
+
+# Enable syntax highlighting for TOML snippets (e.g. pyproject.toml)
+lexers["toml"] = TomlLexer()
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
