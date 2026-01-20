@@ -42,7 +42,7 @@ jobs:
     - name: Check with bandit
       run: |
         # Don't check the tests directory - it runs a process inside a shell.
-        python -m bandit -r pip_chill 
+        python -m bandit -r pip_chill
     - name: Test with pytest
       run: |
         python -m pytest
