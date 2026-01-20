@@ -4,6 +4,8 @@ History
 
 1.0.5 (unreleased)
 ------------------
+* Update GitHub Actions workflows to latest versions
+* Add Ruff to tox linting and code checking
 * Support Python 3.12, 3.13 and 3.14
 * Replace pkg-resources with importlib.metadata
 * Update tests to use new Python versions
