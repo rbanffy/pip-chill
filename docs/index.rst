@@ -14,8 +14,10 @@ Contents:
    readme
    installation
    usage
+   api
    contributing
-   authorshistory
+   authors
+   history
 
 Indices and tables
 ==================
