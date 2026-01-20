@@ -2,6 +2,12 @@
 History
 =======
 
+1.0.5 (unreleased)
+------------------
+* Support Python 3.12, 3.13 and 3.14
+* Replace pkg-resources with importlib.metadata
+* Update tests to use new Python versions
+
 1.0.4
 -----
 * Support Python 3.12
