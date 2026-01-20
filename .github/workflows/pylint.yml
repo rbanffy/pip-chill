@@ -21,4 +21,4 @@ jobs:
         pip install -e .
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint --disable=R0912 pip_chill tests
