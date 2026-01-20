@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """Lists installed packages that are not dependencies of others"""
 
-from pkg_resources import working_set
+import re
+from importlib import metadata
+
+pattern = re.compile('[=!<>]')
 
 
 class Distribution:
@@ -70,50 +73,59 @@ def chill(show_all=False, no_chill=False, no_version=False):
     distributions = {}
     dependencies = {}
 
-    for distribution in working_set:
-        # working_set is a list of pkg_resources.EggInfoDistribution. Of note
-        # for us are the key and version attributes and the requires() method.
-        # The requires() method returns an iterable of
-        # pkg_resources.Requirement objects. We'll use the key attribute to
-        # trim the requirements.
-
-        # importlib.metadata import distributions returns an iterable of
+    for distribution in metadata.distributions():
+        # importlib.metadata.distributions returns() an iterable of
         # importlib.metadata.PathDistribution objects. We'll be interested in
         # the name, version and requires attributes. The requires attribute is
-        # a string representing the requirement in requirements.txt syntax.
+        # a list of strings representing the requirement in requirements.txt
+        # syntax. If the package has no requirements, the requires attribute
+        # is None.
 
         # Skip packages to be ignored.
-        if distribution.key in ignored_packages:
+        if distribution.name in ignored_packages:
             continue
 
         # Populate the distributions dict.
-        if distribution.key in dependencies:
-            dependencies[distribution.key].version = distribution.version
+        if distribution.name in dependencies:
+            # If it is an already know dependency, we add the version.
+            dependencies[distribution.name].version = distribution.version
         else:
-            distributions[distribution.key] = Distribution(
-                distribution.key,
+            distributions[distribution.name] = Distribution(
+                distribution.name,
                 distribution.version,
                 hide_version=no_version,
             )
 
-        # Go over the requirements of this package and remove redundant ones.
-        for requirement in distribution.requires():
-            if requirement.key not in ignored_packages:
-                if requirement.key in dependencies:
-                    dependencies[requirement.key].required_by.add(
-                        distribution.key
-                    )
-                else:
-                    dependencies[requirement.key] = Distribution(
-                        requirement.key,
-                        required_by=(distribution.key,),
-                        hide_version=no_version,
-                    )
+        requirements = distribution.requires
+        if requirements is not None:
+            # Go over the requirements of this package and add any missing
+            # dependencies.
+            for requirement in requirements:
+                # requirement is a string representing the requirement in
+                # requirements.txt syntax. We'll need to parse it.
+                requirement_name = re.split(pattern, requirement)[0]
+                if requirement_name not in ignored_packages:
+                    # We should not ignore this one
+                    if requirement_name in dependencies:
+                        # This is an already known dependency, we add the
+                        # distribution to its required_by set.
+                        dependencies[requirement_name].required_by.add(
+                            distribution.name
+                        )
+                    else:
+                        # This is a new dependency, we create a new
+                        # Distribution object for it.
+                        dependencies[requirement_name] = Distribution(
+                            requirement_name,
+                            required_by=(distribution.name,),
+                            hide_version=no_version,
+                        )
 
-            # If the requirement is in the distributions list, remove it.
-            if requirement.key in distributions:
-                dependencies[requirement.key].version = distributions.pop(
-                    requirement.key
-                ).version
+                # If the requirement is in the distributions list, remove it.
+                # Add the distribution version to the dependency.
+                if requirement_name in distributions:
+                    dependencies[requirement_name].version = distributions.pop(
+                        requirement_name
+                    ).version
 
     return sorted(distributions.values()), sorted(dependencies.values())

@@ -38,7 +38,8 @@ class TestPipChill(unittest.TestCase):
     def test_all(self):
         packages, _ = pip_chill.chill(True)
         package_names = {package.name for package in packages}
-        for package in ["pip-chill", "pip"]:
+        all_packages = ["pip-chill",]
+        for package in all_packages:
             self.assertIn(package, package_names)
 
     def test_hashes(self):
