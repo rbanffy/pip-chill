@@ -3,7 +3,7 @@
 import re
 from importlib import metadata
 
-pattern = re.compile("[\s\(;=!<>]")
+pattern = re.compile(r"[\s\(;=!<>]")
 
 
 class Distribution:
