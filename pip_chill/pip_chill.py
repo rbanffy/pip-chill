@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Lists installed packages that are not dependencies of others"""
 
 import re
