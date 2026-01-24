@@ -1,4 +1,5 @@
 bandit
+build
 coverage
 flake8
 nose
