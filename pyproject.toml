@@ -8,16 +8,13 @@ version = "1.0.5"
 description = "Like `pip freeze` but lists only the packages that are not dependencies of installed packages."
 readme = {file = "README.rst", content-type = "text/x-rst"}
 requires-python = ">=3.10"
-license = {text = "GNU General Public License v3"}
-authors = [
-    {name = "Ricardo Bánffy", email = "rbanffy@gmail.com"}
-]
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE", "AUTHORS.rst"]
 keywords = ["pip-chill"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Environment :: Console",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Natural Language :: English",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
