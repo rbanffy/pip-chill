@@ -48,19 +48,21 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 lint: ## check style with flake8
-	flake8 pip_chill tests
+	pylint --disable=R0912 pip_chill tests
 
 test: ## run tests quickly with the default Python
-	python setup.py test
+	pytest
 
 test-all: ## run tests on every Python version with tox
-	tox
+	tox -p
+
+VIRTUALENV_PATH := $(CURDIR)/venv
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source pip_chill setup.py test
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
+	python -m coverage run --source=pip_chill -m pytest
+	python -m coverage report -m
+	python -m coverage html
+	python -c "$$BROWSER_PYSCRIPT" htmlcov/index.html
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/pip_chill.rst
