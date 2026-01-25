@@ -2,6 +2,7 @@
 
 import re
 from importlib import metadata
+from typing import Any, Set
 
 pattern = re.compile(r"[\s\(;=!<>]")
 
@@ -12,17 +13,23 @@ class Distribution:
     """
 
     def __init__(
-        self, name, version=None, required_by=None, hide_version=False
+        self: str,
+        name: str,
+        version: str = None,
+        required_by: Set = None,
+        hide_version: bool = False,
     ):
         self.name = name
         self.version = version
-        self.required_by = set(required_by) if required_by else set()
+        self.required_by = (
+            set[Any](required_by) if required_by is not None else set[Any]()
+        )
         self.hide_version = hide_version
 
     def __lt__(self, other):
         return self.name < other.name
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         if self is other:
             return True
         if isinstance(other, Distribution):
@@ -32,7 +39,7 @@ class Distribution:
     def __hash__(self):
         return hash(self.name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f'<{self.__module__}.{self.__class__.__name__} instance "'
             f'{self.name}">'
@@ -55,13 +62,15 @@ class Distribution:
         return f"{self.name}=={self.version}"
 
 
-def chill(show_all=False, no_chill=False, no_version=False):
+def chill(
+    show_all: bool = False, no_chill: bool = False, no_version: bool = False
+) -> tuple[list[Distribution], list[Distribution]]:
     """
     Returns a tuple of dicts, one with the the packages, other with their
     dependencies.
     """
     if show_all:
-        ignored_packages = ()
+        ignored_packages: set[str] = set()
     else:
         ignored_packages = {"pip", "wheel", "setuptools", "pkg-resources"}
 
@@ -70,7 +79,7 @@ def chill(show_all=False, no_chill=False, no_version=False):
 
     # Gather all packages that are requirements and will be auto-installed.
     distributions = {}
-    dependencies = {}
+    dependencies: dict[Distribution] = {}
 
     for distribution in metadata.distributions():
         # importlib.metadata.distributions returns() an iterable of
@@ -81,6 +90,7 @@ def chill(show_all=False, no_chill=False, no_version=False):
         # is None.
 
         # Skip packages to be ignored.
+
         if distribution.name in ignored_packages:
             continue
 

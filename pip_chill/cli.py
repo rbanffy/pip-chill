@@ -6,7 +6,7 @@ import argparse
 import pip_chill
 
 
-def main():
+def main() -> None:
     """Console script for pip_chill"""
 
     parser = argparse.ArgumentParser(
