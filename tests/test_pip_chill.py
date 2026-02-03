@@ -28,7 +28,7 @@ class TestPipChill(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_pip_ommitted(self) -> None:
+    def test_pip_omitted(self) -> None:
         packages, _ = pip_chill.chill()
         hidden = {"wheel", "setuptools", "pip"}
         for package in packages:
