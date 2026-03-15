@@ -28,7 +28,7 @@ class TestPipChill(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_pip_ommitted(self) -> None:
+    def test_pip_omitted(self) -> None:
         packages, _ = pip_chill.chill()
         hidden = {"wheel", "setuptools", "pip"}
         for package in packages:
@@ -57,8 +57,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_help(self) -> None:
         command = "pip_chill/cli.py --help"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         self.assertIn("--no-version", result)
@@ -69,8 +69,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_no_version(self) -> None:
         command = "pip_chill/cli.py --no-version"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         self.assertNotIn("==", result)
@@ -78,8 +78,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_verbose(self):
         command = "pip_chill/cli.py --verbose"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         self.assertIn("# Installed as dependency for", result)
@@ -87,8 +87,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_short_verbose(self) -> None:
         command = "pip_chill/cli.py -v"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         self.assertIn("# Installed as dependency for", result)
@@ -96,8 +96,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_verbose_no_version(self) -> None:
         command = "pip_chill/cli.py --verbose --no-version"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         self.assertNotIn("==", result)
@@ -106,8 +106,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_omits_ignored(self) -> None:
         command = "pip_chill/cli.py"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         for package in ["wheel", "setuptools", "pip"]:
@@ -118,8 +118,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_all(self) -> None:
         command = "pip_chill/cli.py --all"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         for package in ["pip-chill", "pip"]:
@@ -128,8 +128,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_short_all(self) -> None:
         command = "pip_chill/cli.py -a"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         for package in ["pip-chill", "pip"]:
@@ -138,8 +138,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_long_all(self):
         command = "pip_chill/cli.py --show-all"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         for package in ["pip-chill", "pip"]:
@@ -148,8 +148,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_interface_no_chill(self) -> None:
         command = "pip_chill/cli.py --no-chill"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 0)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 0)
 
         result = os.popen(command).read()
         self.assertNotIn("pip-chill", result)
@@ -157,8 +157,8 @@ class TestPipChill(unittest.TestCase):
     def test_command_line_invalid_option(self) -> None:
         command = "pip_chill/cli.py --invalid-option"
 
-        returncode = os.system(command)
-        self.assertEqual(returncode, 512)
+        return_code = os.system(command)
+        self.assertEqual(return_code, 512)
 
 
 if __name__ == "__main__":
