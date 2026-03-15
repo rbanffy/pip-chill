@@ -73,7 +73,7 @@ This constraint ensures pip-chill remains lightweight, fast, and free from depen
 
 ### Formatting
 - **Indentation**: 4 spaces (PEP 8)
-- **Line Length**: Reasonable limits, break long argument lists
+- **Line Length**: 79 characters, break long argument lists
 - **Imports**: Group standard library, third-party, local (already zero third-party)
 
 ### String Handling
